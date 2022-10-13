@@ -1,0 +1,17 @@
+FROM node:16-alpine
+
+ENV PATH $PATH:/usr/src/app/node_modules/.bin
+
+WORKDIR /usr/src/app
+
+ADD ./.yarn/releases/yarn-3.2.4.cjs ./.yarn/releases/yarn-3.2.4.cjs
+
+RUN yarn set version ./.yarn/releases/yarn-3.2.4.cjs
+
+COPY package.json yarn.lock .yarnrc.yml ./
+
+RUN yarn install --immutable
+
+EXPOSE 80
+
+CMD [ "npm", "run", "start:dev" ]

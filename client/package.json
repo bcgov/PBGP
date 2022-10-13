@@ -1,0 +1,45 @@
+{
+  "name": "pbgp-client",
+  "version": "1.0.0",
+  "license": "ISC",
+  "proxy": "http://server:80",
+  "scripts": {
+    "start": "REACT_APP_OUTPUT=ALL react-scripts start",
+    "build": "REACT_APP_OUTPUT=ALL react-scripts build",
+    "test": "REACT_APP_OUTPUT=ALL react-scripts test"
+  },
+  "dependencies": {
+    "@date-io/moment": "1.3.13",
+    "@material-ui/core": "4.12.3",
+    "@material-ui/icons": "4.11.2",
+    "@material-ui/lab": "4.0.0-alpha.60",
+    "@material-ui/pickers": "3.3.10",
+    "axios": "0.21.4",
+    "clsx": "1.1.1",
+    "cross-env": "7.0.3",
+    "csvtojson": "2.0.10",
+    "formik": "2.2.9",
+    "i18next": "21.1.1",
+    "ibmcloud-appid-js": "0.4.3",
+    "lodash.throttle": "4.1.1",
+    "material-table": "1.61.0",
+    "moment": "2.29.1",
+    "moment-timezone": "0.5.33",
+    "react": "17.0.2",
+    "react-app-polyfill": "2.0.0",
+    "react-dom": "17.0.2",
+    "react-dropzone": "11.4.2",
+    "react-i18next": "11.12.0",
+    "react-router-dom": "5.3.0",
+    "react-scripts": "4.0.3",
+    "replace-in-file": "6.2.0",
+    "xlsx": "0.17.2",
+    "yup": "0.32.9"
+  },
+  "devDependencies": {
+    "cypress": "7.7.0",
+    "faker": "5.5.3",
+    "puppeteer": "3.3.0"
+  },
+  "packageManager": "yarn@3.2.4"
+}
