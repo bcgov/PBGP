@@ -6,7 +6,8 @@ import {
   GeneralProjectInfo,
   FacilityInfo,
   FundingEligibility,
-  ClimateConsiderations,
+  ClimateConsiderationsAirside,
+  ClimateConsiderationsEnvironmental,
   ProjectBenefits,
   ProjectFunding,
   SupportAndAuthorization,
@@ -33,7 +34,7 @@ export class BCAAPApplication extends CustomBaseEntity {
   fundingEligibility: FundingEligibility;
 
   @Column({ type: 'jsonb', nullable: true })
-  climateConsiderations: ClimateConsiderations;
+  climateConsiderations: ClimateConsiderationsAirside | ClimateConsiderationsEnvironmental;
 
   @Column({ type: 'jsonb', nullable: true })
   projectBenefits: ProjectBenefits;
