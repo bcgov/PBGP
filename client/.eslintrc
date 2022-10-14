@@ -1,6 +1,6 @@
 {
-  "extends": ["react-app", "plugin:jsx-a11y/recommended"],
-  "plugins": ["react", "react-hooks", "jsx-a11y"],
+  "extends": ["react-app"],
+  "plugins": ["react", "react-hooks"],
   "rules": {
     "import/no-anonymous-default-export": [2, { "allowArrowFunction": true }],
     "no-unused-vars": "warn"

@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import './constants/i18n';
 import { Theme, AuthIssuer } from './constants';
 
-import { TopUpRoutes } from './routes';
+import { AppRoutes } from './routes';
 import { Toast, Modal, ErrorBoundary } from './components/generic';
 import { AuthProvider, ToastProvider, ModalProvider } from './providers';
 
@@ -33,7 +33,7 @@ const IEMessage = () => {
     <div>
       {t(
         'This content is ignored in IE browsers. Please use either Chrome, Edge, Safari, or Firefox.'
-      )}
+      )}{' '}
     </div>
   );
 };
@@ -50,12 +50,12 @@ const App = () => (
               <CssBaseline />
               <Toast />
               <Modal />
-              <TopUpRoutes authIssuer={authIssuer} />
-            </ErrorBoundary>
-          </ModalProvider>
-        </AuthProvider>
-      </ToastProvider>
-    </BrowserRouter>
+              <AppRoutes />
+            </ErrorBoundary>{' '}
+          </ModalProvider>{' '}
+        </AuthProvider>{' '}
+      </ToastProvider>{' '}
+    </BrowserRouter>{' '}
   </ThemeProvider>
 );
 

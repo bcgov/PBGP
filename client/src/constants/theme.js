@@ -1,11 +1,10 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
-export const Theme = createMuiTheme({
-
+export const Theme = createTheme({
   /** Colors */
   palette: {
     primary: {
-      main: '#0A70C4',
+      main: '#003366',
     },
     secondary: {
       main: '#0B81A2',
@@ -15,7 +14,7 @@ export const Theme = createMuiTheme({
     },
     text: {
       primary: '#333333',
-      secondary: '#000000',
+      secondary: '#FFFFFF',
       disabled: '#6F6F6F',
     },
     info: {
@@ -49,7 +48,7 @@ export const Theme = createMuiTheme({
   typography: {
     fontFamily: 'acumin-pro-semi-condensed, sans-serif;',
     h1: {
-      fontSize: '48px',
+      fontSize: '38px',
       lineHeight: '54px',
       letterSpacing: 0,
       fontWeight: 700,
@@ -63,7 +62,7 @@ export const Theme = createMuiTheme({
       },
     },
     h2: {
-      fontSize: '48px',
+      fontSize: '38px',
       lineHeight: '56px',
       letterSpacing: '-1.50px',
       fontWeight: 700,
@@ -175,7 +174,7 @@ export const Theme = createMuiTheme({
           padding: '0 0 0 1rem',
           margin: 0,
         },
-        'textarea': {
+        textarea: {
           padding: `0 !important`,
         },
       },
@@ -191,10 +190,10 @@ export const Theme = createMuiTheme({
     MuiInputBase: {
       root: {
         backgroundColor: '#FFFFFF',
-        overflow: "hidden",
+        overflow: 'hidden',
       },
       marginDense: {
-        height: "40px !important",
+        height: '40px !important',
       },
     },
     MuiOutlinedInput: {
@@ -243,7 +242,7 @@ export const Theme = createMuiTheme({
     },
     MuiSkeleton: {
       text: {
-        transform: "none",
+        transform: 'none',
       },
     },
   },
