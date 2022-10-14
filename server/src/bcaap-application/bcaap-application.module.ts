@@ -10,4 +10,4 @@ import { BCAAPApplicationService } from './bcaap-application.service';
   controllers: [BCAAPApplicationController],
   providers: [BCAAPApplicationService],
 })
-export class UserModule {}
+export class BCAAPAppicationModule {}

@@ -4,9 +4,11 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { AppLogger } from './common/logger.service';
 import { LoggerMiddleware } from './logger.middleware';
+import { BCAAPAppicationModule } from './bcaap-application/bcaap-application.module';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, BCAAPAppicationModule, UserModule],
   controllers: [AppController],
   providers: [Logger, AppLogger, AppService],
 })
