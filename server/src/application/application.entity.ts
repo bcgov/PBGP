@@ -11,10 +11,10 @@ import {
   ProjectBenefits,
   ProjectFunding,
   SupportAndAuthorization,
-} from './bcaap-application.interfaces';
+} from './application.interfaces';
 
 @Entity()
-export class BCAAPApplication extends CustomBaseEntity {
+export class Application extends CustomBaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
