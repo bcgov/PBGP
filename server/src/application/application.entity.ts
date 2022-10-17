@@ -1,5 +1,5 @@
 import { User } from '@/user/user.entity';
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne, ManyToOne } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 import {
   ContactInfo,
@@ -18,8 +18,8 @@ export class Application extends CustomBaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'int', nullable: true })
-  priority: number;
+  @Column({ type: 'varchar', length: 100, nullable: false, unique: true })
+  externalId: string;
 
   @Column({ type: 'jsonb', nullable: true })
   contactInfo: ContactInfo;
@@ -48,7 +48,6 @@ export class Application extends CustomBaseEntity {
   @Column({ type: 'boolean', nullable: false })
   isSubmitted: boolean;
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User, (user) => user.applications)
   user: User;
 }

@@ -5,10 +5,11 @@ export interface ContactInfo {
   applicantName: string;
   primaryContactName: string;
   phoneNumber: string;
+  applicationPriority: string;
 }
 
 export interface GeneralProjectInfo {
-  estimatedCost: number;
+  estimatedCost: string;
   projectType: string;
   facilityMasterPlan: string;
   facilityMasterPlanExplanation: string;
@@ -27,9 +28,9 @@ export interface FacilityInfo {
   eligibleForACAP: string;
   madeForACAP: string;
   facilityUsage: [string];
-  passengerVolumes: number;
-  cargoTonnes: number;
-  aircraftMovements: number;
+  passengerVolumes: string;
+  cargoTonnes: string;
+  aircraftMovements: string;
 }
 
 export interface FundingEligibility {
@@ -82,11 +83,11 @@ export interface ProjectBenefits {
 export interface ProjectFunding {
   contingencyPlan: string;
   contingencyPlanExplanation: string;
-  totalEstimatedCost: number;
-  potentialBCAAPShare: number;
-  thirdPartyContributions: number;
-  applicantShare: number;
-  totalRequest: number;
+  totalEstimatedCost: string;
+  potentialBCAAPShare: string;
+  thirdPartyContributions: string;
+  applicantShare: string;
+  totalRequest: string;
 }
 
 export interface SupportAndAuthorization {
