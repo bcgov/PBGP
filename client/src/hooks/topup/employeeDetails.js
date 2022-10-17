@@ -1,45 +1,56 @@
-import React,{ useState } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import moment from 'moment';
 import xlsx from 'xlsx';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
-import { Route } from 'constants/routes'
-import { AxiosPrivate, serializeTopupFormValues } from 'utils'
-import { useToast } from 'hooks'
-import { EmployerXlsValidation, EmployeeXmlHeaderKeys, parseEmployeeDate } from 'constants/topup/schema';
+import { Route } from 'constants/routes';
+import { AxiosPrivate, serializeTopupFormValues } from 'utils';
+import { useToast } from 'hooks';
+import {
+  EmployerXlsValidation,
+  EmployeeXmlHeaderKeys,
+  parseEmployeeDate,
+} from 'constants/topup/schema';
 
 export const useEmployeeDetailsForm = () => {
-  const history = useHistory()
-  const [isFetching, setFetching] = useState(false)
-  const { openToast } = useToast()
-  const { t } = useTranslation()
+  const history = useHistory();
+  const [isFetching, setFetching] = useState(false);
+  const { openToast } = useToast();
+  const { t } = useTranslation();
 
   return {
     isFetching,
     submit: async (values) => {
       try {
         setFetching(true);
-        await AxiosPrivate.post('/api/v1/topup/employee', serializeTopupFormValues({ employees: values }, 'employee'));
-        openToast({ status: 'success', message: t("Employees file successfully submitted.") });
+        await AxiosPrivate.post(
+          '/api/v1/topup/employee',
+          serializeTopupFormValues({ employees: values }, 'employee')
+        );
+        openToast({ status: 'success', message: t('Employees file successfully submitted.') });
         history.push(Route.Root);
-        openToast({ status: 'warning', message: t('Your submission is now in draft form, please review the application declaration to complete submission') })
-
+        openToast({
+          status: 'warning',
+          message: t(
+            'Your submission is now in draft form, please review the application declaration to complete submission'
+          ),
+        });
       } catch (e) {
-        openToast({ status: 'error', message: e.message || t("Failed to submit form") });
+        openToast({ status: 'error', message: e.message || t('Failed to submit form') });
         setFetching(false);
       }
-    }
-  }
+    },
+  };
 };
 
-export const useEmployeesDetail = () =>{
-  const history = useHistory()
-  const [isFetching, setFetching] = useState(undefined)
-  const { openToast } = useToast()
-  const { t } = useTranslation()
+export const useEmployeesDetail = () => {
+  const history = useHistory();
+  const [isFetching, setFetching] = useState(undefined);
+  const { openToast } = useToast();
+  const { t } = useTranslation();
   const [formValues, setFormValues] = useState(null);
-  const [commentData, setCommentData] = useState(null)
+  const [commentData, setCommentData] = useState(null);
   return {
     isFetching,
     formValues,
@@ -47,28 +58,29 @@ export const useEmployeesDetail = () =>{
     getEmployeesDetail: async (id) => {
       try {
         setFetching(true);
-        const { data: submission } = await AxiosPrivate.get(`/api/v1/topup/submission/${id}?withSIN=true`);
-        setFormValues(submission)
+        const { data: submission } = await AxiosPrivate.get(
+          `/api/v1/topup/submission/${id}?withSIN=true`
+        );
+        setFormValues(submission);
       } catch (e) {
-        openToast({ status: 'error', message: e.message || t("Failed to submit form") });
+        openToast({ status: 'error', message: e.message || t('Failed to submit form') });
+        setFetching(false);
+      } finally {
         setFetching(false);
       }
-      finally {
-        setFetching(false)
-      }
     },
-    getComments: async ()=>{
-      const response = await AxiosPrivate.get(`/api/v1/topup/action_items`)
+    getComments: async () => {
+      const response = await AxiosPrivate.get(`/api/v1/topup/action_items`);
       setCommentData(response.data);
-    }
-  }
+    },
+  };
 };
-export const useUpdateEmployeesDetail = () =>{
-	const history = useHistory()
+export const useUpdateEmployeesDetail = () => {
+  const history = useHistory();
   const [isFetching, setFetching] = useState(undefined);
   const [isEditing, setIsEditing] = useState(false);
   const { openToast } = useToast();
-  const {id} =useParams()
+  const { id } = useParams();
   return {
     isFetching,
     isEditing,
@@ -76,31 +88,37 @@ export const useUpdateEmployeesDetail = () =>{
     updateForm: async (employees) => {
       try {
         setFetching(true);
-        await AxiosPrivate.patch(`/api/v1/topup/form/${id}/employee`,
-        serializeTopupFormValues({employees}, 'employee'))
-        openToast({ status: "warning", message: "Your submission is now in draft form, please review the application declaration to complete submission" });
+        await AxiosPrivate.patch(
+          `/api/v1/topup/form/${id}/employee`,
+          serializeTopupFormValues({ employees }, 'employee')
+        );
+        openToast({
+          status: 'warning',
+          message:
+            'Your submission is now in draft form, please review the application declaration to complete submission',
+        });
         setIsEditing(false);
         setFetching(false);
-				history.push(Route.Root)
+        history.push(Route.Root);
       } catch (e) {
-        openToast({ status: 'error', message: "Failed to update Employees Information" });
+        openToast({ status: 'error', message: 'Failed to update Employees Information' });
         setFetching(false);
       }
     },
     deleteEmployee: async (employee) => {
-        try {
+      try {
         setFetching(true);
-        await AxiosPrivate.delete(`/api/v1/topup/form/${id}/employee/${employee.indexId}`)
-        openToast({ status: "success", message: "Successfully deleted employee" });
+        await AxiosPrivate.delete(`/api/v1/topup/form/${id}/employee/${employee.indexId}`);
+        openToast({ status: 'success', message: 'Successfully deleted employee' });
         setIsEditing(false);
         setFetching(false);
       } catch (e) {
-        openToast({ status: 'error', message: "Failed to delete employee" });
+        openToast({ status: 'error', message: 'Failed to delete employee' });
         setFetching(false);
-      }}
-  }
-}
-
+      }
+    },
+  };
+};
 
 export const useEmployeeXmlParser = () => {
   const [fileData, setFileData] = useState();
@@ -116,7 +134,7 @@ export const useEmployeeXmlParser = () => {
     setFileUploaded(false);
     setFileValidity(undefined);
     setErrorData(undefined);
-    setErrorString("");
+    setErrorString('');
   };
 
   return {
@@ -131,36 +149,38 @@ export const useEmployeeXmlParser = () => {
       editedRowData.error = false;
       clear();
       let errors = [];
-      let stringifiedErrors = "data:text/csv;charset=utf-8,Row Number,Error Messages\n";
+      let stringifiedErrors = 'data:text/csv;charset=utf-8,Row Number,Error Messages\n';
       let constructedData = [];
       let constructedTableData = [];
 
       tableData.map((element, index) => {
         try {
-            if (element.tableData.id !== editedRowData.tableData.id) {
-
-              const validatedDto = EmployerXlsValidation.validateSync(element, { abortEarly: false })
-              constructedTableData.push(validatedDto)
-              constructedData.push(validatedDto);
-            } else {
-              const validatedDto = EmployerXlsValidation.validateSync(editedRowData, { abortEarly: false })
-              constructedTableData.push(validatedDto)
-              constructedData.push(validatedDto);
-            }
-
+          if (element.tableData.id !== editedRowData.tableData.id) {
+            const validatedDto = EmployerXlsValidation.validateSync(element, { abortEarly: false });
+            constructedTableData.push(validatedDto);
+            constructedData.push(validatedDto);
+          } else {
+            const validatedDto = EmployerXlsValidation.validateSync(editedRowData, {
+              abortEarly: false,
+            });
+            constructedTableData.push(validatedDto);
+            constructedData.push(validatedDto);
+          }
         } catch (validationError) {
           element.error = true;
-          element.errorMessage = `${validationError?.errors?.toString().replace(/,/g, '. ')}`
-          constructedTableData.push(element)
+          element.errorMessage = `${validationError?.errors?.toString().replace(/,/g, '. ')}`;
+          constructedTableData.push(element);
           errors.push({
             row: 'Table row: ' + index,
             errorName: validationError.name,
             errorMessages: validationError.errors,
-            value: validationError.value
+            value: validationError.value,
           });
-          stringifiedErrors += `${index + 1},"${validationError?.errors?.toString().replace(/,/g, '. ')}"\n`
+          stringifiedErrors += `${index + 1},"${validationError?.errors
+            ?.toString()
+            .replace(/,/g, '. ')}"\n`;
         }
-      })
+      });
 
       setTableData(constructedTableData);
       setFileData(constructedData);
@@ -178,34 +198,36 @@ export const useEmployeeXmlParser = () => {
     deleteTableData: (rowData) => {
       clear();
       let errors = [];
-      let stringifiedErrors = "data:text/csv;charset=utf-8,Row Number,Error Messages\n";
+      let stringifiedErrors = 'data:text/csv;charset=utf-8,Row Number,Error Messages\n';
       let constructedData = [];
       let constructedTableData = [];
-      let replacementData = []
-      tableData.map(element => {
+      let replacementData = [];
+      tableData.map((element) => {
         if (element.tableData.id !== rowData.tableData.id) {
           replacementData.push(element);
         }
-      })
+      });
 
       replacementData.map((element, index) => {
         try {
-          const validatedDto = EmployerXlsValidation.validateSync(element, { abortEarly: false })
-          constructedTableData.push(validatedDto)
+          const validatedDto = EmployerXlsValidation.validateSync(element, { abortEarly: false });
+          constructedTableData.push(validatedDto);
           constructedData.push(validatedDto);
         } catch (validationError) {
           element.error = true;
-          element.errorMessage = `${validationError?.errors?.toString().replace(/,/g, '. ')}`
-          constructedTableData.push(element)
+          element.errorMessage = `${validationError?.errors?.toString().replace(/,/g, '. ')}`;
+          constructedTableData.push(element);
           errors.push({
             row: 'Table row: ' + index,
             errorName: validationError.name,
             errorMessages: validationError.errors,
-            value: validationError.value
+            value: validationError.value,
           });
-          stringifiedErrors += `${index + 1},"${validationError?.errors?.toString().replace(/,/g, '. ')}"\n`
+          stringifiedErrors += `${index + 1},"${validationError?.errors
+            ?.toString()
+            .replace(/,/g, '. ')}"\n`;
         }
-      })
+      });
 
       setTableData(constructedTableData);
       setFileData(constructedData);
@@ -224,9 +246,9 @@ export const useEmployeeXmlParser = () => {
       const url = window.encodeURI(errorString);
       const link = document.createElement('a');
       link.setAttribute('href', url);
-      link.setAttribute('download', `error-report-${moment().format("YYYY-MM-DD")}.csv`);
+      link.setAttribute('download', `error-report-${moment().format('YYYY-MM-DD')}.csv`);
       document.body.appendChild(link);
-      link.click()
+      link.click();
       document.body.removeChild(link);
     },
     triggerTemplateDownload: (option) => {
@@ -236,7 +258,6 @@ export const useEmployeeXmlParser = () => {
       if (option === 'template') {
         url = '/files/HealthCriticalWorkerBenefit-Template.xlsx';
         link.setAttribute('download', `HealthCriticalWorkerBenefit-Template.xlsx`);
-
       } else {
         url = '/files/ApplicationTemplateGuide.docx';
         link.setAttribute('download', `ApplicationTemplateGuide.docx`);
@@ -244,7 +265,7 @@ export const useEmployeeXmlParser = () => {
 
       link.setAttribute('href', url);
       document.body.appendChild(link);
-      link.click()
+      link.click();
       document.body.removeChild(link);
     },
     handleFileDrop: (file) => {
@@ -253,7 +274,7 @@ export const useEmployeeXmlParser = () => {
       const BreakException = {};
       let headers = [];
       let errors = [];
-      let stringifiedErrors = "data:text/csv;charset=utf-8,Row Number,Error Messages\n";
+      let stringifiedErrors = 'data:text/csv;charset=utf-8,Row Number,Error Messages\n';
       let constructedData = [];
       let constructedTableData = [];
       let numberOfConsecutiveEmptyRows = 0;
@@ -304,29 +325,27 @@ export const useEmployeeXmlParser = () => {
                  * (e.g a row of one single whitespace per collumn).
                  * Only stays true if there are no values in the entire row's worth of collumns.
                  *
-                **/
+                 **/
 
                 let rowIsEmpty = true;
                 let collumnsAreEmpty = true;
 
                 if (index === 0) {
-
                   // Convert all headers to a trimmed lowercase string delimited by underscores
                   // Compare collected headers against the expected headers, generate errors if any are missing.
-                  element.map(e => headers.push(e.trim().replace(/\s/g, '_').toLowerCase()));
-                  Object.keys(EmployeeXmlHeaderKeys).map(key => {
+                  element.map((e) => headers.push(e.trim().replace(/\s/g, '_').toLowerCase()));
+                  Object.keys(EmployeeXmlHeaderKeys).map((key) => {
                     if (!headers.includes(key)) {
                       errors.push({
                         row: 'Header row',
                         errorName: 'Header error',
                         errorMessages: ``,
-                        value: key
-                      })
-                      stringifiedErrors += `Header Row,Expected header: ${key} but none was found.\n`
+                        value: key,
+                      });
+                      stringifiedErrors += `Header Row,Expected header: ${key} but none was found.\n`;
                     }
-                  })
+                  });
                 } else {
-
                   // Catch if row is completely empty (blank array)
                   // Usually occurs at the trailing end of .xlsx files, as the library doesn't know when the true end is
                   // and collects a few empty rows before stopping
@@ -337,13 +356,12 @@ export const useEmployeeXmlParser = () => {
                   // Create a DTO object out of the array of arrays, mapping each header to it's corresponding collumn (index)
                   let dtoShape = {};
                   headers.map((el, i) => {
-
                     // Catch if ANY single index is truthy, then row is eligible for validation and being added to the DTO array
-                    if (!!element[i]?.toString().replace(" ", "").length) {
+                    if (!!element[i]?.toString().replace(' ', '').length) {
                       collumnsAreEmpty = false;
                     }
 
-                    dtoShape[el.trim()] = element[i]
+                    dtoShape[el.trim()] = element[i];
                   });
 
                   // If rowIsEmpty is false, validate each DTO object as it's being created, and push the DTO to the constructed array
@@ -351,23 +369,33 @@ export const useEmployeeXmlParser = () => {
                     // ValidateSync is necessary to resolve all validation before exiting, regular validation method causes an empty errors array
                     try {
                       // Format dates into consistent shape
-                      dtoShape.date_of_birth = parseEmployeeDate(dtoShape.date_of_birth)?.format('YYYY/MM/DD') || dtoShape.date_of_birth;
-                      dtoShape.start_date = parseEmployeeDate(dtoShape.start_date)?.format('YYYY/MM/DD') || dtoShape.start_date;
+                      dtoShape.date_of_birth =
+                        parseEmployeeDate(dtoShape.date_of_birth)?.format('YYYY/MM/DD') ||
+                        dtoShape.date_of_birth;
+                      dtoShape.start_date =
+                        parseEmployeeDate(dtoShape.start_date)?.format('YYYY/MM/DD') ||
+                        dtoShape.start_date;
 
-                      const validatedDto = EmployerXlsValidation.validateSync(dtoShape, { abortEarly: false })
-                      constructedTableData.push(validatedDto)
+                      const validatedDto = EmployerXlsValidation.validateSync(dtoShape, {
+                        abortEarly: false,
+                      });
+                      constructedTableData.push(validatedDto);
                       constructedData.push(validatedDto);
                     } catch (validationError) {
                       dtoShape.error = true;
-                      dtoShape.errorMessage = `${validationError?.errors?.toString().replace(/,/g, '. ')}`
-                      constructedTableData.push(dtoShape)
+                      dtoShape.errorMessage = `${validationError?.errors
+                        ?.toString()
+                        .replace(/,/g, '. ')}`;
+                      constructedTableData.push(dtoShape);
                       errors.push({
                         row: index + 1,
                         errorName: validationError.name,
                         errorMessages: validationError.errors,
-                        value: validationError.value
+                        value: validationError.value,
                       });
-                      stringifiedErrors += `${index + 1},"${validationError?.errors?.toString().replace(/,/g, '. ')}"\n`
+                      stringifiedErrors += `${index + 1},"${validationError?.errors
+                        ?.toString()
+                        .replace(/,/g, '. ')}"\n`;
                     }
                   } else {
                     // if either the row is completely empty, or filled entirely with false-y values, increment the number of empty rows
@@ -377,7 +405,7 @@ export const useEmployeeXmlParser = () => {
               });
             } catch (e) {
               // Stop if error is expected Break exception, else re-throw error
-              if (e !== BreakException) throw e
+              if (e !== BreakException) throw e;
             }
 
             setTableData(constructedTableData);
@@ -392,8 +420,7 @@ export const useEmployeeXmlParser = () => {
               setFileUploaded(true);
               setFileValidity(true);
             }
-
-          }
+          };
         } catch (error) {
           // This error will only ever have to do with the file reader failing entirely
           setFileValidity(false);
@@ -403,36 +430,6 @@ export const useEmployeeXmlParser = () => {
 
         reader.readAsArrayBuffer(file[0]);
       }
-    }
-  }
-}
-
-export const useUpdateTopupForm = () => {
-  const [isFetching, setFetching] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const { openToast } = useToast();
-
-  return {
-    isFetching,
-    isEditing,
-    setIsEditing,
-    updateForm: async (confirmationNumber, values) => {
-      try {
-        setFetching(true);
-        const serializedFormValues = serializeTopupFormValues(values);
-
-        await AxiosPrivate.patch(`/api/v1/admin/back-office/form/${confirmationNumber}`, {
-          hasPlaceToStayForQuarantine: serializedFormValues.hasPlaceToStayForQuarantine,
-          quarantineLocation: serializedFormValues.quarantineLocation
-        });
-
-        openToast({ status: "success", message: "Successfully updated form" });
-        setIsEditing(false);
-        setFetching(false);
-      } catch (e) {
-        openToast({ status: 'error', message: "Failed to update form" });
-        setFetching(false);
-      }
-    }
-  }
+    },
+  };
 };

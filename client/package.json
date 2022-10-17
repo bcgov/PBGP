@@ -4,7 +4,7 @@
   "license": "ISC",
   "proxy": "http://server:80",
   "scripts": {
-    "start": "REACT_APP_OUTPUT=ALL react-scripts start",
+    "start": "CHOKIDAR_USEPOLLING=true REACT_APP_OUTPUT=ALL react-scripts start",
     "build": "REACT_APP_OUTPUT=ALL react-scripts build",
     "test": "REACT_APP_OUTPUT=ALL react-scripts test"
   },
@@ -22,16 +22,17 @@
     "i18next": "21.1.1",
     "ibmcloud-appid-js": "0.4.3",
     "lodash.throttle": "4.1.1",
-    "material-table": "1.61.0",
+    "material-table": "1.69.0",
     "moment": "2.29.1",
     "moment-timezone": "0.5.33",
+    "prop-types": "15.8.1",
     "react": "17.0.2",
     "react-app-polyfill": "2.0.0",
     "react-dom": "17.0.2",
     "react-dropzone": "11.4.2",
     "react-i18next": "11.12.0",
     "react-router-dom": "5.3.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "5.0.1",
     "replace-in-file": "6.2.0",
     "xlsx": "0.17.2",
     "yup": "0.32.9"
@@ -39,7 +40,8 @@
   "devDependencies": {
     "cypress": "7.7.0",
     "faker": "5.5.3",
-    "puppeteer": "3.3.0"
+    "puppeteer": "3.3.0",
+    "react-error-overlay": "6.0.9"
   },
   "packageManager": "yarn@3.2.4"
 }

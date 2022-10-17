@@ -14,8 +14,11 @@ const authStateObj = (res, userType, authissuer) => {
   // Note: This will only be in place when login page is used - not when ingress authentication is used
   const combinedToken = accessToken && idToken && `${accessToken} ${idToken}`;
 
-  return { userType, user: { accessToken: combinedToken, authissuer,  idTokenPayload: {...response } }};
-}
+  return {
+    userType,
+    user: { accessToken: combinedToken, authissuer, idTokenPayload: { ...response } },
+  };
+};
 
 const initialState = {
   isAuthenticated: false,
@@ -56,8 +59,8 @@ export const AuthProvider = ({ children, authIssuer, userType }) => {
     (async () => {
       try {
         setFetchingUser(true);
-        const user = await fetchUser(authIssuer);
-        updateAuthState(authStateObj(user, userType, authIssuer))
+        //  const user = await fetchUser(authIssuer);
+        //  updateAuthState(authStateObj(user, userType, authIssuer))
       } catch (e) {
         if (state.isAuthenticated) {
           openToast({ status: 'error', message: 'Authentication error. Please login again' });
@@ -76,9 +79,5 @@ export const AuthProvider = ({ children, authIssuer, userType }) => {
     state,
   };
 
-  return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };
