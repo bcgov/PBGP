@@ -4,9 +4,11 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { AppLogger } from './common/logger.service';
 import { LoggerMiddleware } from './logger.middleware';
+import { UserModule } from './user/user.module';
+import { ApplicationModule } from './application/application.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, ApplicationModule, UserModule],
   controllers: [AppController],
   providers: [Logger, AppLogger, AppService],
 })
