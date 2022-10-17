@@ -1,5 +1,5 @@
 import { User } from '@/user/user.entity';
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 import {
   ContactInfo,
@@ -17,9 +17,6 @@ import {
 export class Application extends CustomBaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({ type: 'varchar', length: 100, nullable: false, unique: true })
-  externalId: string;
 
   @Column({ type: 'jsonb', nullable: true })
   contactInfo: ContactInfo;
