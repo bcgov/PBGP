@@ -71,7 +71,7 @@ export const Header = () => {
                 ]}
                 label={
                   <Fragment>
-                    <AccountCircleOutlinedIcon />{username}
+                    <AccountCircleOutlinedIcon />&nbsp;{username}
                    
                     {/* &nbsp;{user.idTokenPayload?.name || user.idTokenPayload?.email || 'Unknown'} */}
                   </Fragment>
