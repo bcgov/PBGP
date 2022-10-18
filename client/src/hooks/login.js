@@ -29,7 +29,7 @@ export const useLogin = () => {
         // const combinedToken = `${accessToken} ${idToken}`;
         // updateAuthState({ userType, user: {authissuer,  ...response } }, combinedToken);
 
-        updateAuthState(userData, "asdasdasdasdas");
+        updateAuthState(userData);
 
       } catch (e) {
         openToast({ status: 'error', message: e.message || 'Login failed' });

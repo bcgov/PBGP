@@ -22,8 +22,10 @@ export const Header = () => {
   const { t, i18n } = useTranslation();
   const {
     clearAuthState,
-    state: { userType, isAuthenticated, user },
+    state: { userType, isAuthenticated, user, username },
   } = useAuth();
+
+  // const userData = localStorage.getItem('auth');
 
   return (
     <Fragment>
@@ -58,19 +60,20 @@ export const Header = () => {
               <Menu
                 options={[
                   { label: 'Logout', onClick: clearAuthState },
-                  {
-                    label: 'Payments',
-                    onClick: () => history.push(`${Route.AdminPortalPaymentPage}`),
-                  },
-                  {
-                    label: 'Reports',
-                    onClick: () => history.push(`${Route.AdminPortalReportsPage}`),
-                  },
+                  // {
+                  //   label: 'Payments',
+                  //   onClick: () => history.push(`${Route.AdminPortalPaymentPage}`),
+                  // },
+                  // {
+                  //   label: 'Reports',
+                  //   onClick: () => history.push(`${Route.AdminPortalReportsPage}`),
+                  // },
                 ]}
                 label={
                   <Fragment>
-                    <AccountCircleOutlinedIcon />
-                    &nbsp;{user.idTokenPayload?.name || user.idTokenPayload?.email || 'Unknown'}
+                    <AccountCircleOutlinedIcon />{username}
+                   
+                    {/* &nbsp;{user.idTokenPayload?.name || user.idTokenPayload?.email || 'Unknown'} */}
                   </Fragment>
                 }
               />
