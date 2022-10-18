@@ -50,7 +50,7 @@ export const AppRoutes = () => {
     <Suspense fallback={<LinearProgress />}>
       <Switch>
         {!isAuthenticated && <Route exact path={Routes.Login} render={() => <Login />} />}
-       
+        
         <Route path="/dashboard" component={DashboardB} />
         <Redirect to={Routes.DashboardB} />
        
