@@ -42,7 +42,7 @@ export class Application extends CustomBaseEntity {
   @Column({ type: 'jsonb', nullable: true })
   supportAndAuthorization: SupportAndAuthorization;
 
-  @Column({ type: 'boolean', nullable: false })
+  @Column({ type: 'boolean', nullable: false, default: false })
   isSubmitted: boolean;
 
   @ManyToOne(() => User, (user) => user.applications)
