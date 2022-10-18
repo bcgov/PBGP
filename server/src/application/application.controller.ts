@@ -1,4 +1,7 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { SUCCESS_RESPONSE } from '@/common/constants';
+import { SaveApplicationDto } from '@/common/dto/save-application.dto';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { ApiBody } from '@nestjs/swagger';
 import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
 
@@ -16,5 +19,17 @@ export class ApplicationController {
   @Post()
   createApplication(): Promise<Application> {
     return this.applicationService.createApplication();
+  }
+
+  @Patch('/:applicationId')
+  @ApiBody({ type: SaveApplicationDto })
+  async saveApplication(
+    // To-do: Get the logged-in user data (id) as well
+    // and allow to update only the applications that belong to them.
+    @Param('applicationId') applicationId: string,
+    @Body() applicationDto: SaveApplicationDto
+  ) {
+    await this.applicationService.saveApplication(applicationId, applicationDto);
+    return SUCCESS_RESPONSE;
   }
 }
