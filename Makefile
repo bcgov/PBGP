@@ -21,6 +21,12 @@ export DB_SERVER := $(or $(DB_SERVER),database)
 export DB_PORT := $(or $(DB_PORT),5432)
 export GIT_LOCAL_BRANCH := $(or $(GIT_LOCAL_BRANCH),dev)
 
+export APP_NAME:=pbgp
+export OS_NAMESPACE_PREFIX:=ed9154
+export OS_NAMESPACE_SUFFIX?=dev
+export TARGET_NAMESPACE=$(OS_NAMESPACE_PREFIX)-$(OS_NAMESPACE_SUFFIX)
+export TOOLS_NAMESPACE=$(OS_NAMESPACE_PREFIX)-tools
+
 define deployTag
 "${PROJECT}-${DEPLOY_DATE}"
 endef
@@ -87,3 +93,17 @@ local-client-logs:
 
 curl-client:
 	@docker exec -i $(PROJECT)-server curl localhost:3000
+
+add-role:
+	@oc policy add-role-to-user admin system:serviceaccount:$(TARGET_NAMESPACE):default -n $(TOOLS_NAMESPACE)
+
+networking-prep:
+	@oc process -f openshift/networking.yml | oc apply -n $(TARGET_NAMESPACE) -f -
+
+db-prep:
+	@oc process -f openshift/patroni.prep.yml -p APP_NAME=$(APP_NAME) | oc create -n $(TARGET_NAMESPACE) -f -
+	@oc policy add-role-to-user system:image-puller system:serviceaccount:$(TARGET_NAMESPACE):$(APP_NAME)-patroni -n $(TOOLS_NAMESPACE)
+
+db-create:
+	@oc process -f openshift/patroni.bc.yml -p APP_NAME=$(APP_NAME) | oc apply -n $(TOOLS_NAMESPACE) -f -
+	@oc process -f openshift/patroni.dc.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) | oc apply -n $(TARGET_NAMESPACE) -f -
