@@ -10,6 +10,7 @@ export const Route = Object.freeze({
     // Shared routes.
     Root: '/',
 
+    DashboardB: '/dashboard',
     // Topup Routes.
     Organization: '/organization',
     Employees: '/employees',

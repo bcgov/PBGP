@@ -4,6 +4,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { Route as Routes } from 'constants/routes';
 import { useAuth } from 'hooks';
 import AppClosed from 'pages/AppClosed';
+import DashboardB from 'pages/applicant/DashboardB'
 
 // Topup pages
 const Dashboard = lazy(() => import('pages/applicant/Dashboard'));
@@ -17,6 +18,7 @@ const PrivateRoute = ({ Component, ...rest }) => {
   } = useAuth();
 
   if (!isAuthenticated) return <Redirect to={Routes.Login} />;
+
   return <Route {...rest} render={(props) => <Component {...props} />} />;
 };
 
@@ -34,7 +36,6 @@ export const AppRoutes = () => {
     isFetchingUser,
     state: { isAuthenticated },
   } = useAuth();
-
   // If application is closed, just show the closed app page and disable all app functionality.
   const reactAppIsClosed = process.env.REACT_APP_IS_CLOSED ?? window._env_.REACT_APP_IS_CLOSED;
   if (reactAppIsClosed === 'true') {
@@ -42,12 +43,17 @@ export const AppRoutes = () => {
   }
 
   return isFetchingUser ? (
+    <>
     <LinearProgress />
+    </>
   ) : (
     <Suspense fallback={<LinearProgress />}>
       <Switch>
         {!isAuthenticated && <Route exact path={Routes.Login} render={() => <Login />} />}
-        <Redirect to={Routes.Login} />
+       
+        <Route path="/dashboard" component={DashboardB} />
+        <Redirect to={Routes.DashboardB} />
+       
       </Switch>
     </Suspense>
   );

@@ -44,7 +44,8 @@ export default () => {
           <Box m={2} display='flex' flexDirection='column' alignItems='center'>
             <Formik
               initialValues={{ username: '', password: '' }}
-              onSubmit={(values) => console.log(values)}
+              onSubmit={(values) => login(values)}
+              // onSubmit={() => login(UserType.User, AuthIssuer.User)}
             >
               <Form style={{ width: '100%' }}>
                 <Grid container direction='column' spacing={2}>
