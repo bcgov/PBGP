@@ -1,0 +1,53 @@
+kind: Template
+apiVersion: template.openshift.io/v1
+labels:
+  app: ${APP_NAME}
+parameters:
+  - name: APP_NAME
+    description: App name that OpenShift objects will be prefixed with
+    required: true
+  - name: REPO
+    description: URL of boilerplate repository
+    value: https://github.com/bcgov/PBGP.git
+    required: true
+  - name: REF
+    description: Reference of repository that should be built
+    value: test-deployment
+    required: true
+  - name: IMAGE_TAG
+    description: ImageStream tag for build and deploy
+    value: latest
+    required: true
+objects:
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: ${APP_NAME}-server
+    spec:
+      lookupPolicy:
+        local: false
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: ${APP_NAME}-server
+    spec:
+      completionDeadlineSeconds: 3600
+      triggers:
+        - type: ImageChange
+        - type: ConfigChange
+      runPolicy: SerialLatestOnly
+      source:
+        type: Git
+        git:
+          uri: ${REPO}
+          ref: ${REF}
+      strategy:
+        type: Docker
+      output:
+        to:
+          kind: ImageStreamTag
+          name: ${APP_NAME}-server:${IMAGE_TAG}
+      resources:
+        limits:
+          cpu: "500m"
+          memory: 2Gi
