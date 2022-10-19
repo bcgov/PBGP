@@ -13,6 +13,11 @@ import { Menu } from './Menu';
 export const Header = () => {
   const { keycloak } = useKeycloak();
 
+  const handleLogout = () => {
+    localStorage.removeItem('keycloakToken');
+    keycloak.logout();
+  };
+
   return (
     <Fragment>
       <Box
@@ -42,7 +47,7 @@ export const Header = () => {
           {keycloak.authenticated && (
             <>
               <Menu
-                options={[{ label: 'Logout', onClick: () => keycloak.logout() }]}
+                options={[{ label: 'Logout', onClick: () => handleLogout() }]}
                 label={
                   <Fragment>
                     <AccountCircleOutlinedIcon />
