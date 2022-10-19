@@ -5,12 +5,10 @@ FROM registry.access.redhat.com/ubi9/nodejs-16 AS client
 ENV HOME_CLIENT /opt/app-root/src/app/client
 # Using root to transfer ownership of work dir
 USER root
-RUN mkdir -p ${HOME_CLIENT}
-RUN chown -R 1001 ${HOME_CLIENT}
+RUN mkdir -p ${HOME_CLIENT} && chown -R 1001 ${HOME_CLIENT}
 WORKDIR ${HOME_CLIENT}
-RUN npm install yarn -g
 ADD client/.yarn/releases/yarn-3.2.4.cjs ./.yarn/releases/yarn-3.2.4.cjs
-RUN yarn set version ./.yarn/releases/yarn-3.2.4.cjs
+RUN npm install yarn -g && yarn set version ./.yarn/releases/yarn-3.2.4.cjs
 COPY client/package.json client/yarn.lock client/.yarnrc.yml ./
 RUN yarn install --immutable
 RUN chown -R 1001 .
@@ -37,9 +35,8 @@ RUN chown -R 1001 ${HOME_SERVER}
 COPY --from=client /opt/app-root/src/app/client/build /opt/app-root/src/app/client/build/.
 
 WORKDIR ${HOME_SERVER}
-RUN npm install yarn -g
 ADD server/.yarn/releases/yarn-3.2.4.cjs ./.yarn/releases/yarn-3.2.4.cjs
-RUN yarn set version ./.yarn/releases/yarn-3.2.4.cjs
+RUN npm install yarn -g && yarn set version ./.yarn/releases/yarn-3.2.4.cjs
 COPY server/package.json server/yarn.lock server/.yarnrc.yml ./
 RUN yarn install --immutable
 RUN chown -R 1001 .
