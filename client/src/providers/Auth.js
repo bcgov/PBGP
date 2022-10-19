@@ -39,8 +39,7 @@ export const AuthProvider = ({ children, authIssuer, userType }) => {
   const updateAuthState = (payload, accessToken) => {
     const data = { ...payload, isAuthenticated: true };
 
-    data.user.accessToken = accessToken || state?.user?.accessToken;
-
+   // data.user.accessToken = accessToken || state?.user?.accessToken;
     localStorage.setItem('auth', JSON.stringify(data));
     setState(data);
   };

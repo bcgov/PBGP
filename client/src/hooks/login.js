@@ -13,19 +13,24 @@ export const useLogin = () => {
 
   return {
     isFetching,
-    login: async (userType, authissuer) => {
+    login: async (userData) => {
       try {
         setFetching(true);
 
-        await appID.init({
-          clientId: process.env.REACT_APP_IS_DEV ? process.env.REACT_APP_IBM_CLIENT_ID : window._env_[authissuer].CLIENT_ID,
-          discoveryEndpoint: process.env.REACT_APP_IS_DEV ? process.env.REACT_APP_IBM_DISCOVERY_ENDPOINT : window._env_[authissuer].DISCOVERY_ENDPOINT,
-        });
+        // await appID.init({
+        //   clientId: process.env.REACT_APP_IS_DEV ? process.env.REACT_APP_IBM_CLIENT_ID : window._env_[authissuer].CLIENT_ID,
+        //   discoveryEndpoint: process.env.REACT_APP_IS_DEV ? process.env.REACT_APP_IBM_DISCOVERY_ENDPOINT : window._env_[authissuer].DISCOVERY_ENDPOINT,
+        // });
 
-        const { accessToken, idToken, accessTokenPayload, ...response } = await appID.signin();
+        // const { accessToken, idToken, accessTokenPayload, ...response } = await appID.signin();
+
+      
         // The backend requires a token consisting of accessToken + idToken for auth purposes
-        const combinedToken = `${accessToken} ${idToken}`;
-        updateAuthState({ userType, user: {authissuer,  ...response } }, combinedToken);
+        // const combinedToken = `${accessToken} ${idToken}`;
+        // updateAuthState({ userType, user: {authissuer,  ...response } }, combinedToken);
+
+        updateAuthState(userData);
+
       } catch (e) {
         openToast({ status: 'error', message: e.message || 'Login failed' });
         setFetching(false);
