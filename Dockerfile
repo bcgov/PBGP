@@ -42,6 +42,7 @@ RUN yarn install --immutable
 RUN chown -R 1001 .
 USER 1001
 COPY server/. .
+RUN yarn run build
 # Run app
 EXPOSE 8080
-CMD [ "npm", "run", "start:prod" ]
+CMD [ "yarn", "run", "start:prod" ]
