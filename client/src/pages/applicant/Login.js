@@ -1,19 +1,29 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React from 'react';
+import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
 import { Page, Button } from '../../components/generic';
 import { Typography } from '@material-ui/core';
 import { useKeycloak } from '@react-keycloak/web/lib';
+import { useHistory } from 'react-router-dom';
+import { Route as Routes } from 'constants/routes';
 
 export default () => {
-  const { keycloak } = useKeycloak();
+  const { keycloak, initialized } = useKeycloak();
+  const history = useHistory();
 
   const login = () => {
     keycloak.login({ redirectUri: `${window.location.origin}/dashboard` });
   };
+
+  useEffect(() => {
+    if (!initialized) return;
+    if (keycloak.authenticated) {
+      history.push(Routes.DashboardB);
+    }
+  }, [history, initialized, keycloak.authenticated]);
 
   return (
     <Page centerContent>
