@@ -14,7 +14,7 @@ export class AuthMiddleware implements NestMiddleware {
     const token = extractToken(req.headers);
     const authUrl = 'https://keycloak.freshworks.club/auth';
     const authRealm = 'PBPG-dev';
-    const authClientId = 'security-admin-console';
+    const authClientId = 'PBGP';
 
     const jwksUri = `${authUrl}/realms/${authRealm}/protocol/openid-connect/certs`;
 

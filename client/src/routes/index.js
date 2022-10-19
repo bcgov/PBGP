@@ -26,15 +26,11 @@ const PrivateRoute = ({ Component, ...rest }) => {
 // Routes only accessible to applicants
 
 export const AppRoutes = () => {
-  const { initialized } = useKeycloak();
-
   // If application is closed, just show the closed app page and disable all app functionality.
   const reactAppIsClosed = process.env.REACT_APP_IS_CLOSED ?? window._env_.REACT_APP_IS_CLOSED;
   if (reactAppIsClosed === 'true') {
     return <AppClosed />;
   }
-
-  if (!initialized) return <LinearProgress />;
 
   return (
     <Suspense fallback={<LinearProgress />}>

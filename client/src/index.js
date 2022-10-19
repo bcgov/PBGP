@@ -10,11 +10,13 @@ import { ReactKeycloakProvider } from '@react-keycloak/web';
 
 import './constants/i18n';
 import { Theme, AuthIssuer } from './constants';
+import { AxiosPrivate } from 'utils';
 
 import { AppRoutes } from './routes';
 import { Toast, Modal, ErrorBoundary } from './components/generic';
 import { AuthProvider, ToastProvider, ModalProvider } from './providers';
 import { keycloakClient } from './keycloakClient';
+import { LinearProgress } from '@material-ui/core';
 
 function msieversion() {
   var ua = window.navigator.userAgent;
@@ -42,25 +44,36 @@ const IEMessage = () => {
 
 const authIssuer = process.env.REACT_APP_OUTPUT === 'ALL' ? AuthIssuer.GOA : AuthIssuer.User;
 
-const App = () => (
-  <ReactKeycloakProvider authClient={keycloakClient}>
-    <ThemeProvider theme={Theme}>
-      <BrowserRouter>
-        <ToastProvider>
-          <AuthProvider authIssuer={authIssuer} userType={AuthIssuer.User}>
-            <ModalProvider>
-              <ErrorBoundary>
-                <CssBaseline />
-                <Toast />
-                <Modal />
-                <AppRoutes />
-              </ErrorBoundary>{' '}
-            </ModalProvider>{' '}
-          </AuthProvider>{' '}
-        </ToastProvider>{' '}
-      </BrowserRouter>{' '}
-    </ThemeProvider>
-  </ReactKeycloakProvider>
-);
+const App = () => {
+  const handleTokens = (tokens) => {
+    AxiosPrivate.defaults.headers.common['Authorization'] = `Bearer ${tokens.token}`;
+    localStorage.setItem('keycloakToken', tokens.token);
+  };
+
+  return (
+    <ReactKeycloakProvider
+      LoadingComponent={<LinearProgress />}
+      authClient={keycloakClient}
+      onTokens={handleTokens}
+    >
+      <ThemeProvider theme={Theme}>
+        <BrowserRouter>
+          <ToastProvider>
+            <AuthProvider authIssuer={authIssuer} userType={AuthIssuer.User}>
+              <ModalProvider>
+                <ErrorBoundary>
+                  <CssBaseline />
+                  <Toast />
+                  <Modal />
+                  <AppRoutes />
+                </ErrorBoundary>{' '}
+              </ModalProvider>{' '}
+            </AuthProvider>{' '}
+          </ToastProvider>{' '}
+        </BrowserRouter>{' '}
+      </ThemeProvider>
+    </ReactKeycloakProvider>
+  );
+};
 
 ReactDOM.render(msieversion() ? <IEMessage /> : <App />, document.getElementById('root'));
