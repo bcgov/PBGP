@@ -15,7 +15,7 @@
     "start:dev:local": "nest start --preserveWatchOutput --watch --exec \"node -r ./env.js\"",
     "start:debug": "nest start --debug --watch",
     "start:debug:local": "nest start --debug --watch --exec \"node -r ./env.js\"",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/main.js",
     "lint": "echo 'Linting @tbcm/api...' && eslint --fix --cache \"{src,apps,libs,test}/**/*.ts\"",
     "test": "jest",
     "test:watch": "jest --watch",
