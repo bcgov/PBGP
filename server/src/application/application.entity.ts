@@ -1,5 +1,6 @@
+import { File } from '@/file/file.enetity';
 import { User } from '@/user/user.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 import {
   ContactInfo,
@@ -47,4 +48,7 @@ export class Application extends CustomBaseEntity {
 
   @ManyToOne(() => User, (user) => user.applications)
   user: User;
+
+  @OneToMany(() => File, (file) => file.application)
+  files: File[];
 }
