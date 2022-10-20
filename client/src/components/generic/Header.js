@@ -14,7 +14,6 @@ export const Header = () => {
   const { keycloak } = useKeycloak();
 
   const handleLogout = () => {
-    localStorage.removeItem('keycloakToken');
     keycloak.logout();
   };
 
