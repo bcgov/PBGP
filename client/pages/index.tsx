@@ -36,4 +36,6 @@ const Dashboard: NextPage = () => {
   );
 };
 
-export default withAuth(Dashboard);
+export default dynamic(() => Promise.resolve(withAuth(Dashboard)), {
+  ssr: false,
+});

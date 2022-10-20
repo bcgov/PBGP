@@ -14,13 +14,13 @@ const withAuth = (Component: NextComponentType<NextPageContext>) => {
       if (kcInitialized && !keycloak?.authenticated) {
         router.replace('/login');
       }
-    }, [keycloak?.authenticated]);
+    }, [kcInitialized, keycloak?.authenticated]);
 
     // Loading while keycloak is initializing
-    // if (!kcInitialized) return <Spinner className='h-10 w-10' />;
+    if (!kcInitialized) return <Spinner className='h-10 w-10' />;
 
     // Loading after we've been authenticated but haven't received tokens
-    // if (keycloak?.authenticated && !tokensInitialized) return <Spinner className='h-10 w-10' />;
+    if (!keycloak?.authenticated || !tokensInitialized) return <Spinner className='h-10 w-10' />;
 
     return <Component />;
   };

@@ -12,7 +12,7 @@ export default () => {
     if (keycloak?.authenticated) {
       router.push('/');
     }
-  }, [history, kcInitialized, keycloak?.authenticated]);
+  }, [router, kcInitialized, keycloak?.authenticated]);
 
   const login = () => {
     keycloak?.login({ redirectUri: `${window.location.origin}/` });
