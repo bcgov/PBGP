@@ -9,6 +9,9 @@
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@react-keycloak-fork/ssr": "^4.0.3",
+    "axios": "^1.1.3",
+    "keycloak-js": "^19.0.3",
     "next": "latest",
     "react": "18.1.0",
     "react-dom": "18.1.0"

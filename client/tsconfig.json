@@ -17,7 +17,9 @@
     "baseUrl": ".",
     "paths": {
       "@components": ["components/index.tsx"],
+      "@constants": ["constants/index.ts"],
       "@services": ["services/index.ts"],
+      "@contexts": ["contexts/index.ts"],
       "@assets/*": ["public/assets/*"]
     }
   },

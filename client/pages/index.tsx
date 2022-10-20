@@ -1,4 +1,4 @@
-import { Button, Link } from '@components';
+import { Link } from '@components';
 import type { NextPage } from 'next';
 
 const Home: NextPage = () => {

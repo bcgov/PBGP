@@ -1,7 +1,23 @@
 import { Button } from '@components';
-import React from 'react';
+import { useAuthContext } from '@contexts';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 
 export default () => {
+  const { keycloak, kcInitialized } = useAuthContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!kcInitialized) return;
+    if (keycloak?.authenticated) {
+      router.push('/');
+    }
+  }, [history, kcInitialized, keycloak?.authenticated]);
+
+  const login = () => {
+    keycloak?.login({ redirectUri: `${window.location.origin}/` });
+  };
+
   return (
     <div className='h-full grid grid-cols-2 gap-20'>
       <div className='flex flex-col justify-center'>
@@ -16,7 +32,9 @@ export default () => {
         </p>
       </div>
       <div className='flex items-center'>
-        <Button variant='primary'>Login</Button>
+        <Button variant='primary' onClick={login}>
+          Login
+        </Button>
       </div>
     </div>
   );

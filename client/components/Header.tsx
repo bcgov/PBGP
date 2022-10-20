@@ -3,14 +3,21 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 
 import logo from '@assets/img/bc_logo.png';
+import { Button } from './Button';
+import { useAuthContext } from '@contexts';
 
 export const Header: React.FC = () => {
   const router = useRouter();
+  const { keycloak } = useAuthContext();
   const headerRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     headerRef?.current?.focus();
   }, [router.asPath]);
+
+  const handleLogout = () => {
+    keycloak?.logout({ redirectUri: location.origin + '/' });
+  };
 
   return (
     <header className='w-full py-2 border-b-2 bg-bcBluePrimary border-bcYellowPrimary flex justify-center'>
@@ -30,6 +37,13 @@ export const Header: React.FC = () => {
               Ministry of Transportation and Infrastructure
             </h1>
           </div>
+        </div>
+        <div>
+          {keycloak?.authenticated ? (
+            <Button variant='secondary' onClick={handleLogout}>
+              Logout
+            </Button>
+          ) : null}
         </div>
       </div>
     </header>
