@@ -1,1 +1,2 @@
-export * from './AuthContext';
+// Contexts
+export * from './Auth.context';

@@ -2,30 +2,36 @@ import '../styles/globals.css';
 
 import Head from 'next/head';
 import type { AppProps as NextAppProps } from 'next/app';
-import { SSRKeycloakProvider, SSRCookies } from '@react-keycloak-fork/ssr';
+import { SSRKeycloakProvider, SSRCookies, SSRAuthClient } from '@react-keycloak-fork/ssr';
 
 import { Footer, Header } from '@components';
 import { AuthProvider } from '@contexts';
 import { keycloakConfig } from '@constants';
-import { StrictMode } from 'react';
+import { StrictMode, useState } from 'react';
+import axios from 'axios';
 
 interface AppProps extends NextAppProps {
   cookies: unknown;
 }
 
+type TokensType = Pick<SSRAuthClient, 'token' | 'refreshToken'>;
+
 function App({ Component, pageProps, cookies }: AppProps) {
+  const [tokensInitialized, setTokensInitialized] = useState(false);
+
+  const handleTokens = (tokens: TokensType) => {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${tokens.token}`;
+    setTokensInitialized(true);
+  };
+
   return (
     <SSRKeycloakProvider
-      keycloakConfig={keycloakConfig}
       persistor={SSRCookies(cookies)}
-      LoadingComponent={<>Authenticating...</>}
-      initOptions={{
-        pkceMethod: 'S256',
-        checkLoginIframe: false,
-      }}
+      keycloakConfig={keycloakConfig}
+      onTokens={handleTokens}
     >
       <StrictMode>
-        <AuthProvider>
+        <AuthProvider tokensInitialized={tokensInitialized}>
           <Head>
             <title>BC - Programs Branch Grant Programs</title>
             <link rel='icon' href='/assets/img/bc_favicon.ico' />

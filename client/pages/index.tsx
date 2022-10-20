@@ -1,7 +1,8 @@
 import { Link } from '@components';
+import withAuth from 'components/withAuth';
 import type { NextPage } from 'next';
 
-const Home: NextPage = () => {
+const Dashboard: NextPage = () => {
   return (
     <div className='flex h-full flex-col items-left justify-center gap-2'>
       <h2 className='text-4xl'>BC Air Access Program Application</h2>
@@ -35,4 +36,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withAuth(Dashboard);
