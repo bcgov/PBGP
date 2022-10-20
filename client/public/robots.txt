@@ -1,4 +1,0 @@
-User-Agent: *
-
-Disallow: /16d5dd32-0387-43d3-8958-99e8a12f0dff
-Allow: /
