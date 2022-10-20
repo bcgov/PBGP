@@ -1,4 +1,4 @@
-import { File } from '@/file/file.enetity';
+import { File } from '@/file/file.entity';
 import { User } from '@/user/user.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
