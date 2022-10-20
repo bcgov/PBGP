@@ -26,7 +26,9 @@ export class AuthMiddleware implements NestMiddleware {
       const signingKey = jwks.getPublicKey();
       const verified = jwt.verify(token, signingKey);
       if (verified['azp'] !== authClientId) {
-        throw new UnauthorizedException('Invalid authorized party');
+        throw new UnauthorizedException(
+          `[AuthMiddleware] Remote authorized party does not match what was expected, ${verified['azp']} !== ${authClientId}`
+        );
       }
       const user = decoded.payload;
       res.locals.kcUser = user;
@@ -52,7 +54,7 @@ const getKCEnvironmentVariables = () => {
   const authClientId = process.env.KC_AUTH_CLIENT_ID;
 
   if (!authUrl || !authRealm || !authClientId) {
-    throw new InternalServerErrorException(`Environment Keycloak configuration is missing,
+    throw new InternalServerErrorException(`[AuthMiddleware] Environment Keycloak configuration is missing,
       KC_AUTH_URL=${authUrl}
       KC_AUTH_REALM=${authRealm}
       KC_AUTH_CLIENT_ID=${authClientId}
@@ -67,10 +69,13 @@ const extractToken = (headers: { [key: string]: string }): string => {
     const auth = headers.authorization.split(' ');
     const type = auth[0].toLowerCase();
     if (type !== 'bearer') {
-      throw new UnauthorizedException(401, 'Invalid authentication header');
+      throw new UnauthorizedException(
+        401,
+        `[AuthMiddleware] Invalid authentication header type: ${type}`
+      );
     }
     return auth[1];
   }
 
-  throw new UnauthorizedException('No authentication token found');
+  throw new UnauthorizedException('[AuthMiddleware] No authentication token found');
 };
