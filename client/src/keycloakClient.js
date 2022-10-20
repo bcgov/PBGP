@@ -1,11 +1,7 @@
 import Keycloak from 'keycloak-js';
 
-const authUrl = 'https://keycloak.freshworks.club/auth';
-const authRealm = 'PBPG-dev';
-const authClientId = 'PBGP';
-
 export const keycloakClient = new Keycloak({
-  url: authUrl,
-  realm: authRealm,
-  clientId: authClientId,
+  url: process.env.REACT_APP_KC_AUTH_URL,
+  realm: process.env.REACT_APP_KC_AUTH_REALM,
+  clientId: process.env.REACT_APP_KC_AUTH_CLIENT_ID,
 });

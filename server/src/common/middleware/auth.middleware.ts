@@ -12,9 +12,7 @@ import jwksRsa from 'jwks-rsa';
 export class AuthMiddleware implements NestMiddleware {
   async use(req: any, res: any, next: () => void) {
     const token = extractToken(req.headers);
-    const authUrl = 'https://keycloak.freshworks.club/auth';
-    const authRealm = 'PBPG-dev';
-    const authClientId = 'PBGP';
+    const { authUrl, authRealm, authClientId } = getKCEnvironmentVariables();
 
     const jwksUri = `${authUrl}/realms/${authRealm}/protocol/openid-connect/certs`;
 
@@ -47,6 +45,22 @@ export class AuthMiddleware implements NestMiddleware {
     }
   }
 }
+
+const getKCEnvironmentVariables = () => {
+  const authUrl = process.env.KC_AUTH_URL;
+  const authRealm = process.env.KC_AUTH_REALM;
+  const authClientId = process.env.KC_AUTH_CLIENT_ID;
+
+  if (!authUrl || !authRealm || !authClientId) {
+    throw new InternalServerErrorException(`Environment Keycloak configuration is missing,
+      KC_AUTH_URL=${authUrl}
+      KC_AUTH_REALM=${authRealm}
+      KC_AUTH_CLIENT_ID=${authClientId}
+    `);
+  }
+
+  return { authUrl, authRealm, authClientId };
+};
 
 const extractToken = (headers: { [key: string]: string }): string => {
   if (headers.authorization) {

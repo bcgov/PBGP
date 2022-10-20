@@ -21,6 +21,10 @@ export DB_SERVER := $(or $(DB_SERVER),database)
 export DB_PORT := $(or $(DB_PORT),5432)
 export GIT_LOCAL_BRANCH := $(or $(GIT_LOCAL_BRANCH),dev)
 
+export KC_AUTH_URL = https://keycloak.freshworks.club/auth
+export KC_AUTH_REALM = PBPG-dev
+export KC_AUTH_CLIENT_ID = PBGP
+
 define deployTag
 "${PROJECT}-${DEPLOY_DATE}"
 endef
