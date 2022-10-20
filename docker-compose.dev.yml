@@ -9,6 +9,10 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.dev
+    environment:
+      - REACT_APP_KC_AUTH_URL=${KC_AUTH_URL}
+      - REACT_APP_KC_AUTH_REALM=${KC_AUTH_REALM}
+      - REACT_APP_KC_AUTH_CLIENT_ID=${KC_AUTH_CLIENT_ID}
     expose:
       - "3000"
     ports:
@@ -38,6 +42,9 @@ services:
       - POSTGRES_USERNAME=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - PORTGRES_PORT=${DB_PORT}
+      - KC_AUTH_URL=${KC_AUTH_URL}
+      - KC_AUTH_REALM=${KC_AUTH_REALM}
+      - KC_AUTH_CLIENT_ID=${KC_AUTH_CLIENT_ID}
       - APP_PORT=80
     expose:
       - "80"

@@ -14,6 +14,7 @@
     "@material-ui/icons": "4.11.2",
     "@material-ui/lab": "4.0.0-alpha.60",
     "@material-ui/pickers": "3.3.10",
+    "@react-keycloak/web": "^3.4.0",
     "axios": "0.21.4",
     "clsx": "1.1.1",
     "cross-env": "7.0.3",
@@ -21,6 +22,7 @@
     "formik": "2.2.9",
     "i18next": "21.1.1",
     "ibmcloud-appid-js": "0.4.3",
+    "keycloak-js": "^19.0.3",
     "lodash.throttle": "4.1.1",
     "material-table": "1.69.0",
     "moment": "2.29.1",
@@ -38,7 +40,6 @@
     "yup": "0.32.9"
   },
   "devDependencies": {
-    "cypress": "7.7.0",
     "faker": "5.5.3",
     "puppeteer": "3.3.0",
     "react-error-overlay": "6.0.9"
