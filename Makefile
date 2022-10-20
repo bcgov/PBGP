@@ -50,7 +50,7 @@ print-status:
 
 run-local:
 	@echo "+\n++ Make: Running locally ...\n+"
-	@docker-compose -f docker-compose.dev.yml up -d
+	@docker-compose -f docker-compose.dev.yml up --build -d
 
 run-local-client:
 	@echo "+\n++ Make: Running locally ...\n+"
