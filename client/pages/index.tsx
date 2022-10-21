@@ -1,6 +1,7 @@
 import { Link } from '@components';
 import withAuth from 'components/withAuth';
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 
 const Dashboard: NextPage = () => {
   return (
