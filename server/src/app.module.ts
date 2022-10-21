@@ -7,9 +7,10 @@ import { LoggerMiddleware } from './logger.middleware';
 import { UserModule } from './user/user.module';
 import { ApplicationModule } from './application/application.module';
 import { AuthMiddleware } from './common/middleware/auth.middleware';
+import { SupportingDocumentModule } from './supporting-document/supporting-document.module';
 
 @Module({
-  imports: [DatabaseModule, ApplicationModule, UserModule],
+  imports: [DatabaseModule, ApplicationModule, UserModule, SupportingDocumentModule],
   controllers: [AppController],
   providers: [Logger, AppLogger, AppService],
 })
