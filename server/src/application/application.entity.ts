@@ -1,4 +1,4 @@
-import { File } from '@/file/file.entity';
+import { SupportingDocument } from '@/supporting-document/supporting-document.entity';
 import { User } from '@/user/user.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
@@ -49,6 +49,6 @@ export class Application extends CustomBaseEntity {
   @ManyToOne(() => User, (user) => user.applications)
   user: User;
 
-  @OneToMany(() => File, (file) => file.application)
-  files: File[];
+  @OneToMany(() => SupportingDocument, (supportingDocument) => supportingDocument.application)
+  supportingDocuments: SupportingDocument[];
 }

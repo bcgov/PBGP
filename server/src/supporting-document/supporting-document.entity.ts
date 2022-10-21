@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
 @Entity()
-export class File extends CustomBaseEntity {
+export class SupportingDocument extends CustomBaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -13,6 +13,6 @@ export class File extends CustomBaseEntity {
   @Column({ type: 'bytea', nullable: false })
   file: string;
 
-  @ManyToOne(() => Application, (application) => application.files)
+  @ManyToOne(() => Application, (application) => application.supportingDocuments)
   application: Application;
 }
