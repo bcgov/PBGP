@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useAuthContext } from '@contexts';
 import { Spinner } from './Spinner';
 
-const withAuth = (Component: NextComponentType<NextPageContext>) => {
+export const withAuth = (Component: NextComponentType<NextPageContext>) => {
   const Auth = () => {
     const { keycloak, kcInitialized, tokensInitialized } = useAuthContext();
     const router = useRouter();
@@ -27,5 +27,3 @@ const withAuth = (Component: NextComponentType<NextPageContext>) => {
 
   return Auth;
 };
-
-export default withAuth;

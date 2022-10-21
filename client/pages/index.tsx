@@ -1,5 +1,4 @@
-import { Link } from '@components';
-import withAuth from 'components/withAuth';
+import { Link, withAuth } from '@components';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 
