@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Formik, Form } from 'formik';
 import { Link, withAuth, Stepper, Button } from '@components';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
@@ -19,9 +20,18 @@ const Dashboard: NextPage = () => {
     <div className='flex h-full flex-col items-left justify-center gap-2'>
       <h2 className='text-4xl'>BC Air Access Program Application</h2>
 
-      <Stepper steps={PlanningSteps} currentStep={currentStep} />
+      <Formik initialValues={{}} onSubmit={() => {}}>
+        <Form>
+          <Stepper steps={PlanningSteps} currentStep={currentStep} />
 
-      <p>
+          <div className="flex justify-between w-full">
+            <Button variant='outline'>Cancel</Button>
+            <Button variant='primary'>Continue</Button>
+            </div>
+        </Form>
+      </Formik>
+
+      {/* <p>
         The BC Air Access Program (BCAAP) is an application-based program that provides capital
         cost-sharing contributions to aviation infrastructure projects. This includes facility
         master plans, greenhouse gas audits or baselining, and GPS approaches. Support to the
@@ -46,7 +56,7 @@ const Dashboard: NextPage = () => {
         <Link variant='primary' href='#'>
           Start Application
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 };
