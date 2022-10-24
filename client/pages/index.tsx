@@ -8,17 +8,17 @@ const Dashboard: NextPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
 
   const handleClick = (clickType: any) => {
-		let newStep = currentStep;
-		(clickType == "next") ? newStep++ : newStep--;
-		// Check if steps are within the boundary
-		if (newStep > 0 && newStep <= PlanningSteps.length) {
-			setCurrentStep(newStep)
-		}
-	}
+    let newStep = currentStep;
+    clickType == 'next' ? newStep++ : newStep--;
+    // Check if steps are within the boundary
+    if (newStep > 0 && newStep <= PlanningSteps.length) {
+      setCurrentStep(newStep);
+    }
+  };
   return (
     <div className='flex h-full flex-col items-left justify-center gap-2'>
       <h2 className='text-4xl'>BC Air Access Program Application</h2>
-    
+
       <Stepper steps={PlanningSteps} currentStep={currentStep} />
 
       <p>
