@@ -38,8 +38,8 @@ function App({ Component, pageProps, cookies }: AppProps) {
           </Head>
           <div className='h-full flex flex-col'>
             <Header />
-            <main className='flex-grow flex justify-center md:pt-11 pt-5 bg-bcLightBackground'>
-              <div className=' w-full xl:w-layout mx-2 mb-12'>
+            <main className='flex-grow flex justify-center bg-bcLightBackground'>
+              <div className=' w-full xl:w-layout mb-12'>
                 <Component {...pageProps} />
               </div>
             </main>

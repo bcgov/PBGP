@@ -20,7 +20,7 @@ const Dashboard: NextPage = () => {
     }
   };
   return (
-    <div className='flex flex-col items-left justify-center gap-2'>
+    <div className='h-screen flex flex-col w-full px-10 py-5 bg-white'>
       <PageTitle
         title={`BC Air Access Program Application`}
         description={`Learn more about eligibility, prepare documents and deadline of the program, please click here`}
@@ -30,22 +30,24 @@ const Dashboard: NextPage = () => {
         <Form>
           <Stepper steps={PlanningSteps} currentStep={currentStep} />
 
-          <FormContent step={currentStep} formTitle={PlanningSteps[currentStep - 1]} />
-
-          <div className='flex justify-between w-full'>
-            <Button variant='outline'>Cancel</Button>
-            <div>
-              <Button variant='outline' type='button' disabled={isFirstStep} onClick={handleClick}>
-                Back
-              </Button>
-              <Button
-                variant='primary'
-                type='button'
-                disabled={currentStep >= PlanningSteps.length}
-                onClick={() => handleClick('next')}
-              >
-                Continue
-              </Button>
+         <div className="">
+            <FormContent step={currentStep} formTitle={PlanningSteps[currentStep - 1]} />
+            
+            <div className='flex justify-between w-full'>
+              <Button variant='outline'>Cancel</Button>
+              <div>
+                <Button variant='outline' type='button' disabled={isFirstStep} onClick={handleClick}>
+                  Back
+                </Button>
+                <Button
+                  variant='primary'
+                  type='button'
+                  disabled={currentStep >= PlanningSteps.length}
+                  onClick={() => handleClick('next')}
+                >
+                  Continue
+                </Button>
+              </div>
             </div>
           </div>
         </Form>
