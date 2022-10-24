@@ -11,8 +11,10 @@ const Step: React.FC<StepProps> = ({ index, step, label, isLast, currentStep }) 
     <div key={index} className={!isLast ? 'w-full flex items-center' : 'flex items-center'}>
       <div className='relative flex flex-col items-center '>
         <div
-          className={`rounded-full border-2 border-gray-300 h-8 w-8 flex items-center justify-center py-3  ${
-            currentStep == index + 1 ? 'border-bcBlueNav' : ''
+          className={`rounded-full border-2 ${
+            currentStep > index + 1 && 'bg-bcBluePrimary'
+          } border-gray-300 h-8 w-8 flex items-center justify-center py-3  ${
+            currentStep >= index + 1 ? 'border-bcBlueNav' : ''
           }`}
         >
           {currentStep == index + 1 && (
@@ -20,10 +22,12 @@ const Step: React.FC<StepProps> = ({ index, step, label, isLast, currentStep }) 
               className={`rounded-full h-6 w-6 flex items-center justify-center bg-bcBluePrimary`}
             ></div>
           )}
+
+          {currentStep > index + 1 && <span className='text-white font-bold text-xl'>✓</span>}
         </div>
         <div
           className={`hidden md:block absolute top-0 text-center mt-10 w-32 text-xs font-medium uppercase ${
-            currentStep == index + 1 ? 'font-bold text-bcBluePrimary' : 'text-gray-400'
+            currentStep >= index + 1 ? 'font-bold text-bcBluePrimary' : 'text-gray-400'
           }`}
         >
           {label}
@@ -32,7 +36,7 @@ const Step: React.FC<StepProps> = ({ index, step, label, isLast, currentStep }) 
       {!isLast ? (
         <div
           className={`flex-grow  ${
-            currentStep !== index + 1 && 'border-dotted'
+            currentStep <= index + 1 && 'border-dotted'
           }  mx-2 border-t-2 border-bcBlueNav`}
         ></div>
       ) : null}
