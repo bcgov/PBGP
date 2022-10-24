@@ -4,9 +4,11 @@ import { Link, withAuth, Stepper, Button } from '@components';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { PlanningSteps } from '../constants';
+import { FormContent } from '../components/forms';
 
 const Dashboard: NextPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const isFirstStep = currentStep === 1;
 
   const handleClick = (clickType: any) => {
     let newStep = currentStep;
@@ -24,10 +26,24 @@ const Dashboard: NextPage = () => {
         <Form>
           <Stepper steps={PlanningSteps} currentStep={currentStep} />
 
-          <div className="flex justify-between w-full">
+          <FormContent step={currentStep} formTitle={PlanningSteps[currentStep - 1]} />
+
+          <div className='flex justify-between w-full'>
             <Button variant='outline'>Cancel</Button>
-            <Button variant='primary'>Continue</Button>
+            <div>
+              <Button variant='outline' type='button' disabled={isFirstStep} onClick={handleClick}>
+                Back
+              </Button>
+              <Button
+                variant='primary'
+                type='button'
+                disabled={currentStep >= PlanningSteps.length}
+                onClick={() => handleClick('next')}
+              >
+                Continue
+              </Button>
             </div>
+          </div>
         </Form>
       </Formik>
 
