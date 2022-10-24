@@ -79,14 +79,14 @@ export const ContactInfo: React.FC = () => {
               ))}
             </Select>
 
-            <div className='flex flex-1 w-full mt-8'>
+            {/* <div className='flex flex-1 w-full mt-8'>
               <span className='flex flex-1 justify-start'>
                 <Button variant='outline'>Cancel</Button>
               </span>
               <span className='flex flex-1 justify-end'>
                 <Button variant='primary'>Continue</Button>
               </span>
-            </div>
+            </div> */}
           </div>
         </Form>
       )}

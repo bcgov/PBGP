@@ -1,13 +1,17 @@
+import {ContactInfo} from '../../pages/contact-info';
 interface FormContentProps {
   step: number;
   formTitle: string;
 }
 
 export const FormContent: React.FC<FormContentProps> = ({ step, formTitle }) => {
+  console.log("+++++++++++++++ formTitle", formTitle)
+  console.log("+++++++++++++++ step", step)
+
   const showStepContent = () => {
     switch (formTitle) {
-      //   case 'Profile':
-      //     return <Profile title={formTitle} step={step} />;
+        case 'Facility Information':
+          return <ContactInfo  />;
       //   case 'Care Activities Bundles':
       //     return <CareActivitiesBundle title={formTitle} step={step} />;
       //   case 'Occupation':
