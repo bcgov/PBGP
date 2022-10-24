@@ -1,7 +1,6 @@
 import { Link, withAuth } from '@components';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import { ContactInfo } from './contact-info';
 
 const Dashboard: NextPage = () => {
   return (
