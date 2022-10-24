@@ -7,3 +7,6 @@ export * from './Spinner';
 
 // HOCs
 export * from './withAuth';
+
+// From
+export * from './form';
