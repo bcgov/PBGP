@@ -1,11 +1,26 @@
-import { Link, withAuth } from '@components';
+import { useState, useEffect } from 'react';
+import { Link, withAuth, Stepper, Button } from '@components';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
+import { PlanningSteps } from '../constants';
 
 const Dashboard: NextPage = () => {
+  const [currentStep, setCurrentStep] = useState(1);
+
+  const handleClick = (clickType: any) => {
+		let newStep = currentStep;
+		(clickType == "next") ? newStep++ : newStep--;
+		// Check if steps are within the boundary
+		if (newStep > 0 && newStep <= PlanningSteps.length) {
+			setCurrentStep(newStep)
+		}
+	}
   return (
     <div className='flex h-full flex-col items-left justify-center gap-2'>
       <h2 className='text-4xl'>BC Air Access Program Application</h2>
+    
+      <Stepper steps={PlanningSteps} currentStep={currentStep} />
+
       <p>
         The BC Air Access Program (BCAAP) is an application-based program that provides capital
         cost-sharing contributions to aviation infrastructure projects. This includes facility

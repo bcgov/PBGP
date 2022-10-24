@@ -4,6 +4,6 @@ export * from './Footer';
 export * from './Button';
 export * from './Link';
 export * from './Spinner';
-
+export * from './Stepper';
 // HOCs
 export * from './withAuth';
