@@ -5,6 +5,7 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { PlanningSteps } from '../constants';
 import { FormContent } from '../components/forms';
+import { PageTitle } from 'components/PageTitle';
 
 const Dashboard: NextPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -19,8 +20,11 @@ const Dashboard: NextPage = () => {
     }
   };
   return (
-    <div className='flex h-full flex-col items-left justify-center gap-2'>
-      <h2 className='text-4xl'>BC Air Access Program Application</h2>
+    <div className='flex flex-col items-left justify-center gap-2'>
+      <PageTitle
+        title={`BC Air Access Program Application`}
+        description={`Learn more about eligibility, prepare documents and deadline of the program, please click here`}
+      />
 
       <Formik initialValues={{}} onSubmit={() => {}}>
         <Form>
