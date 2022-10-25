@@ -2,12 +2,15 @@ import { Form, Formik } from 'formik';
 import { Button, Field, Radio, Select, Option } from '@components';
 
 export const ContactInfo: React.FC = () => {
+
   const dropdownOptions = [
     { value: 'first', text: '1st' },
     { value: 'second', text: '2nd' },
     { value: 'third', text: '3rd' },
     { value: 'fourth', text: '4th' },
   ];
+
+
 
   return (
     <Formik initialValues={{}} onSubmit={() => {}}>
@@ -84,7 +87,8 @@ export const ContactInfo: React.FC = () => {
                 <Button variant='outline'>Cancel</Button>
               </span>
               <span className='flex flex-1 justify-end'>
-                <Button variant='primary'>Continue</Button>
+                <Button  variant='outline'>Back</Button>
+                <Button  variant='primary'>Continue</Button>
               </span>
             </div>
           </div>
