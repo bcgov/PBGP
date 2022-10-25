@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { Error } from '@components';
+import { Error, Description } from '@components';
 import { Field as FormikField, useField, useFormikContext } from 'formik';
 
 interface RadioProps {
@@ -7,6 +7,7 @@ interface RadioProps {
   name: string;
   options: RadioOptionType[];
   horizontal?: boolean;
+  description?: string;
 }
 
 export interface RadioOptionType {
@@ -18,10 +19,11 @@ export interface RadioType extends React.FC<RadioProps> {
   Boolean: React.FC<BooleanRadioProps>;
 }
 
-export const Radio: RadioType = ({ legend, name, options, horizontal }) => {
+export const Radio: RadioType = ({ legend, name, options, horizontal, description }) => {
   return (
     <fieldset className='flex flex-col gap-4'>
       <legend className='text-bcBlack font-bold mb-4'>{legend}</legend>
+      <Description id={`${name}-description`}>{description}</Description>
       <div
         className={classnames(
           'flex',

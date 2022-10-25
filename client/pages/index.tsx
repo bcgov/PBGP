@@ -29,7 +29,7 @@ const Dashboard: NextPage = () => {
       <FormContent step={currentStep} formTitle={PlanningSteps[currentStep - 1]} />
 
       <div className='flex-1 flex flex-col min-h-0'>
-        <div className='flex justify-center'> 
+        <div className='flex justify-center'>
           <Button variant='outline'>Cancel</Button>
           <Button variant='outline' type='button' disabled={isFirstStep} onClick={handleClick}>
             Back
@@ -39,12 +39,11 @@ const Dashboard: NextPage = () => {
             type='button'
             disabled={currentStep >= PlanningSteps.length}
             onClick={() => handleClick('next')}
-            >
+          >
             Continue
           </Button>
         </div>
       </div>
-      
     </div>
   );
 };
