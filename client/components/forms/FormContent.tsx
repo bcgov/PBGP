@@ -10,7 +10,7 @@ export const FormContent: React.FC<FormContentProps> = ({ step, formTitle }) => 
 
   const showStepContent = () => {
     switch (formTitle) {
-        case 'Facility Information':
+        case 'Contact Information':
           return <ContactInfo  />;
       //   case 'Care Activities Bundles':
       //     return <CareActivitiesBundle title={formTitle} step={step} />;
@@ -24,5 +24,5 @@ export const FormContent: React.FC<FormContentProps> = ({ step, formTitle }) => 
         return formTitle;
     }
   };
-  return <div className='flex-1 flex flex-col min-h-0'>{showStepContent()}</div>;
+  return <div className='flex-1 flex flex-col min-h-0 mt-10'>{showStepContent()}</div>;
 };

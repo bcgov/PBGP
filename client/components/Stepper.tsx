@@ -26,7 +26,7 @@ const Step: React.FC<StepProps> = ({ index, step, label, isLast, currentStep }) 
           {currentStep > index + 1 && <span className='text-white font-bold text-xl'>✓</span>}
         </div>
         <div
-          className={`hidden md:block absolute top-0 text-center mt-10 w-32 text-xs font-medium ${
+          className={`hidden md:block absolute top-0 text-center mt-10 w-28 text-xs font-medium ${
             currentStep >= index + 1 ? 'font-bold text-bcBluePrimary' : 'text-gray-400'
           }`}
         >

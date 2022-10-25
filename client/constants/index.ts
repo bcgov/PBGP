@@ -1,6 +1,8 @@
 export * from './keycloak.constants';
 
 export const PlanningSteps = [
+  'Contact Information',
+  'General Project Information and Description',
   'Facility Information',
   'Funding Eligibility',
   'Environmental / Climate Considerations',
