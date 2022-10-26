@@ -1,4 +1,4 @@
-import { ContactInfo, GeneralProjectInfo, FormSteps } from '@components';
+import { ContactInfo, GeneralProjectInfo, FacilityInfo, FormSteps } from '@components';
 interface FormContentProps {
   step: number;
   formTitle: string;
@@ -11,6 +11,8 @@ export const FormContent: React.FC<FormContentProps> = ({ step, formTitle }) => 
         return <ContactInfo />;
       case FormSteps.GENERAL_INFO:
         return <GeneralProjectInfo />;
+      case FormSteps.FACILITY_INFO:
+          return <FacilityInfo />;
       default:
         return formTitle;
     }

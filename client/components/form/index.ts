@@ -5,3 +5,4 @@ export * from './Description';
 export * from './Select';
 export * from './Radio';
 export * from './Textarea';
+export * from './Checkbox';
