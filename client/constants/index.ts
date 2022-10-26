@@ -28,5 +28,4 @@ export const FacilityUsage = [
     {label: 'Medevac', value: 'Medevac'},
     {label: 'Flight training', value: 'Flight training'},
     {label: 'Other (please explain)', value: 'Other (please explain)'},
-
 ];

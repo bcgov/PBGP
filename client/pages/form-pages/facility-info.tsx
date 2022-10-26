@@ -12,7 +12,6 @@ const initialValues = {
 };
 
 export const FacilityInfo: React.FC = () => {
-
   return (
     <Formik initialValues={initialValues} onSubmit={() => {}}>
       {({ values }: any) => (
@@ -24,7 +23,12 @@ export const FacilityInfo: React.FC = () => {
             </div>
 
             <div className='flex flex- w-full justify-start'>
-                <CheckboxArray title='Facility Type' name='facilityType' legend='Please select all that apply' options={FacilityType}/>
+              <CheckboxArray
+                title='Facility Type'
+                name='facilityType'
+                legend='Please select all that apply'
+                options={FacilityType}
+              />
             </div>
 
             <div className='flex flex-1 w-full justify-start'>
@@ -58,21 +62,21 @@ export const FacilityInfo: React.FC = () => {
                 ]}
               />
 
-              <Textarea name='textAreaNoAppAcap' label='' description='If selected “No”, please indicate why not' maxLength={225} />
+              <Textarea
+                name='textAreaNoAppAcap'
+                label=''
+                description='If selected “No”, please indicate why not'
+                maxLength={225}
+              />
             </div>
 
             <div className='flex flex- w-full justify-start'>
-                <CheckboxArray title='Facility Usage' name='facilityUsage' legend='Select all that apply' options={FacilityUsage}/>
-            </div>
-
-            <div className='flex flex-1 w-full mt-8'>
-              <span className='flex flex-1 justify-start'>
-                <Button variant='outline'>Cancel</Button>
-              </span>
-              <span className='flex flex-1 justify-end'>
-                <Button  variant='outline'>Back</Button>
-                <Button  variant='primary'>Continue</Button>
-              </span>
+              <CheckboxArray
+                title='Facility Usage'
+                name='facilityUsage'
+                legend='Select all that apply'
+                options={FacilityUsage}
+              />
             </div>
           </div>
         </Form>
