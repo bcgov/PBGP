@@ -1,9 +1,10 @@
 import classnames from 'classnames';
-import { Error } from '@components';
+import { Error, Description } from '@components';
 import { Field as FormikField, useField, useFormikContext } from 'formik';
+import { ReactNode } from 'react';
 
 interface RadioProps {
-  legend: string;
+  legend: string | ReactNode;
   name: string;
   options: RadioOptionType[];
   horizontal?: boolean;

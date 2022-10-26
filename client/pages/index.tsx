@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Formik, Form } from 'formik';
-import { Link, withAuth, Stepper, Button } from '@components';
+import { Link, withAuth, Stepper, Button, FormSteps } from '@components';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import { PlanningSteps } from '../constants';
+import { PlanningSteps } from '@components';
 import { FormContent } from '../components/forms';
 import { PageTitle } from 'components/PageTitle';
 
@@ -26,12 +26,17 @@ const Dashboard: NextPage = () => {
         description={`Learn more about eligibility, prepare documents and deadline of the program, please click here`}
       />
       <Stepper steps={PlanningSteps} currentStep={currentStep} />
-      <FormContent step={currentStep} formTitle={PlanningSteps[currentStep - 1]} />
+      <FormContent step={currentStep} formTitle={Object.keys(FormSteps)[currentStep - 1]} />
 
       <div className='flex-1 flex flex-col min-h-0'>
-        <div className='flex justify-center'> 
+        <div className='flex justify-center'>
           <Button variant='outline'>Cancel</Button>
-          <Button variant='outline' type='button' disabled={isFirstStep} onClick={handleClick}>
+          <Button
+            variant='outline'
+            type='button'
+            disabled={isFirstStep}
+            onClick={() => handleClick('')}
+          >
             Back
           </Button>
           <Button
@@ -39,12 +44,11 @@ const Dashboard: NextPage = () => {
             type='button'
             disabled={currentStep >= PlanningSteps.length}
             onClick={() => handleClick('next')}
-            >
+          >
             Continue
           </Button>
         </div>
       </div>
-      
     </div>
   );
 };

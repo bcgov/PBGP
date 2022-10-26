@@ -7,18 +7,27 @@ interface TextareaProps extends FieldProps {
   rows?: number;
 }
 
-export const Textarea: React.FC<TextareaProps> = ({ name, label, description, maxLength }) => {
+export const Textarea: React.FC<TextareaProps> = ({
+  name,
+  label,
+  description,
+  maxLength,
+  disabled = false,
+}) => {
   const { values } = useFormikContext<Record<string, string>>();
 
   return (
-    <div>
+    <div className='flex-1'>
       <Field
         name={name}
         label={label}
         description={description}
         maxLength={maxLength}
         as='textarea'
-        className='bg-white h-20 w-full border rounded border-bcBlack p-1.5'
+        disabled={disabled}
+        className={`${
+          disabled ? 'bg-gray-200' : 'bg-white'
+        } h-20 w-full border rounded border-bcBlack p-1.5`}
       />
       {maxLength ? (
         <>

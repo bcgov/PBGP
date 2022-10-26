@@ -1,12 +1,5 @@
 export * from './keycloak.constants';
-
-export const PlanningSteps = [
-  'Contact Information',
-  'General Project Information and Description',
-  'Facility Information',
-  'Funding Eligibility',
-  'Environmental / Climate Considerations',
-  'Funding and Project Cost Estimate Information',
-  'Support Documentation and Checklist',
-  'Authorization',
-];
+export * from '../pages/form-pages/contact-info';
+export * from '../pages/form-pages/general-project-info';
+export * from './enums';
+export * from './constants';
