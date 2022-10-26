@@ -40,7 +40,7 @@ export const GeneralProjectInfo: React.FC = () => {
               <Radio
                 legend={
                   <>
-                    <p>What type of project is being applied for?</p>
+                    <p className='mb-2'>What type of project is being applied for?</p>
                     <p className='text-sm text-gray-500'>
                       (Please read carefully and then select the one that best fits the project)
                     </p>
