@@ -1,5 +1,5 @@
 interface DescriptionProps {
-  id: string;
+  id?: string;
   children?: React.ReactNode;
 }
 

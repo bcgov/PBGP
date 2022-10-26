@@ -1,5 +1,5 @@
 import { Form, Formik, FormikProps } from 'formik';
-import { Field, Radio, Textarea } from '@components';
+import { Description, Field, Radio, Textarea } from '@components';
 import { GeneralInfoInterface } from 'constants/interfaces';
 
 const initialValues = {
@@ -38,9 +38,15 @@ export const GeneralProjectInfo: React.FC = () => {
 
             <div className='flex flex-1 w-full justify-start'>
               <Radio
-                legend='What type of project is being applied for?'
+                legend={
+                  <>
+                    <p>What type of project is being applied for?</p>
+                    <p className='text-sm text-gray-500'>
+                      (Please read carefully and then select the one that best fits the project)
+                    </p>
+                  </>
+                }
                 name='projectType'
-                description='(Please read carefully and then select the one that best fits the project)'
                 options={[
                   {
                     label:
