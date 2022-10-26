@@ -2,7 +2,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface ButtonProps {
-  onClick?: (prop?: any) => void;
+  onClick?: () => void;
   variant: keyof typeof buttonColor;
   loading?: boolean;
   type?: 'submit' | 'reset' | 'button';

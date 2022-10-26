@@ -1,5 +1,5 @@
 import { Form, Formik, FormikProps } from 'formik';
-import { Description, Field, Radio, Textarea } from '@components';
+import { Field, Radio, Textarea, FormStepTitles, FormSteps } from '@components';
 import { GeneralInfoInterface } from 'constants/interfaces';
 
 const initialValues = {
@@ -23,7 +23,7 @@ export const GeneralProjectInfo: React.FC = () => {
           <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center drop-shadow-sm'>
             <div className='mb-4 flex items-center flex-col'>
               <h1 className='text-xl font-medium text-bcBluePrimary'>
-                General Project Information and Description
+                {FormStepTitles[FormSteps.GENERAL_INFO]}
               </h1>
               <h3>Please proivde detailed information for your application.</h3>
             </div>
@@ -40,10 +40,10 @@ export const GeneralProjectInfo: React.FC = () => {
               <Radio
                 legend={
                   <>
-                    <p className='mb-2'>What type of project is being applied for?</p>
-                    <p className='text-sm text-gray-500'>
+                    <span className='mb-2 block'>What type of project is being applied for?</span>
+                    <span className='text-sm text-gray-500'>
                       (Please read carefully and then select the one that best fits the project)
-                    </p>
+                    </span>
                   </>
                 }
                 name='projectType'

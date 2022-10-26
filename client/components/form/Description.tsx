@@ -1,6 +1,6 @@
 interface DescriptionProps {
-  id?: string;
-  children?: React.ReactNode;
+  id: string;
+  children: React.ReactNode;
 }
 
 export const Description: React.FC<DescriptionProps> = ({ id, children }) => {

@@ -1,5 +1,5 @@
 import { Form, Formik, FormikProps } from 'formik';
-import { Field, Radio, Select, Option } from '@components';
+import { Field, Radio, Select, Option, FormStepTitles, FormSteps } from '@components';
 import { ContactInfoInterface } from 'constants/interfaces';
 
 const initialValues = {
@@ -27,7 +27,9 @@ export const ContactInfo: React.FC = () => {
         <Form className='flex justify-center'>
           <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center drop-shadow-sm'>
             <div className='mb-4 flex items-center flex-col'>
-              <h1 className='text-xl font-medium text-bcBluePrimary'>Contact Information</h1>
+              <h1 className='text-xl font-medium text-bcBluePrimary'>
+                {FormStepTitles[FormSteps.CONTACT_INFO]}
+              </h1>
               <h3>Please proivde detailed information for your application.</h3>
             </div>
 
@@ -90,16 +92,6 @@ export const ContactInfo: React.FC = () => {
                 ></Option>
               ))}
             </Select>
-
-            {/* <div className='flex flex-1 w-full mt-8'>
-              <span className='flex flex-1 justify-start'>
-                <Button variant='outline'>Cancel</Button>
-              </span>
-              <span className='flex flex-1 justify-end'>
-                <Button variant='outline'>Back</Button>
-                <Button variant='primary'>Continue</Button>
-              </span>
-            </div> */}
           </div>
         </Form>
       )}

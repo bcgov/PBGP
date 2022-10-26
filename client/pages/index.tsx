@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import { Link, withAuth, Stepper, Button } from '@components';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import { PlanningSteps } from '../constants';
+import { PlanningSteps } from '@components';
 import { FormContent } from '../components/forms';
 import { PageTitle } from 'components/PageTitle';
 
@@ -31,7 +31,12 @@ const Dashboard: NextPage = () => {
       <div className='flex-1 flex flex-col min-h-0'>
         <div className='flex justify-center'>
           <Button variant='outline'>Cancel</Button>
-          <Button variant='outline' type='button' disabled={isFirstStep} onClick={handleClick}>
+          <Button
+            variant='outline'
+            type='button'
+            disabled={isFirstStep}
+            onClick={() => handleClick('')}
+          >
             Back
           </Button>
           <Button
