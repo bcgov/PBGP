@@ -1,4 +1,5 @@
-import {ContactInfo} from '../../pages/contact-info';
+import {ContactInfo} from '../formPages/contact-info';
+import {FacilityInfo} from '../formPages/facility-info';
 interface FormContentProps {
   step: number;
   formTitle: string;
@@ -10,6 +11,8 @@ export const FormContent: React.FC<FormContentProps> = ({ step, formTitle }) => 
     switch (formTitle) {
         case 'Contact Information':
           return <ContactInfo  />;
+        case 'Facility Information':
+          return <FacilityInfo  />;
         default:
           return formTitle;
     }
