@@ -10,4 +10,4 @@ export const FormStepTitles: Record<keyof typeof FormSteps, string> = {
   [FormSteps.SUPPORT_DOCUMENTATION]: 'Support Documentation and Checklist',
   [FormSteps.AUTHORIZATION]: 'Authorization',
 };
-export const PlanningSteps = Object.keys(FormSteps);
+export const PlanningSteps = Object.values(FormStepTitles);
