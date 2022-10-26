@@ -1,17 +1,31 @@
-import { Form, Formik } from 'formik';
+import { Form, Formik, FormikProps } from 'formik';
 import { Field, Radio, Textarea } from '@components';
+import { GeneralInfoInterface } from 'constants/interfaces';
+
+const initialValues = {
+  estimatedCost: '',
+  projectType: '',
+  facilityMasterPlan: '',
+  standardCompliance: '',
+  standardComplianceExplanation: '',
+  estimatedStartDate: '',
+  estimatedEndDate: '',
+  projectTitle: '',
+  projectScope: '',
+  projectRationale: '',
+};
 
 export const GeneralProjectInfo: React.FC = () => {
   return (
-    <Formik initialValues={{}} onSubmit={() => {}}>
-      {({ values }: any) => (
+    <Formik initialValues={initialValues} onSubmit={() => {}}>
+      {({ values }: FormikProps<GeneralInfoInterface>) => (
         <Form className='flex justify-center'>
           <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center drop-shadow-sm'>
             <div className='mb-4 flex items-center flex-col'>
               <h1 className='text-xl font-medium text-bcBluePrimary'>
                 General Project Information and Description
               </h1>
-              <h3 className=''>Please proivde detailed information for your application.</h3>
+              <h3>Please proivde detailed information for your application.</h3>
             </div>
 
             <Field

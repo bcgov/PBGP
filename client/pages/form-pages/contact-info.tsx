@@ -1,5 +1,17 @@
-import { Form, Formik } from 'formik';
+import { Form, Formik, FormikProps } from 'formik';
 import { Field, Radio, Select, Option } from '@components';
+import { ContactInfoInterface } from 'constants/interfaces';
+
+const initialValues = {
+  facilityName: '',
+  applicantName: '',
+  primaryContactName: '',
+  phoneNumber: '',
+  mailingAddress: '',
+  mailingAddressPostalCode: '',
+  isOneApplication: '',
+  priority: '',
+};
 
 export const ContactInfo: React.FC = () => {
   const dropdownOptions = [
@@ -10,13 +22,13 @@ export const ContactInfo: React.FC = () => {
   ];
 
   return (
-    <Formik initialValues={{}} onSubmit={() => {}}>
-      {({ values }: any) => (
+    <Formik initialValues={initialValues} onSubmit={() => {}}>
+      {({ values }: FormikProps<ContactInfoInterface>) => (
         <Form className='flex justify-center'>
           <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center drop-shadow-sm'>
             <div className='mb-4 flex items-center flex-col'>
               <h1 className='text-xl font-medium text-bcBluePrimary'>Contact Information</h1>
-              <h3 className=''>Please proivde detailed information for your application.</h3>
+              <h3>Please proivde detailed information for your application.</h3>
             </div>
 
             <Field name='facilityName' type='text' label='Facility name' maxLength={300}></Field>
