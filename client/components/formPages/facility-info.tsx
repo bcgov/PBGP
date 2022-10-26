@@ -1,17 +1,8 @@
 import { Form, Formik } from 'formik';
-import { Button, Field, Radio, Select, Option, CheckboxArray } from '@components';
-import { FacilityType, StatusPerTransport } from '../../constants';
+import { Button, Field, Radio, Select, Option, CheckboxArray, Textarea } from '@components';
+import { FacilityType, FacilityUsage, StatusPerTransport } from '../../constants';
 
 export const FacilityInfo: React.FC = () => {
-
-  const dropdownOptions = [
-    { value: 'first', text: '1st' },
-    { value: 'second', text: '2nd' },
-    { value: 'third', text: '3rd' },
-    { value: 'fourth', text: '4th' },
-  ];
-
-
 
   return (
     <Formik initialValues={{}} onSubmit={() => {}}>
@@ -37,7 +28,33 @@ export const FacilityInfo: React.FC = () => {
               ></Radio>
             </div>
 
-            
+            <div className='flex flex-col w-full px-8 py-4 bg-slate-200'>
+              <Radio
+                legend='Is the project eligible for the federal Airports Capital Assistance Program (ACAP)?'
+                name='acapEligibilty'
+                horizontal={true}
+                options={[
+                  { label: 'Yes', value: 'yes' },
+                  { label: 'No', value: 'no' },
+                ]}
+              />
+              
+              <Radio
+                legend='If “Yes”, has an application been made to ACAP?'
+                name='acapApplication'
+                horizontal={true}
+                options={[
+                  { label: 'Yes', value: 'yes' },
+                  { label: 'No', value: 'no' },
+                ]}
+              />
+
+              <Textarea name='Peter' label='' description='If selected “No”, please indicate why not' maxLength={225} />
+            </div>
+
+            <div className='flex flex- w-full justify-start'>
+                <CheckboxArray title='Facility Usage' name='FacilityUsage' legend='Select all that apply' options={FacilityUsage}/>
+            </div>
 
             <div className='flex flex-1 w-full mt-8'>
               <span className='flex flex-1 justify-start'>

@@ -3,7 +3,7 @@ import { Error } from '@components';
 import { Field as FormikField, useField, useFormikContext } from 'formik';
 
 interface RadioProps {
-  title: string;
+  title?: string;
   legend: string;
   name: string;
   options: RadioOptionType[];
