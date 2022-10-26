@@ -21,9 +21,9 @@ export interface RadioType extends React.FC<RadioProps> {
 
 export const Radio: RadioType = ({ title, legend, name, options, horizontal }) => {
   return (
-    <div className='flex flex-col gap-2'>
-      <h3 className='text-bcBlack font-bold w-full'>{title}</h3>
-      <legend className='text-gray-400 mb-4'>{legend}</legend>
+    <fieldset className='flex flex-col gap-2'>
+      <legend className='text-xl text-bcBlack font-bold w-full'>{title}</legend>
+      <p className='text-gray-400 mb-2 text-sm'>{legend}</p>
       <div
         className={classnames(
           'flex',
@@ -47,7 +47,7 @@ export const Radio: RadioType = ({ title, legend, name, options, horizontal }) =
         ))}
       </div>
       <Error name={name} />
-    </div>
+    </fieldset>
   );
 };
 
