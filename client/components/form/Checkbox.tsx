@@ -45,12 +45,12 @@ interface CheckboxArrayProps {
 
 export const CheckboxArray: React.FC<CheckboxArrayProps> = ({ title, name, legend, options }) => {
   return (
-    <div className='flex flex-col w-full gap-2'>
-      <h3 className='text-bcBlack w-full font-bold'>{title}</h3>
-      <legend className='w-full text-gray-400 mb-2'>{legend}</legend>
+    <fieldset className='flex flex-col gap-2'>
+      <legend className='text-xl text-bcBlack font-bold w-full'>{title}</legend>
+      <p className='text-gray-400 mb-2 text-sm'>{legend}</p>
       {options.map(option => (
         <Checkbox key={option.value} name={name} value={option.value} label={option.label} />
       ))}
-    </div>
+    </fieldset>
   );
 };
