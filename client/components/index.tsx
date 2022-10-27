@@ -6,6 +6,7 @@ export * from './Link';
 export * from './Spinner';
 export * from './Stepper';
 export * from './PageTitle';
+export * from './CheckBoxExplain';
 // HOCs
 export * from './withAuth';
 
