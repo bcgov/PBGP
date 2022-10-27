@@ -7,10 +7,10 @@ import {
 import { EnvironmentalInfoInterface } from 'constants/interfaces';
 
 const initialValues = {
-    benefitsForEnvironment: '',
-    bestPracticesForDesign: '',
-    identifyRiskForEnvironment: '',
-    innovationForProjectEnvironment: '',
+  environmentalProjectDescription: '',
+  environmentalGoals: '',
+  projectStrategy: '',
+  successAssessment: '',
 };
 
 export const EnvironmentalConsiderations: React.FC = () => {
@@ -29,7 +29,7 @@ export const EnvironmentalConsiderations: React.FC = () => {
 
             <div className='flex flex-col w-full'>
               <Textarea
-                name='benefitsForEnvironment'
+                name='environmentalProjectDescription'
                 label='Outline the benefits of the project from an environmental and/or climate perspective.'
                 maxLength={225}
               />
@@ -37,7 +37,7 @@ export const EnvironmentalConsiderations: React.FC = () => {
 
             <div className='flex flex-col w-full'>
               <Textarea
-                name='bestPracticesForDesign'
+                name='environmentalGoals'
                 label='How are best practices from an environmental and/or climate perspective incorporated into the design and construction of this project?'
                 maxLength={225}
               />
@@ -45,7 +45,7 @@ export const EnvironmentalConsiderations: React.FC = () => {
 
             <div className='flex flex-col w-full'>
               <Textarea
-                name='identifyRiskForEnvironment'
+                name='projectStrategy'
                 label='Have any specific environmentally related risks been identified with this project and, if yes, what is your planning for addressed these risks?'
                 maxLength={225}
               />
@@ -53,7 +53,7 @@ export const EnvironmentalConsiderations: React.FC = () => {
 
             <div className='flex flex-col w-full'>
               <Textarea
-                name='innovationForProjectEnvironment'
+                name='successAssessment'
                 label='Is any type of innovation from an environmental and/or climate perspective being incorporated into this project?'
                 maxLength={225}
               />

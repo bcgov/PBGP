@@ -1,24 +1,39 @@
 import { Form, Formik, FormikProps } from 'formik';
 import {
   Radio,
-  CheckboxArray,
   Textarea,
+  CheckBoxExplain,
   FormStepTitles,
   FormSteps,
 } from '@components';
 import { FundingEligibilityInterface } from 'constants/interfaces';
 
 const initialValues = {
-    communityServed: '',
-    communityServedExplanation: '',
-    facilityHas: '',
-    projectAppliedFor: '',
-    additionalFunding: '',
-
+  indigenousCommunityServed: '',
+  indigenousCommunityServedExplanation: '',
+  revenueStream: '',
+  revenueStreamExplanation: '',
+  greenhouseReductionPlan: '',
+  greenhouseReductionPlanExplanation: '',
+  activeTransportationSupported: '',
+  activeTransportationSupportExplanation: '',
+  requiredForMedevac: '',
+  requiredForMedevacExplanation: '',
+  requiredForWildfireSuppression: '',
+  requiredForWildfireSuppressionExplanation: '',
+  requiredForEmergency: '',
+  requiredForEmergencyExplanation: '',
+  requiredForExtraordinaryEvent: '',
+  requiredForExtraordinaryEventExplanation: '',
+  requiredToCorrectNonCompliance: '',
+  requiredToCorrectNonComplianceExplanation: '',
+  requiredForClimateChange: '',
+  requiredForClimateChangeExplanation: '',
+  BCAAPFunding: '',
+  BCAAPFundingExplanation: '',
 };
 
 export const FundingEligibility: React.FC = () => {
-
   return (
     <Formik initialValues={initialValues} onSubmit={() => {}}>
       {({ values }: FormikProps<FundingEligibilityInterface>) => (
@@ -38,58 +53,92 @@ export const FundingEligibility: React.FC = () => {
               any, of the following apply, with a brief explanation for those that you so indicate:
             </p>
 
-            <div className='flex flex- w-full justify-start'>
-              <CheckboxArray
-                legend='The community served is:'
-                name='communityServed'
-                options={[{ label: 'Indigenous, isolated, rural or remote', value: 'Indigenous' }]}
+            <fieldset className='w-full gap-2'>
+              <legend className='text-xl text-bcBlack font-bold w-full'>
+                The community served is:
+              </legend>
+              <CheckBoxExplain
+                name='indigenousCommunityServed'
+                value={values.indigenousCommunityServed}
+                textvalue={values.indigenousCommunityServedExplanation}
+                label='Indigenous, isolated, rural or remote'
               />
-            </div>
+            </fieldset>
 
-            <div className='flex flex-col w-full px-8 py-4 bg-slate-200'>
-              <Textarea
-                name='communityServedExplanation'
-                label=''
-                description='Please explain:'
-                maxLength={225}
+            <fieldset className='w-full gap-2'>
+              <legend className='text-xl text-bcBlack font-bold w-full'>The facility has:</legend>
+              <CheckBoxExplain
+                name='revenueStream'
+                value={values.revenueStream}
+                textvalue={values.revenueStreamExplanation}
+                label='Limited revenue streams available'
               />
-            </div>
+              <CheckBoxExplain
+                name='greenhouseReductionPlan'
+                value={values.greenhouseReductionPlan}
+                textvalue={values.greenhouseReductionPlanExplanation}
+                label='A greenhouse gas reduction plan in place '
+              />
+              <CheckBoxExplain
+                name='activeTransportationSupported'
+                value={values.activeTransportationSupported}
+                textvalue={values.activeTransportationSupportExplanation}
+                label='Policies, procedures or infrastructure in place to '
+              />
+              <CheckBoxExplain
+                name='activeTransportationSupported'
+                value={values.activeTransportationSupported}
+                textvalue={values.activeTransportationSupportExplanation}
+                label='Support active transportation'
+              />
+            </fieldset>
 
-            <div className='flex flex- w-full justify-start'>
-              <CheckboxArray
-                legend='The facility has:'
-                name='facilityHas'
-                options={[
-                  { label: 'Limited revenue streams available', value: 'yes' },
-                  { label: 'A greenhouse gas reduction plan in place ', value: 'no' },
-                  { label: 'Policies, procedures or infrastructure in place to ', value: 'yes' },
-                  { label: 'Support active transportation', value: 'no' },
-                ]}
+            <fieldset className='w-full gap-2'>
+              <legend className='text-xl text-bcBlack font-bold w-full'>
+                The project being applied for is:
+              </legend>
+              <CheckBoxExplain
+                name='requiredForMedevac'
+                value={values.requiredForMedevac}
+                textvalue={values.requiredForMedevacExplanation}
+                label='Required for medevac operations'
               />
-            </div>
-
-            <div className='flex flex- w-full justify-start'>
-              <CheckboxArray
-                legend='The project being applied for is:'
-                name='projectAppliedFor'
-                options={[
-                  { label: 'Required for medevac operations', value: 'yes' },
-                  { label: 'Required for wildfire suppression operations', value: 'no' },
-                  { label: 'Needed for emergency response / preparedness', value: 'yes' },
-                  { label: 'Required due to an extraordinary event (e.g., flooding)', value: 'no' },
-                  {
-                    label: 'Required to correct a non-compliance with federal aviation regulations',
-                    value: 'yes',
-                  },
-                  { label: 'Required for climate change mitigation / adaptation', value: 'no' },
-                ]}
+              <CheckBoxExplain
+                name='requiredForWildfireSuppression'
+                value={values.requiredForWildfireSuppression}
+                textvalue={values.requiredForWildfireSuppressionExplanation}
+                label='Required for wildfire suppression operations'
               />
-            </div>
+              <CheckBoxExplain
+                name='requiredForEmergency'
+                value={values.requiredForEmergency}
+                textvalue={values.requiredForEmergencyExplanation}
+                label='Needed for emergency response / preparedness'
+              />
+              <CheckBoxExplain
+                name='requiredForExtraordinaryEvent'
+                value={values.requiredForExtraordinaryEvent}
+                textvalue={values.requiredForExtraordinaryEventExplanation}
+                label='Required due to an extraordinary event (e.g., flooding)'
+              />
+              <CheckBoxExplain
+                name='requiredToCorrectNonCompliance'
+                value={values.requiredToCorrectNonCompliance}
+                textvalue={values.requiredToCorrectNonComplianceExplanation}
+                label='Required to correct a non-compliance with federal aviation regulations'
+              />
+              <CheckBoxExplain
+                name='requiredForClimateChange'
+                value={values.requiredForClimateChange}
+                textvalue={values.requiredForClimateChangeExplanation}
+                label='Required for climate change mitigation / adaptation'
+              />
+            </fieldset>
 
             <div className='flex flex-1 w-full justify-start'>
               <Radio
                 legend='The percentage share of BCAAP funding available for your project may be increased by an additional 5% if you are a non-profit society registered in British Columbia for the purposes of operating this small facility and you are reliant on volunteer contributions to complete this project. Does this description apply to you?'
-                name='isOneApplication'
+                name='BCAAPFunding'
                 horizontal={true}
                 options={[
                   { label: 'Yes', value: 'yes' },
@@ -97,6 +146,17 @@ export const FundingEligibility: React.FC = () => {
                 ]}
               ></Radio>
             </div>
+            {values.BCAAPFunding == 'yes' && (
+              <div className='flex flex-col w-full px-8 py-4 bg-slate-200'>
+                <Textarea
+                  name={`BCAAPFundingExplanation`}
+                  value={values.BCAAPFundingExplanation}
+                  label=''
+                  description='Please explain:'
+                  maxLength={225}
+                />
+              </div>
+            )}
           </div>
         </Form>
       )}
