@@ -18,7 +18,7 @@ export const CheckBoxExplain: React.FC<CheckboxProps> = ({
 }) => {
   return (
     <>
-      <div className='flex flex- w-full justify-start'>
+      <div className='flex flex- w-full justify-start my-2'>
         <Checkbox name={name} value={value} label={label} />
       </div>
       {value && (
