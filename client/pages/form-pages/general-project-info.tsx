@@ -38,14 +38,8 @@ export const GeneralProjectInfo: React.FC = () => {
 
             <div className='flex flex-1 w-full justify-start'>
               <Radio
-                legend={
-                  <>
-                    <span className='mb-2 block'>What type of project is being applied for?</span>
-                    <span className='text-sm text-gray-500'>
-                      (Please read carefully and then select the one that best fits the project)
-                    </span>
-                  </>
-                }
+                title='What type of project is being applied for?'
+                legend='(Please read carefully and then select the one that best fits the project)'
                 name='projectType'
                 options={[
                   {

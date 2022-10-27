@@ -147,7 +147,7 @@ export const FundingEligibility: React.FC = () => {
               ></Radio>
             </div>
             {values.BCAAPFunding == 'yes' && (
-              <div className='flex flex-col w-full px-8 py-4 bg-slate-200'>
+              <div className='flex flex-col w-full p-4 bg-slate-200'>
                 <Textarea
                   name={`BCAAPFundingExplanation`}
                   value={values.BCAAPFundingExplanation}

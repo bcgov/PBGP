@@ -69,6 +69,7 @@ export const ContactInfo: React.FC = () => {
 
             <div className='flex flex-1 w-full justify-start'>
               <Radio
+                title=''
                 legend='Are you submitting more than one application to BCAAP?'
                 name='isOneApplication'
                 horizontal={true}

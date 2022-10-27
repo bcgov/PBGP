@@ -22,7 +22,7 @@ export const CheckBoxExplain: React.FC<CheckboxProps> = ({
         <Checkbox name={name} value={value} label={label} />
       </div>
       {value && (
-        <div className='flex flex-col w-full px-8 py-4 bg-slate-200'>
+        <div className='flex flex-col w-full p-4 bg-slate-200'>
           <Textarea
             name={`${name}Explanation`}
             value={textvalue}

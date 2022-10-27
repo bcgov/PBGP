@@ -1,4 +1,12 @@
-import { ContactInfo, GeneralProjectInfo, FundingEligibility, EnvironmentalConsiderations, FormSteps } from '@components';
+import {
+  ContactInfo,
+  GeneralProjectInfo,
+  FacilityInfo,
+  FundingEligibility,
+  EnvironmentalConsiderations,
+  FormSteps,
+} from '@components';
+
 interface FormContentProps {
   step: number;
   formTitle: string;
@@ -11,6 +19,8 @@ export const FormContent: React.FC<FormContentProps> = ({ step, formTitle }) => 
         return <ContactInfo />;
       case FormSteps.GENERAL_INFO:
         return <GeneralProjectInfo />;
+      case FormSteps.FACILITY_INFO:
+        return <FacilityInfo />;
       case FormSteps.FUNDING_ELIGIBILITY:
         return <FundingEligibility />;
       case FormSteps.ENVIRONMENTAL_CONSIDERATION:
