@@ -48,8 +48,19 @@ export interface FundingEligibilityInterface {
 }
 
 export interface EnvironmentalInfoInterface {
-    environmentalProjectDescription: string;
-    environmentalGoals: string;
-    projectStrategy: string;
-    successAssessment: string;
+  environmentalProjectDescription: string;
+  environmentalGoals: string;
+  projectStrategy: string;
+  successAssessment: string;
+}
+
+export interface FacilityInfoInterface {
+  facilityType: string;
+  status: string;
+  eligibleForACAP: string;
+  madeForACAP: string;
+  facilityUsage: string;
+  passengerVolumes: string;
+  cargoTonnes: string;
+  aircraftMovements: string;
 }

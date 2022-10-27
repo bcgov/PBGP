@@ -1,20 +1,23 @@
-import { Form, Formik } from 'formik';
-import { Button, Field, Radio, Select, Option, CheckboxArray, Textarea } from '@components';
+import { Form, Formik, FormikProps } from 'formik';
+import { Radio, CheckboxArray, Textarea } from '@components';
 import { FacilityType, FacilityUsage, StatusPerTransport } from '../../constants';
+import { FacilityInfoInterface } from 'constants/interfaces';
 
 const initialValues = {
   facilityType: '',
-  statusCanReg: '',
-  acapEligibilty: '',
-  acapApplication: '',
-  textAreaNoAppAcap: '',
+  status: '',
+  eligibleForACAP: '',
+  madeForACAP: '',
   facilityUsage: '',
+  passengerVolumes: '',
+  cargoTonnes: '',
+  aircraftMovements: '',
 };
 
 export const FacilityInfo: React.FC = () => {
   return (
     <Formik initialValues={initialValues} onSubmit={() => {}}>
-      {({ values }: any) => (
+      {({ values }: FormikProps<FacilityInfoInterface>) => (
         <Form className='flex justify-center'>
           <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center drop-shadow-sm'>
             <div className='mb-4 flex items-center flex-col'>
@@ -24,9 +27,9 @@ export const FacilityInfo: React.FC = () => {
 
             <div className='flex flex- w-full justify-start'>
               <CheckboxArray
-                title='Facility Type'
+                legend='Facility Type'
                 name='facilityType'
-                legend='Please select all that apply'
+                description='Please select all that apply'
                 options={FacilityType}
               />
             </div>
@@ -35,7 +38,7 @@ export const FacilityInfo: React.FC = () => {
               <Radio
                 title='Status per transport Canada regulations'
                 legend='Select one'
-                name='statusCanReg'
+                name='status'
                 horizontal={true}
                 options={StatusPerTransport}
               ></Radio>
@@ -44,7 +47,7 @@ export const FacilityInfo: React.FC = () => {
             <div className='flex flex-col w-full px-8 py-4 bg-slate-200'>
               <Radio
                 legend='Is the project eligible for the federal Airports Capital Assistance Program (ACAP)?'
-                name='acapEligibilty'
+                name='eligibleForACAP'
                 horizontal={true}
                 options={[
                   { label: 'Yes', value: 'yes' },
@@ -54,7 +57,7 @@ export const FacilityInfo: React.FC = () => {
 
               <Radio
                 legend='If “Yes”, has an application been made to ACAP?'
-                name='acapApplication'
+                name='madeForACAP'
                 horizontal={true}
                 options={[
                   { label: 'Yes', value: 'yes' },
@@ -72,9 +75,9 @@ export const FacilityInfo: React.FC = () => {
 
             <div className='flex flex- w-full justify-start'>
               <CheckboxArray
-                title='Facility Usage'
+                legend='Facility Usage'
                 name='facilityUsage'
-                legend='Select all that apply'
+                description='Select all that apply'
                 options={FacilityUsage}
               />
             </div>

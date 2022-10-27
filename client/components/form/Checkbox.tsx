@@ -1,7 +1,7 @@
 import { FastField } from 'formik';
 
 interface CheckboxProps {
-  name: string;
+  name: string | undefined;
   label: string;
   value?: string;
   handleChange?: any;
@@ -11,7 +11,7 @@ interface CheckboxProps {
 export interface CheckboxOptionType {
   label: string;
   value: string;
-  name: string;
+  name?: string;
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({ name, label, value, styles = '' }) => {
