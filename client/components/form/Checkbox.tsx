@@ -11,6 +11,7 @@ interface CheckboxProps {
 export interface CheckboxOptionType {
   label: string;
   value: string;
+  name: string;
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({ name, label, value, styles = '' }) => {
@@ -37,19 +38,19 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, label, value, styles =
 };
 
 interface CheckboxArrayProps {
-  title: string;
+  description?: string;
   name: string;
   legend: string;
   options: CheckboxOptionType[];
 }
 
-export const CheckboxArray: React.FC<CheckboxArrayProps> = ({ title, name, legend, options }) => {
+export const CheckboxArray: React.FC<CheckboxArrayProps> = ({ description, name, legend, options }) => {
   return (
     <fieldset className='flex flex-col gap-2'>
-      <legend className='text-xl text-bcBlack font-bold w-full'>{title}</legend>
-      <p className='text-gray-400 mb-2 text-sm'>{legend}</p>
+      <legend className='text-xl text-bcBlack font-bold w-full'>{legend}</legend>
+      <p className='text-gray-400 mb-2 text-sm'>{description}</p>
       {options.map(option => (
-        <Checkbox key={option.value} name={name} value={option.value} label={option.label} />
+        <Checkbox key={option.value} name={option.name} value={option.value} label={option.label} />
       ))}
     </fieldset>
   );
