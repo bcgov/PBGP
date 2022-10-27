@@ -1,5 +1,5 @@
 import { SUCCESS_RESPONSE } from '@/common/constants';
-import { SaveApplicationDto } from '@/common/dto/save-application.dto';
+import { SaveApplicationDto, UserDto } from '@/common/dto/save-application.dto';
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import { Application } from './application.entity';
@@ -8,6 +8,13 @@ import { ApplicationService } from './application.service';
 @Controller('applications')
 export class ApplicationController {
   constructor(private applicationService: ApplicationService) {}
+
+  @Get('/in-progress')
+  @ApiBody({ type: UserDto })
+  getInProgressApplication(@Body() userId: string) {
+    // For now there can be only one, like the Highlander.
+    return this.applicationService.getInProgressApplication(userId);
+  }
 
   @Get('/:applicationId')
   getApplication(@Param('applicationId') applicationId: string) {

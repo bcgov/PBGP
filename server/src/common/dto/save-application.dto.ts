@@ -21,3 +21,7 @@ export declare class SaveApplicationDto {
   supportAndAuthorization: SupportAndAuthorization;
   isSubmitted: boolean;
 }
+
+export declare class UserDto {
+  userId: string;
+}

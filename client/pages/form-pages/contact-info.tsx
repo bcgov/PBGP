@@ -1,7 +1,8 @@
 import { Form, Formik, FormikProps } from 'formik';
 import { Field, Radio, Select, Option, FormStepTitles, FormSteps } from '@components';
 import { ContactInfoInterface } from 'constants/interfaces';
-import { getUserId } from '@contexts';
+// import { getUserId, useAuthContext } from '@contexts';
+// import { useEffect } from 'react';
 
 const initialValues = {
   facilityName: '',
@@ -23,6 +24,12 @@ export const ContactInfo: React.FC = () => {
   ];
 
   // console.log(getUserId());
+  // console.log(useAuthContext().keycloak);
+
+  // // Preload data
+  // useEffect(() => {
+
+  // }, []);
 
   return (
     <Formik initialValues={initialValues} onSubmit={() => {}}>
