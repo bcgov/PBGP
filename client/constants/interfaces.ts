@@ -21,3 +21,18 @@ export interface GeneralInfoInterface {
   projectScope: string;
   projectRationale: string;
 }
+
+export interface FundingEligibilityInterface {
+  communityServed: string;
+  communityServedExplanation: string;
+  facilityHas: string;
+  projectAppliedFor: string;
+  additionalFunding: string;
+}
+
+export interface EnvironmentalInfoInterface {
+    benefitsForEnvironment: string;
+    bestPracticesForDesign: string;
+    identifyRiskForEnvironment: string;
+    innovationForProjectEnvironment: string;
+}
