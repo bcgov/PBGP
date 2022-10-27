@@ -30,4 +30,6 @@ function useAuthContext() {
   return context;
 }
 
-export { AuthProvider, useAuthContext };
+const getUserId = () => useAuthContext().keycloak?.idTokenParsed?.sub;
+
+export { AuthProvider, useAuthContext, getUserId };

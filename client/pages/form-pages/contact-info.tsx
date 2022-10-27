@@ -1,6 +1,7 @@
 import { Form, Formik, FormikProps } from 'formik';
 import { Field, Radio, Select, Option, FormStepTitles, FormSteps } from '@components';
 import { ContactInfoInterface } from 'constants/interfaces';
+import { getUserId } from '@contexts';
 
 const initialValues = {
   facilityName: '',
@@ -20,6 +21,8 @@ export const ContactInfo: React.FC = () => {
     { value: 'third', text: '3rd' },
     { value: 'fourth', text: '4th' },
   ];
+
+  // console.log(getUserId());
 
   return (
     <Formik initialValues={initialValues} onSubmit={() => {}}>
