@@ -2,7 +2,8 @@ import { Form, Formik, FormikProps } from 'formik';
 import { Field, Radio, Select, Option, FormStepTitles, FormSteps } from '@components';
 import { ContactInfoInterface } from 'constants/interfaces';
 import { getUserId, useAuthContext } from '@contexts';
-// import { useEffect } from 'react';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 const initialValues = {
   facilityName: '',
@@ -22,14 +23,28 @@ export const ContactInfo: React.FC = () => {
     { value: 'third', text: '3rd' },
     { value: 'fourth', text: '4th' },
   ];
+  const userId = getUserId();
+  const keycloak = useAuthContext().keycloak;
 
-  console.log(getUserId());
-  console.log(useAuthContext().keycloak);
+  // Preload data
+  useEffect(() => {
+    (async () => {
+      const data = { userId: userId };
 
-  // // Preload data
-  // useEffect(() => {
+      const options = {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded',
+          Authorization: `Bearer ${keycloak?.idToken}`,
+        },
+        data,
+        url: 'http://localhost:8080/api/v1/applications/in-progress',
+      };
 
-  // }, []);
+      const response = await axios(options); // wrap in async function
+      console.log(response);
+    })();
+  }, []);
 
   return (
     <Formik initialValues={initialValues} onSubmit={() => {}}>
