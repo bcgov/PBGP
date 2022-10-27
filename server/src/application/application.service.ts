@@ -22,11 +22,11 @@ export class ApplicationService {
   }
 
   async getInProgressApplication(userId): Promise<Application> {
-    const application = this.applicationRepository.findOne({ where: { user: userId } });
-    if (application && !(await application).isSubmitted) {
-      return application;
-    }
-    return this.createApplication();
+    const application = await this.applicationRepository.findOne({
+      where: { user: userId, isSubmitted: false },
+    });
+
+    return application ? application : this.createApplication();
   }
 
   async createApplication(): Promise<Application> {
