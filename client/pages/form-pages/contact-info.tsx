@@ -101,8 +101,9 @@ export const ContactInfo: React.FC = () => {
 
   const [initialValues, setInitialValues] = useState(initialValuesInit);
   const { updateProceedToNext } = useFormContext();
+  const [applicationId, setApplicationId] = useState('');
 
-  // Move all this to useContactInfo
+  // Move all this to useContactInfo or a component above when we get an application context/management page
   // ------------------------------------
   useEffect(() => {
     const getData = async () => {
@@ -119,15 +120,37 @@ export const ContactInfo: React.FC = () => {
       };
 
       const response = await axios(options);
+      setApplicationId(response.data.id);
       setInitialValues(response.data.contactInfo);
+      console.log(keycloak);
     };
     getData();
   }, []);
-  const handleSubmit = () => {
-    // Patch goes here
+
+  const handleSubmit = (values: any) => {
+    const patch = async () => {
+      // Move it to its own file later
+      // ------------------------------------
+      console.log(applicationId);
+      const data = { contactInfo: values };
+      const url = `http://localhost:8080/api/v1/applications/${applicationId}`;
+      console.log(data);
+      const options = {
+        method: 'PATCH',
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded',
+          Authorization: `Bearer ${keycloak?.idToken}`,
+        },
+        data,
+        url,
+      };
+
+      const response = await axios(options);
+      // ------------------------------------
+    };
+    patch();
     updateProceedToNext();
   };
-  //
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize={true}>
