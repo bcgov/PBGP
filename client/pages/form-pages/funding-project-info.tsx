@@ -22,7 +22,7 @@ export const FundingProjectCostInfo: React.FC = () => {
               <h1 className='text-xl font-medium text-bcBluePrimary'>
                 {FormStepTitles[FormSteps.FUNDING_INFO]}
               </h1>
-              <h3>Please proivde detailed information for your application.</h3>
+              <h3>Please provide detailed information for your application.</h3>
             </div>
 
             <div className='flex flex-1 w-full justify-start'>
