@@ -28,9 +28,35 @@ const Dashboard: NextPage = () => {
       <Stepper steps={PlanningSteps} currentStep={currentStep} />
       <FormContent step={currentStep} formTitle={Object.keys(FormSteps)[currentStep - 1]} />
 
-      <div className='flex-1 flex flex-col min-h-0'>
-        <div className='flex justify-center'>
+      <div className='flex justify-center'>
+        <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center'>
+          <div className=''>
+            <Button variant='outline'>Cancel</Button>
+
+            <Button
+              variant='outline'
+              type='button'
+              disabled={isFirstStep}
+              onClick={() => handleClick('')}
+            >
+              Back
+            </Button>
+            <Button
+              variant='primary'
+              type='button'
+              disabled={currentStep >= PlanningSteps.length}
+              onClick={() => handleClick('next')}
+            >
+              Continue
+            </Button>
+            </div>
+        </div>
+        </div>
+      {/* <div className='flex-1 flex flex-col min-h-0'>
+        <div className='flex items-start'>
           <Button variant='outline'>Cancel</Button>
+          </div>
+          <div className='flex items-end'>
           <Button
             variant='outline'
             type='button'
@@ -48,7 +74,7 @@ const Dashboard: NextPage = () => {
             Continue
           </Button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

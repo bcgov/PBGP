@@ -19,7 +19,7 @@ export const FacilityInfo: React.FC = () => {
     <Formik initialValues={initialValues} onSubmit={() => {}}>
       {({ values }: FormikProps<FacilityInfoInterface>) => (
         <Form className='flex justify-center'>
-          <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center drop-shadow-sm'>
+          <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center'>
             <div className='mb-4 flex items-center flex-col'>
               <h1 className='text-xl font-medium text-bcDarkBlue'>Facility Information</h1>
               <h3 className=''>Provide detail contact information for your application.</h3>
@@ -30,6 +30,7 @@ export const FacilityInfo: React.FC = () => {
                 legend='Facility Type'
                 name='facilityType'
                 description='Please select all that apply'
+                classes='grid-cols-2 gap-1'
                 options={FacilityType}
               />
             </div>
@@ -78,6 +79,7 @@ export const FacilityInfo: React.FC = () => {
                 legend='Facility Usage'
                 name='facilityUsage'
                 description='Select all that apply'
+                classes='grid-cols-2 gap-1'
                 options={FacilityUsage}
               />
             </div>

@@ -4,6 +4,7 @@ import {
   FacilityInfo,
   FundingEligibility,
   EnvironmentalConsiderations,
+  FundingProjectCostInfo,
   FormSteps,
 } from '@components';
 
@@ -25,6 +26,8 @@ export const FormContent: React.FC<FormContentProps> = ({ step, formTitle }) => 
         return <FundingEligibility />;
       case FormSteps.ENVIRONMENTAL_CONSIDERATION:
         return <EnvironmentalConsiderations />;
+      case FormSteps.FUNDING_INFO:
+        return <FundingProjectCostInfo />;
       default:
         return formTitle;
     }

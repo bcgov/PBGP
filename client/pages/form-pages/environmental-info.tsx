@@ -19,7 +19,7 @@ export const EnvironmentalConsiderations: React.FC = () => {
     <Formik initialValues={initialValues} onSubmit={() => {}}>
       {({ values }: FormikProps<EnvironmentalInfoInterface>) => (
         <Form className='flex justify-center'>
-          <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center drop-shadow-sm'>
+          <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center'>
             <div className='mb-4 flex items-center flex-col'>
               <h1 className='text-xl font-medium text-bcBluePrimary'>
                 {FormStepTitles[FormSteps.ENVIRONMENTAL_CONSIDERATION]}
