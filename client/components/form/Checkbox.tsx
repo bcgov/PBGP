@@ -45,14 +45,25 @@ interface CheckboxArrayProps {
   options: CheckboxOptionType[];
 }
 
-export const CheckboxArray: React.FC<CheckboxArrayProps> = ({ description, name, legend, options, classes }) => {
+export const CheckboxArray: React.FC<CheckboxArrayProps> = ({
+  description,
+  name,
+  legend,
+  options,
+  classes,
+}) => {
   return (
     <fieldset className='flex flex-col gap-2 w-full'>
       <legend className='text-xl text-bcBlack font-bold w-full'>{legend}</legend>
       <p className='text-gray-400 mb-2 text-sm'>{description}</p>
       <div className={`grid ${classes}}`}>
-        {options.map(option => (
-            <Checkbox key={option.value} name={option.name} value={option.value} label={option.label} />
+        {options.map((option) => (
+          <Checkbox
+            key={option.value}
+            name={option.name}
+            value={option.value}
+            label={option.label}
+          />
         ))}
       </div>
     </fieldset>

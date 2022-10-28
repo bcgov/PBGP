@@ -1,11 +1,5 @@
 import { Form, Formik, FormikProps } from 'formik';
-import {
-  Radio,
-  Textarea,
-  CheckBoxExplain,
-  FormStepTitles,
-  FormSteps,
-} from '@components';
+import { Radio, Textarea, CheckBoxExplain, FormStepTitles, FormSteps } from '@components';
 import { FundingEligibilityInterface } from 'constants/interfaces';
 
 const initialValues = {

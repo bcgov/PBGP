@@ -13,7 +13,6 @@ const initialValues = {
 };
 
 export const FundingProjectCostInfo: React.FC = () => {
-  
   return (
     <Formik initialValues={initialValues} onSubmit={() => {}}>
       {({ values }: FormikProps<FundingProjectCostInfoInterface>) => (
