@@ -2,10 +2,10 @@ import { Form, Formik, FormikProps } from 'formik';
 import { Field, Radio, Select, Option, FormStepTitles, FormSteps } from '@components';
 import { ContactInfoInterface } from 'constants/interfaces';
 import { getUserId, useAuthContext } from '@contexts';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const initialValues = {
+const initialValuesInit = {
   facilityName: '',
   applicantName: '',
   primaryContactName: '',
@@ -26,9 +26,12 @@ export const ContactInfo: React.FC = () => {
   const userId = getUserId();
   const keycloak = useAuthContext().keycloak;
 
-  // Preload data
+  const [initialValues, setInitialValues] = useState(initialValuesInit);
+
+  // Move all this to useContactInfo
+  // ------------------------------------
   useEffect(() => {
-    (async () => {
+    const getData = async () => {
       const data = { userId: userId };
 
       const options = {
@@ -41,13 +44,19 @@ export const ContactInfo: React.FC = () => {
         url: 'http://localhost:8080/api/v1/applications/in-progress',
       };
 
-      const response = await axios(options); // wrap in async function
-      console.log(response);
-    })();
+      const response = await axios(options);
+      setInitialValues(response.data.contactInfo);
+    };
+    getData();
   }, []);
+  const handleSubmit = () => {
+    // Patch goes here
+    console.log('Test');
+  };
+  //
 
   return (
-    <Formik initialValues={initialValues} onSubmit={() => {}}>
+    <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize={true}>
       {({ values }: FormikProps<ContactInfoInterface>) => (
         <Form className='flex justify-center'>
           <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center'>
@@ -108,7 +117,7 @@ export const ContactInfo: React.FC = () => {
             <Select
               label='What is the relative priority of this application to the other(s)?'
               name='priority'
-              disabled={values.isOneApplication === 'yes' ? false : true}
+              disabled={values?.isOneApplication === 'yes' ? false : true}
             >
               {dropdownOptions.map((option, index) => (
                 <Option
