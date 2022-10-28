@@ -22,7 +22,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, label, value, styles =
 
   const identifier = value ?? name;
   return (
-    <div className='flex'>
+    <div className='flex mb-2'>
       <FastField
         name={name}
         id={identifier}
@@ -41,17 +41,31 @@ interface CheckboxArrayProps {
   description?: string;
   name: string;
   legend: string;
+  classes?: string;
   options: CheckboxOptionType[];
 }
 
-export const CheckboxArray: React.FC<CheckboxArrayProps> = ({ description, name, legend, options }) => {
+export const CheckboxArray: React.FC<CheckboxArrayProps> = ({
+  description,
+  name,
+  legend,
+  options,
+  classes,
+}) => {
   return (
-    <fieldset className='flex flex-col gap-2'>
+    <fieldset className='flex flex-col gap-2 w-full'>
       <legend className='text-xl text-bcBlack font-bold w-full'>{legend}</legend>
       <p className='text-gray-400 mb-2 text-sm'>{description}</p>
-      {options.map(option => (
-        <Checkbox key={option.value} name={option.name} value={option.value} label={option.label} />
-      ))}
+      <div className={`grid ${classes}}`}>
+        {options.map((option) => (
+          <Checkbox
+            key={option.value}
+            name={option.name}
+            value={option.value}
+            label={option.label}
+          />
+        ))}
+      </div>
     </fieldset>
   );
 };

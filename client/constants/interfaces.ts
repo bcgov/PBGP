@@ -64,3 +64,13 @@ export interface FacilityInfoInterface {
   cargoTonnes: string;
   aircraftMovements: string;
 }
+
+export interface FundingProjectCostInfoInterface {
+  contingencyPlan: string;
+  contingencyPlanExplanation: string;
+  totalEstimatedCost: string;
+  potentialBCAAPShare: string;
+  thirdPartyContributions: string;
+  applicantShare: string;
+  totalRequest: string;
+}
