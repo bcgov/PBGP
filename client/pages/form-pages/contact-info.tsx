@@ -138,7 +138,7 @@ export const ContactInfo: React.FC = () => {
       const options = {
         method: 'PATCH',
         headers: {
-          'content-type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${keycloak?.idToken}`,
         },
         data,
