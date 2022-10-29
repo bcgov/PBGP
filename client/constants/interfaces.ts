@@ -74,3 +74,8 @@ export interface FundingProjectCostInfoInterface {
   applicantShare: string;
   totalRequest: string;
 }
+
+export interface AuthorizationInterface {
+  projectManagerSignature: string;
+  financialOfficerSignature: string;
+}
