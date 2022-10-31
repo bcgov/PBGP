@@ -5,8 +5,9 @@ import dynamic from 'next/dynamic';
 import { PlanningSteps } from '@components';
 import { FormContent } from '../components/forms';
 import { PageTitle } from 'components/PageTitle';
-import { useFormContext } from 'contexts/useFormContext';
+import { useFormContext } from 'components/services/useFormContext';
 
+useFormContext;
 const Dashboard: NextPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const {

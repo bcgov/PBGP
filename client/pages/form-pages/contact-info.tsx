@@ -1,22 +1,8 @@
-import { Form, Formik, FormikFormProps, FormikProps } from 'formik';
+import { Form, Formik, FormikProps } from 'formik';
 import { Field, Radio, Select, Option, FormStepTitles, FormSteps } from '@components';
 import { ContactInfoInterface } from 'constants/interfaces';
-import { getUserId, useAuthContext } from '@contexts';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useFormContext } from 'contexts/useFormContext';
-import { useFormContent } from 'contexts/useFormContent';
-
-const initialValuesInit = {
-  facilityName: '',
-  applicantName: '',
-  primaryContactName: '',
-  phoneNumber: '',
-  mailingAddress: '',
-  mailingAddressPostalCode: '',
-  isOneApplication: '',
-  priority: '',
-};
+import { useFormContent } from 'components/services/useFormContent';
+import { useContactInfo } from 'components/services/useContactInfo';
 
 export const ContactInfoForm = ({ values }: any) => {
   useFormContent();
@@ -96,61 +82,7 @@ export const ContactInfoForm = ({ values }: any) => {
 };
 
 export const ContactInfo: React.FC = () => {
-  const userId = getUserId();
-  const keycloak = useAuthContext().keycloak;
-
-  const [initialValues, setInitialValues] = useState(initialValuesInit);
-  const { updateProceedToNext } = useFormContext();
-  const [applicationId, setApplicationId] = useState('');
-
-  // Move all this to useContactInfo or a component above when we get an application context/management page
-  // ------------------------------------
-  useEffect(() => {
-    const getData = async () => {
-      const data = { userId: userId };
-
-      const options = {
-        method: 'GET',
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded',
-          Authorization: `Bearer ${keycloak?.idToken}`,
-        },
-        data,
-        url: 'http://localhost:8080/api/v1/applications/in-progress',
-      };
-
-      const response = await axios(options);
-      setApplicationId(response.data.id);
-      setInitialValues(response.data.contactInfo);
-      console.log(keycloak);
-    };
-    getData();
-  }, []);
-
-  const handleSubmit = (values: any) => {
-    const patch = async () => {
-      // Move it to its own file later
-      // ------------------------------------
-      console.log(applicationId);
-      const data = { contactInfo: values };
-      const url = `http://localhost:8080/api/v1/applications/${applicationId}`;
-      console.log(data);
-      const options = {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${keycloak?.idToken}`,
-        },
-        data,
-        url,
-      };
-
-      const response = await axios(options);
-      // ------------------------------------
-    };
-    patch();
-    updateProceedToNext();
-  };
+  const { initialValues, handleSubmit } = useContactInfo();
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize={true}>

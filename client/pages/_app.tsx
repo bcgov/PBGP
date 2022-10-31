@@ -9,7 +9,7 @@ import { AuthProvider } from '@contexts';
 import { keycloakConfig } from '@constants';
 import { StrictMode, useState } from 'react';
 import axios from 'axios';
-import { FormProvider } from 'components/form/FormContext';
+import { FormProvider } from '@components';
 
 interface AppProps extends NextAppProps {
   cookies: unknown;
