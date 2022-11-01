@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import { withAuth, Stepper, Button, FormSteps } from '@components';
+import { withAuth, Stepper, Button, FormSteps, getUserId, useAuthContext } from '@components';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { PlanningSteps } from '@components';
 import { FormContent } from '../components/forms';
 import { PageTitle } from 'components/PageTitle';
 import { useFormContext } from 'components/services/useFormContext';
+import { ApplicationContext } from 'contexts/Application.Context';
+import axios from 'axios';
 
 useFormContext;
 const Dashboard: NextPage = () => {
@@ -14,6 +16,33 @@ const Dashboard: NextPage = () => {
     state: { canProceedToNext },
     updateNextTriggered,
   } = useFormContext();
+
+  // Set ApplicationID Context
+  const [applicationId, setApplicationId] = useState('');
+
+  const userId = getUserId();
+  const keycloak = useAuthContext().keycloak;
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = { userId: userId };
+
+      const options = {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded',
+          Authorization: `Bearer ${keycloak?.idToken}`,
+        },
+        data,
+        url: 'http://localhost:8080/api/v1/applications/in-progress',
+      };
+
+      const response = await axios(options);
+      setApplicationId(response.data.id);
+    };
+    getData();
+  }, []);
+  // ------------
 
   const isFirstStep = currentStep === 1;
 
@@ -34,31 +63,32 @@ const Dashboard: NextPage = () => {
   }, [canProceedToNext]);
 
   return (
-    <div className='flex flex-col w-full px-10 py-5 bg-white'>
-      <PageTitle
-        title={`BC Air Access Program Application`}
-        description={`Learn more about eligibility, prepare documents and deadline of the program, please click here`}
-      />
-      <Stepper steps={PlanningSteps} currentStep={currentStep} />
-      <FormContent step={currentStep} formTitle={Object.keys(FormSteps)[currentStep - 1]} />
-
-      <div className='flex-1 flex flex-col min-h-0'>
-        <div className='flex justify-center'>
-          <Button variant='outline'>Cancel</Button>
-          <Button variant='outline' type='button' disabled={isFirstStep} onClick={handleBack}>
-            Back
-          </Button>
-          <Button
-            variant='primary'
-            type='button'
-            disabled={currentStep >= PlanningSteps.length}
-            onClick={handleContinue}
-          >
-            Continue
-          </Button>
+    <ApplicationContext.Provider value={{ applicationId, setApplicationId }}>
+      <div className='flex flex-col w-full px-10 py-5 bg-white'>
+        <PageTitle
+          title={`BC Air Access Program Application`}
+          description={`Learn more about eligibility, prepare documents and deadline of the program, please click here`}
+        />
+        <Stepper steps={PlanningSteps} currentStep={currentStep} />
+        <FormContent step={currentStep} formTitle={Object.keys(FormSteps)[currentStep - 1]} />
+        <div className='flex-1 flex flex-col min-h-0'>
+          <div className='flex justify-center'>
+            <Button variant='outline'>Cancel</Button>
+            <Button variant='outline' type='button' disabled={isFirstStep} onClick={handleBack}>
+              Back
+            </Button>
+            <Button
+              variant='primary'
+              type='button'
+              disabled={currentStep >= PlanningSteps.length}
+              onClick={handleContinue}
+            >
+              Continue
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </ApplicationContext.Provider>
   );
 };
 

@@ -1,3 +1,5 @@
+import { REQUEST_METHOD } from './request-methods';
+
 export interface ContactInfoInterface {
   facilityName: string;
   applicantName: string;
@@ -73,4 +75,11 @@ export interface FundingProjectCostInfoInterface {
   thirdPartyContributions: string;
   applicantShare: string;
   totalRequest: string;
+}
+
+export interface AxiosPublicInterface {
+  method: REQUEST_METHOD;
+  endpoint: any;
+  token: any;
+  data: any;
 }
