@@ -27,7 +27,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, description, onCh
 
       {files && (
         <div className='flex flex-row rounded-md mb-2 w-full py-2 px-4 bg-gray-300'>
-          <div className='basis-3/4'>{files}</div>
+          <div aria-label={`Uploaded file ${files}`} className='basis-3/4'>{files}</div>
           <div className='basis-1/4'>
             <FontAwesomeIcon icon={faXmark} className='h-6 text-gray-800' />
           </div>
@@ -48,7 +48,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, description, onCh
           </span>
           <span className='text-blue-600 underline'>browse from your device</span>
         </span>
-        <input {...getInputProps({onChange})}  />
+        <input aria-label="browse from your device" {...getInputProps({onChange})}  />
       </label>
     </div>
   );
