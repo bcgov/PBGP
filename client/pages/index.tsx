@@ -5,17 +5,16 @@ import dynamic from 'next/dynamic';
 import { PlanningSteps } from '@components';
 import { FormContent } from '../components/forms';
 import { PageTitle } from 'components/PageTitle';
-import { useFormContext } from 'components/services/useFormContext';
+import { useGrantApplication } from 'components/services/useGrantApplicationContext';
 import { ApplicationContext } from 'contexts/Application.Context';
 import axios from 'axios';
 
-useFormContext;
 const Dashboard: NextPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const {
     state: { canProceedToNext },
     updateNextTriggered,
-  } = useFormContext();
+  } = useGrantApplication();
 
   // Set ApplicationID Context
   const [applicationId, setApplicationId] = useState('');

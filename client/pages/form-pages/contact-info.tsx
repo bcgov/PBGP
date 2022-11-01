@@ -69,11 +69,7 @@ export const ContactInfoForm = ({ values }: any) => {
           disabled={values?.isOneApplication === 'yes' ? false : true}
         >
           {dropdownOptions.map((option, index) => (
-            <Option
-              label={option.text}
-              value={option.value}
-              selected={index === 0 ? true : false}
-            ></Option>
+            <Option key={index} label={option.text} value={option.value}></Option>
           ))}
         </Select>
       </div>

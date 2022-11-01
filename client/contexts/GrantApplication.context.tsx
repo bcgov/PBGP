@@ -1,17 +1,17 @@
 import { createContext, useReducer } from 'react';
 
-export interface FormContextStateProps {
+export interface GrantApplicationStateProps {
   isNextTriggered: boolean;
   canProceedToNext: boolean;
 }
 
-const initialState: FormContextStateProps = {
+const initialState: GrantApplicationStateProps = {
   isNextTriggered: false,
   canProceedToNext: false,
 };
 
 export type PlanningContextType = {
-  state: FormContextStateProps;
+  state: GrantApplicationStateProps;
   updateNextTriggered: () => void;
   updateProceedToNext: () => void;
 };
@@ -21,7 +21,7 @@ const enum FormActions {
   PROCEED_TO_NEXT = 'PROCEED_TO_NEXT',
 }
 
-function reducer(state: any, action: any): FormContextStateProps {
+function reducer(state: any, action: any): GrantApplicationStateProps {
   switch (action.type) {
     case FormActions.NEXT_TRIGGERED:
       return {
@@ -42,13 +42,13 @@ function reducer(state: any, action: any): FormContextStateProps {
   }
 }
 
-export interface FormContextType {
-  state: FormContextStateProps;
+export interface GrantApplicationType {
+  state: GrantApplicationStateProps;
   updateNextTriggered: () => void;
   updateProceedToNext: () => void;
 }
 
-export const FormContext = createContext<FormContextType | null>(null);
+export const GrantApplication = createContext<GrantApplicationType | null>(null);
 
 export const FormProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -57,7 +57,7 @@ export const FormProvider = ({ children }: any) => {
   const updateProceedToNext = () => dispatch({ type: FormActions.PROCEED_TO_NEXT });
 
   return (
-    <FormContext.Provider
+    <GrantApplication.Provider
       value={{
         state,
         updateNextTriggered,
@@ -65,6 +65,6 @@ export const FormProvider = ({ children }: any) => {
       }}
     >
       {children}
-    </FormContext.Provider>
+    </GrantApplication.Provider>
   );
 };

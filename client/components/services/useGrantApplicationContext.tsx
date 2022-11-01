@@ -1,10 +1,10 @@
 import { useContext } from 'react';
-import { FormContext, FormContextType } from '../../contexts/Form.context';
+import { GrantApplication, GrantApplicationType } from '../../contexts/GrantApplication.context';
 
-export const useFormContext = () => {
+export const useGrantApplication = () => {
   const { state, updateNextTriggered, updateProceedToNext } = useContext(
-    FormContext
-  ) as FormContextType;
+    GrantApplication
+  ) as GrantApplicationType;
 
   return {
     updateNextTriggered: () => updateNextTriggered(),

@@ -1,12 +1,12 @@
 import { useFormikContext } from 'formik';
 import { useEffect } from 'react';
-import { useFormContext } from './useFormContext';
+import { useGrantApplication } from './useGrantApplicationContext';
 
 export const useFormContent = () => {
   const { isSubmitting, submitForm, setSubmitting } = useFormikContext();
   const {
     state: { isNextTriggered },
-  } = useFormContext();
+  } = useGrantApplication();
 
   useEffect(() => {
     (async () => {
