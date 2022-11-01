@@ -4,12 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 export interface FileUploadProps {
-  onClick?: () => void;
+  onChange?: (...event: any[]) => void;
   title: string;
   description: string;
 }
 
-export const FileUpload: React.FC<FileUploadProps> = ({ title, description }) => {
+export const FileUpload: React.FC<FileUploadProps> = ({ title, description, onChange, ...rest }) => {
   const onDrop = useCallback((acceptedFiles: any) => {
     // Do something with the files
   }, []);
@@ -20,7 +20,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, description }) =>
       return <span key={file.name}>{file.name}</span>;
     });
 
-  return (
+    return (
     <div className='w-full mb-2'>
       <h3 className='text-xl text-bcBlack font-bold w-full'>{title}</h3>
       <p className='text-gray-400 mb-2 text-sm'>{description}</p>
@@ -49,7 +49,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, description }) =>
           </span>
           <span className='text-blue-600 underline'>browse from your device</span>
         </span>
-        <input {...getInputProps()} />
+        <input {...getInputProps({onChange})}  />
       </label>
     </div>
   );

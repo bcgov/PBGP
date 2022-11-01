@@ -74,3 +74,7 @@ export interface FundingProjectCostInfoInterface {
   applicantShare: string;
   totalRequest: string;
 }
+
+export interface SupportDocsInterface {
+  docList: any[string],
+}
