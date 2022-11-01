@@ -1,46 +1,18 @@
-import { getUserId, useAuthContext } from '@contexts';
-import axios from 'axios';
+import { useAuthContext } from '@contexts';
 import { useFormContext } from './useFormContext';
-import { useState, useEffect, useContext } from 'react';
-import { ApplicationContext, ApplicationContextType } from 'contexts/Application.Context';
+import { useState, useEffect } from 'react';
 import { API_ENDPOINT, AxiosPublic, REQUEST_METHOD } from 'constants/request-methods';
-
-const initialValuesInit = {
-  facilityName: '',
-  applicantName: '',
-  primaryContactName: '',
-  phoneNumber: '',
-  mailingAddress: '',
-  mailingAddressPostalCode: '',
-  isOneApplication: '',
-  priority: '',
-};
+import { useApplicationContext } from './useApplicationContext';
 
 export const useContactInfo = () => {
-  const userId = getUserId();
   const keycloak = useAuthContext().keycloak;
-
-  const [initialValues, setInitialValues] = useState(initialValuesInit);
+  const ApplicationContext = useApplicationContext();
+  const [initialValues, setInitialValues] = useState(ApplicationContext.initialValues.contactInfo);
   const { updateProceedToNext } = useFormContext();
-  const { applicationId } = useContext(ApplicationContext) as ApplicationContextType;
 
   useEffect(() => {
-    const getData = async () => {
-      if (!applicationId) return;
-      const data = { userId: userId };
-
-      const options = {
-        method: REQUEST_METHOD.GET,
-        token: keycloak?.idToken,
-        data,
-        endpoint: API_ENDPOINT.applicationId(applicationId),
-      };
-
-      const response = await AxiosPublic(options);
-      setInitialValues(response.data.contactInfo);
-    };
-    getData();
-  }, [applicationId]);
+    setInitialValues(ApplicationContext.initialValues.contactInfo);
+  }, [ApplicationContext.initialValues.contactInfo]);
 
   const handleSubmit = (values: any) => {
     const patch = async () => {
@@ -50,10 +22,10 @@ export const useContactInfo = () => {
         method: REQUEST_METHOD.PATCH,
         token: keycloak?.idToken,
         data,
-        endpoint: API_ENDPOINT.applicationId(applicationId),
+        endpoint: API_ENDPOINT.applicationId(ApplicationContext.applicationId),
       };
 
-      const response = await AxiosPublic(options);
+      await AxiosPublic(options);
     };
     patch();
     updateProceedToNext();

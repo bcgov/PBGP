@@ -4,14 +4,16 @@ import { ApplicationContext, ApplicationContextType } from 'contexts/Application
 import { useContext, useEffect, useState } from 'react';
 
 const initialValuesInit = {
-  facilityName: '',
-  applicantName: '',
-  primaryContactName: '',
-  phoneNumber: '',
-  mailingAddress: '',
-  mailingAddressPostalCode: '',
-  isOneApplication: '',
-  priority: '',
+  contactInfo: {
+    facilityName: '',
+    applicantName: '',
+    primaryContactName: '',
+    phoneNumber: '',
+    mailingAddress: '',
+    mailingAddressPostalCode: '',
+    isOneApplication: '',
+    priority: '',
+  },
 };
 
 export const useApplicationContext = () => {
@@ -38,5 +40,5 @@ export const useApplicationContext = () => {
     getData();
   }, [applicationId]);
 
-  return { initialValues, setInitialValues };
+  return { applicationId, initialValues, setInitialValues };
 };
