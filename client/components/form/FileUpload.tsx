@@ -9,7 +9,7 @@ export interface FileUploadProps {
   description: string;
 }
 
-export const FileUpload: React.FC<FileUploadProps> = ({ title, description, onChange, ...rest }) => {
+export const FileUpload: React.FC<FileUploadProps> = ({ title, description, onChange }) => {
   const onDrop = useCallback((acceptedFiles: any) => {
     // Do something with the files
   }, []);
@@ -41,8 +41,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, description, onCh
         <span className='flex flex-col items-center space-x-2'>
           <FontAwesomeIcon
             icon={faCloudArrowUp}
-            style={{ fontSize: '30rem' }}
-            className='text-bcBluePrimary'
+            className='text-bcBluePrimary h-12'
           />
           <span className='font-medium text-gray-600'>
             {isDragActive ? 'Drop the files here ...' : 'Drop your file here, or'}
