@@ -21,7 +21,7 @@ export const AxiosPublic = ({ method, endpoint, token, data }: AxiosPublicInterf
     method,
     headers: {
       Accept: 'application/json',
-      'Content-type': 'application/json',
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     data,

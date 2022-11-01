@@ -13,7 +13,7 @@ export class ApplicationController {
   @ApiBody({ type: UserDto })
   getInProgressApplication(@Body() userId: string) {
     // For now there can be only one, like the Highlander.
-    return this.applicationService.getInProgressApplication(userId);
+    return this.applicationService.getOrCreateApplication(userId);
   }
 
   @Get('/:applicationId')

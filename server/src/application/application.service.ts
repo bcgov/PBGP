@@ -21,7 +21,7 @@ export class ApplicationService {
     return;
   }
 
-  async getInProgressApplication(userId): Promise<Application> {
+  async getOrCreateApplication(userId): Promise<Application> {
     const application = await this.applicationRepository.findOne({
       where: { user: userId, isSubmitted: false },
     });
