@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
 import { FormStepTitles, FormSteps, FileUpload } from '@components';
 import { SupportDocsInterface } from 'constants/interfaces';
@@ -8,11 +8,11 @@ const initialValues = {
 };
 
 export const SupportDocsChecklist: React.FC = () => {
-  const [fileArray, setFileArray] = useState([]);
-
-  const  fileSelectedHandler = (file: any) => {
-    let addedFiles = fileArray.concat(file);
-    setFileArray( addedFiles )
+  const [fileArray, setFileArray] = useState<any>([]);
+  
+  const  handleChange = (file: any) => {
+    let name = file[0].name;
+    setFileArray((p: any) => [...p, String(name)]);
   }
 
   return (
@@ -29,27 +29,27 @@ export const SupportDocsChecklist: React.FC = () => {
 
             <FileUpload
               title='Quotes for work'
-              onChange={fileSelectedHandler}
+              handleChange={handleChange}
               description='File standard (format/size and more)'
             />
             <FileUpload
               title='Council Resolution or Equivalent'
-              onChange={fileSelectedHandler}
+              handleChange={handleChange}
               description='File standard (format/size and more)'
             />
             <FileUpload
               title='Facility Development Plan (if available)'
-              onChange={fileSelectedHandler}
+              handleChange={handleChange}
               description='File standard (format/size and more)'
             />
             <FileUpload
               title='Environmental Assessment (if applicable)'
-              onChange={fileSelectedHandler}
+              handleChange={handleChange}
               description='File standard (format/size and more)'
             />
             <FileUpload
               title='Other support documentations (if applicable)'
-              onChange={fileSelectedHandler}
+              handleChange={handleChange}
               description='File standard (format/size and more)'
             />
           </div>

@@ -4,14 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 export interface FileUploadProps {
-  onChange?: (...event: any[]) => void;
+  handleChange?: (file: any) => void;
   title: string;
   description: string;
 }
 
-export const FileUpload: React.FC<FileUploadProps> = ({ title, description, onChange }) => {
+export const FileUpload: React.FC<FileUploadProps> = ({ title, description, handleChange }) => {
   const onDrop = useCallback((acceptedFiles: any) => {
-    // Do something with the files
+    // Pass the new File as param
+    handleChange(acceptedFiles)
   }, []);
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({ onDrop });
   const files =
@@ -43,12 +44,12 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, description, onCh
             icon={faCloudArrowUp}
             className='text-bcBluePrimary h-12'
           />
-          <span className='font-medium text-gray-600'>
-            {isDragActive ? 'Drop the files here ...' : 'Drop your file here, or'}
+          <span className='font-medium text-gray-600 not-sr-only'>
+            Drop your file here, or
           </span>
           <span className='text-blue-600 underline'>browse from your device</span>
         </span>
-        <input aria-label="browse from your device" {...getInputProps({onChange})}  />
+        <input aria-label="upload file from your device" {...getInputProps()}  />
       </label>
     </div>
   );
