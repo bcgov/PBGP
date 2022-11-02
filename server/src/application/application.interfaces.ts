@@ -6,6 +6,9 @@ export interface ContactInfo {
   primaryContactName: string;
   phoneNumber: string;
   applicationPriority: string;
+  mailingAddressPostalCode: string;
+  isOneApplication: string;
+  priority: string;
 }
 
 export interface GeneralProjectInfo {

@@ -30,4 +30,7 @@ function useAuthContext() {
   return context;
 }
 
-export { AuthProvider, useAuthContext };
+// Change to their email later on, make a ticket for this.
+const getUserId = () => useAuthContext().keycloak?.idTokenParsed?.sub;
+
+export { AuthProvider, useAuthContext, getUserId };

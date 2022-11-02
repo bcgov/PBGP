@@ -1,81 +1,93 @@
-import { useState, useEffect } from 'react';
-import { Formik, Form } from 'formik';
-import { Link, withAuth, Stepper, Button, FormSteps } from '@components';
+import { useEffect, useState } from 'react';
+import { withAuth, Stepper, Button, FormSteps, getUserId, useAuthContext } from '@components';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { PlanningSteps } from '@components';
 import { FormContent } from '../components/forms';
 import { PageTitle } from 'components/PageTitle';
+import { useGrantApplication } from 'components/services/useGrantApplicationContext';
+import { ApplicationFormDataContext } from 'contexts/ApplicationFormData.context';
+import axios from 'axios';
 
 const Dashboard: NextPage = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
+  const {
+    state: { canProceedToNext },
+    updateNextTriggered,
+  } = useGrantApplication();
+
+  // Set ApplicationID Context
+  const [applicationId, setApplicationId] = useState('');
+
+  const userId = getUserId();
+  const keycloak = useAuthContext().keycloak;
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = { userId: userId };
+
+      const options = {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded',
+          Authorization: `Bearer ${keycloak?.idToken}`,
+        },
+        data,
+        url: 'http://localhost:8080/api/v1/applications/in-progress',
+      };
+
+      const response = await axios(options);
+      setApplicationId(response.data.id);
+    };
+    getData();
+  }, []);
+  // ------------
+
   const isFirstStep = currentStep === 1;
 
-  const handleClick = (clickType: any) => {
-    let newStep = currentStep;
-    clickType == 'next' ? newStep++ : newStep--;
-    // Check if steps are within the boundary
+  const handleBack = () => {
+    const newStep = currentStep - 1;
+
     if (newStep > 0 && newStep <= PlanningSteps.length) {
       setCurrentStep(newStep);
     }
   };
+  const handleContinue = () => {
+    updateNextTriggered();
+  };
+
+  useEffect(() => {
+    if (canProceedToNext && currentStep >= PlanningSteps.length) return;
+    setCurrentStep(Number(currentStep) + 1);
+  }, [canProceedToNext]);
+
   return (
-    <div className='flex flex-col w-full px-10 py-5 bg-white'>
-      <PageTitle
-        title={`BC Air Access Program Application`}
-        description={`Learn more about eligibility, prepare documents and deadline of the program, please click here`}
-      />
-      <Stepper steps={PlanningSteps} currentStep={currentStep} />
-      <FormContent step={currentStep} formTitle={Object.keys(FormSteps)[currentStep - 1]} />
-
-      <div className='flex justify-center'>
-        <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center'>
-          <div className=''>
+    <ApplicationFormDataContext.Provider value={{ applicationId, setApplicationId }}>
+      <div className='flex flex-col w-full px-10 py-5 bg-white'>
+        <PageTitle
+          title={`BC Air Access Program Application`}
+          description={`Learn more about eligibility, prepare documents and deadline of the program, please click here`}
+        />
+        <Stepper steps={PlanningSteps} currentStep={currentStep} />
+        <FormContent step={currentStep} formTitle={Object.keys(FormSteps)[currentStep - 1]} />
+        <div className='flex-1 flex flex-col min-h-0'>
+          <div className='flex justify-center'>
             <Button variant='outline'>Cancel</Button>
-
-            <Button
-              variant='outline'
-              type='button'
-              disabled={isFirstStep}
-              onClick={() => handleClick('')}
-            >
+            <Button variant='outline' type='button' disabled={isFirstStep} onClick={handleBack}>
               Back
             </Button>
             <Button
               variant='primary'
               type='button'
               disabled={currentStep >= PlanningSteps.length}
-              onClick={() => handleClick('next')}
+              onClick={handleContinue}
             >
               Continue
             </Button>
           </div>
         </div>
       </div>
-      {/* <div className='flex-1 flex flex-col min-h-0'>
-        <div className='flex items-start'>
-          <Button variant='outline'>Cancel</Button>
-          </div>
-          <div className='flex items-end'>
-          <Button
-            variant='outline'
-            type='button'
-            disabled={isFirstStep}
-            onClick={() => handleClick('')}
-          >
-            Back
-          </Button>
-          <Button
-            variant='primary'
-            type='button'
-            disabled={currentStep >= PlanningSteps.length}
-            onClick={() => handleClick('next')}
-          >
-            Continue
-          </Button>
-        </div>
-      </div> */}
-    </div>
+    </ApplicationFormDataContext.Provider>
   );
 };
 

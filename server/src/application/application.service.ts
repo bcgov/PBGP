@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Application } from './application.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { SaveApplicationDto } from '@/common/dto/save-application.dto';
 
 @Injectable()
@@ -19,6 +19,14 @@ export class ApplicationService {
     }
 
     return;
+  }
+
+  async getOrCreateApplication(userId): Promise<Application> {
+    const application = await this.applicationRepository.findOne({
+      where: { user: userId, isSubmitted: false },
+    });
+
+    return application ? application : this.createApplication();
   }
 
   async createApplication(): Promise<Application> {
