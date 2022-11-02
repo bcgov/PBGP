@@ -68,7 +68,7 @@ export const AuthorizationPage: React.FC = () => {
               <h1 className='text-xl font-medium text-bcBluePrimary'>
                 {FormStepTitles[FormSteps.AUTHORIZATION]}
               </h1>
-              <h3>Please proivde detailed information for your application.</h3>
+              <p>Please proivde detailed information for your application.</p>
             </div>
 
             <p className='font-bold'>
