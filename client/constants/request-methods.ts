@@ -11,7 +11,7 @@ export enum REQUEST_METHOD {
 }
 
 export const API_ENDPOINT = {
-  applicationId: (applicationId: string) => `/applications/${applicationId}`,
+  APPLICATION_ID: (applicationId: string) => `/applications/${applicationId}`,
   APPLICATIONS: '/applications',
   IN_PROGRESS: '/applications/in-progress',
 };

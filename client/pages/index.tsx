@@ -6,7 +6,7 @@ import { PlanningSteps } from '@components';
 import { FormContent } from '../components/forms';
 import { PageTitle } from 'components/PageTitle';
 import { useGrantApplication } from 'components/services/useGrantApplicationContext';
-import { ApplicationContext } from 'contexts/Application.Context';
+import { ApplicationFormDataContext } from 'contexts/ApplicationFormData.context';
 import axios from 'axios';
 
 const Dashboard: NextPage = () => {
@@ -62,7 +62,7 @@ const Dashboard: NextPage = () => {
   }, [canProceedToNext]);
 
   return (
-    <ApplicationContext.Provider value={{ applicationId, setApplicationId }}>
+    <ApplicationFormDataContext.Provider value={{ applicationId, setApplicationId }}>
       <div className='flex flex-col w-full px-10 py-5 bg-white'>
         <PageTitle
           title={`BC Air Access Program Application`}
@@ -87,7 +87,7 @@ const Dashboard: NextPage = () => {
           </div>
         </div>
       </div>
-    </ApplicationContext.Provider>
+    </ApplicationFormDataContext.Provider>
   );
 };
 

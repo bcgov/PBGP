@@ -78,10 +78,10 @@ export const ContactInfoForm = ({ values }: any) => {
 };
 
 export const ContactInfo: React.FC = () => {
-  const { initialValues, handleSubmit } = useContactInfo();
+  const { contactInfoValues, handleSubmit } = useContactInfo();
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize={true}>
+    <Formik initialValues={contactInfoValues} onSubmit={handleSubmit} enableReinitialize={true}>
       {({ values }: FormikProps<ContactInfoInterface>) => (
         <ContactInfoForm values={values}></ContactInfoForm>
       )}
