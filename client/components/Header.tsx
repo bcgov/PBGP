@@ -8,7 +8,7 @@ import { useAuthContext } from '@contexts';
 
 export const Header: React.FC = () => {
   const router = useRouter();
-  const { keycloak } = useAuthContext();
+  const { keycloak, user } = useAuthContext();
   const headerRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export const Header: React.FC = () => {
   }, [router.asPath]);
 
   const handleLogout = () => {
-    keycloak?.logout({ redirectUri: location.origin + '/' });
+    keycloak?.logout();
   };
 
   return (

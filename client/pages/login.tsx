@@ -15,7 +15,7 @@ export default () => {
   }, [router, kcInitialized, keycloak?.authenticated]);
 
   const login = () => {
-    keycloak?.login({ redirectUri: `${window.location.origin}/` });
+    keycloak?.login({ idpHint: 'idir' });
   };
 
   return (

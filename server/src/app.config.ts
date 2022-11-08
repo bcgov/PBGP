@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import {
   BadRequestException,
   ValidationError,
@@ -14,6 +14,7 @@ import { ErrorExceptionFilter } from './common/error-exception.filter';
 import { TrimPipe } from './common/trim.pipe';
 import { API_PREFIX } from './config';
 import { Documentation } from './common/documentation';
+import { APIAuthGuard } from './auth/api.guard';
 
 interface ValidationErrorMessage {
   property: string;
@@ -79,6 +80,9 @@ export async function createNestApp(): Promise<{
 
   // Global Error Filter
   app.useGlobalFilters(new ErrorExceptionFilter(app.get(AppLogger)));
+
+  const reflector = app.get(Reflector);
+  app.useGlobalGuards(new APIAuthGuard(reflector));
 
   // Printing the environment variables
   // eslint-disable-next-line no-console

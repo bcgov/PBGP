@@ -21,9 +21,9 @@ export DB_SERVER := $(or $(DB_SERVER),database)
 export DB_PORT := $(or $(DB_PORT),5432)
 export GIT_LOCAL_BRANCH := $(or $(GIT_LOCAL_BRANCH),dev)
 
-export KC_AUTH_URL = https://keycloak.freshworks.club/auth
-export KC_AUTH_REALM = PBPG-dev
-export KC_AUTH_CLIENT_ID = PBGP
+export KC_AUTH_URL = https://dev.loginproxy.gov.bc.ca/auth
+export KC_AUTH_REALM = standard
+export KC_AUTH_CLIENT_ID = ed-9154-dev-4226
 
 define deployTag
 "${PROJECT}-${DEPLOY_DATE}"
@@ -88,6 +88,9 @@ local-server-logs:
 
 local-client-logs:
 	@docker logs $(PROJECT)-client --tail 25 --follow
+
+local-db-logs:
+	@docker logs $(PROJECT)_db --tail 25 --follow
 
 curl-client:
 	@docker exec -i $(PROJECT)-server curl localhost:3000
