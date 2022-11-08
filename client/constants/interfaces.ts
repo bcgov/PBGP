@@ -78,3 +78,8 @@ export interface FundingProjectCostInfoInterface {
 export interface SupportDocsInterface {
   docList: any[string],
 }
+
+export interface AuthorizationInterface {
+  projectManagerSignature: string;
+  financialOfficerSignature: string;
+}

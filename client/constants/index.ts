@@ -6,6 +6,7 @@ export * from '../pages/form-pages/funding-eligibility';
 export * from '../pages/form-pages/environmental-info';
 export * from '../pages/form-pages/funding-project-info';
 export * from '../pages/form-pages/support-docs-checklist';
+export * from '../pages/form-pages/authorize';
 export * from './enums';
 export * from './constants';
 
