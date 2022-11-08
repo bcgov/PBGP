@@ -1,23 +1,10 @@
-import {
-  ContactInfo,
-  GeneralProjectInfo,
-  FacilityInfo,
-  FundingEligibility,
-  ClimateConsiderationsAirside,
-  ClimateConsiderationsEnvironmental,
-  ProjectBenefits,
-  ProjectFunding,
-  SupportAndAuthorization,
-} from '../../application/application.interfaces';
+import { ReviewStatuses } from "../enums";
 
 export declare class SaveApplicationDto {
-  contactInfo: ContactInfo;
-  generalProjectInfo: GeneralProjectInfo;
-  facilityInfo: FacilityInfo;
-  fundingEligibility: FundingEligibility;
-  climateConsiderations: ClimateConsiderationsAirside | ClimateConsiderationsEnvironmental;
-  projectBenefits: ProjectBenefits;
-  projectFunding: ProjectFunding;
-  supportAndAuthorization: SupportAndAuthorization;
-  isSubmitted: boolean;
+  submission: any; // dynamic
+  confirmationId: string;
+  facilityName: string;
+  assignedTo: string;
+  status: ReviewStatuses;
+
 }

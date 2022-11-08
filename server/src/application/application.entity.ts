@@ -1,18 +1,7 @@
-import { SupportingDocument } from '@/supporting-document/supporting-document.entity';
-import { User } from '@/user/user.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { BCAAPForm } from '@/BCAAPForm/bcaapform.entity';
+import { ReviewStatuses } from '@/common/enums';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
-import {
-  ContactInfo,
-  GeneralProjectInfo,
-  FacilityInfo,
-  FundingEligibility,
-  ClimateConsiderationsAirside,
-  ClimateConsiderationsEnvironmental,
-  ProjectBenefits,
-  ProjectFunding,
-  SupportAndAuthorization,
-} from './application.interfaces';
 
 @Entity()
 export class Application extends CustomBaseEntity {
@@ -20,35 +9,27 @@ export class Application extends CustomBaseEntity {
   id: string;
 
   @Column({ type: 'jsonb', nullable: true })
-  contactInfo: ContactInfo;
+  // It's dynamic, so putting any here
+  submission: any;
 
-  @Column({ type: 'jsonb', nullable: true })
-  generalProjectInfo: GeneralProjectInfo;
+  @Column({ type: 'varchar', length: '200', nullable: false })
+  confirmationId: string;
 
-  @Column({ type: 'jsonb', nullable: true })
-  facilityInfo: FacilityInfo;
+  @Column({ type: 'varchar', length: '200', nullable: false })
+  facilityName: string;
 
-  @Column({ type: 'jsonb', nullable: true })
-  fundingEligibility: FundingEligibility;
+  @Column({ type: 'varchar', length: '100', nullable: true })
+  assignedTo: string;
 
-  @Column({ type: 'jsonb', nullable: true })
-  climateConsiderations: ClimateConsiderationsAirside | ClimateConsiderationsEnvironmental;
+  @Column({
+    type: 'varchar',
+    length: '100',
+    nullable: false,
+    default: ReviewStatuses.INITIAL_REVIEW,
+  })
+  status: ReviewStatuses;
 
-  @Column({ type: 'jsonb', nullable: true })
-  projectBenefits: ProjectBenefits;
-
-  @Column({ type: 'jsonb', nullable: true })
-  projectFunding: ProjectFunding;
-
-  @Column({ type: 'jsonb', nullable: true })
-  supportAndAuthorization: SupportAndAuthorization;
-
-  @Column({ type: 'boolean', nullable: false, default: false })
-  isSubmitted: boolean;
-
-  @ManyToOne(() => User, (user) => user.applications)
-  user: User;
-
-  @OneToMany(() => SupportingDocument, (supportingDocument) => supportingDocument.application)
-  supportingDocuments: SupportingDocument[];
+  @OneToOne(() => BCAAPForm)
+  @JoinColumn()
+  form: BCAAPForm;
 }
