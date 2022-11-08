@@ -1782,6 +1782,20 @@ next@latest:
   languageName: node
   linkType: hard
 
+"react-signature-canvas@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "react-signature-canvas@npm:1.0.6"
+  dependencies:
+    signature_pad: ^2.3.2
+    trim-canvas: ^0.1.0
+  peerDependencies:
+    prop-types: ^15.5.8
+    react: 0.14 - 18
+    react-dom: 0.14 - 18
+  checksum: 4fe5f0c41162f7c26dd5e8dc8305583016f75eb95a3f6c1207b6234d20b7e3348033e20d26f9f8d0d59c57a63a1679e27e4e5d285f2537ea25f8cc73f3626c71
+  languageName: node
+  linkType: hard
+
 "react@npm:18.1.0":
   version: 18.1.0
   resolution: "react@npm:18.1.0"
@@ -1898,7 +1912,10 @@ next@latest:
     postcss: ^8.4.14
     react: 18.1.0
     react-dom: 18.1.0
+    react-signature-canvas: ^1.0.6
+    signature_pad: ^4.1.0
     tailwindcss: ^3.1.2
+    trim-canvas: ^0.1.2
     typescript: 4.7.2
   languageName: unknown
   linkType: soft
@@ -1957,6 +1974,20 @@ next@latest:
   version: 3.0.7
   resolution: "signal-exit@npm:3.0.7"
   checksum: a2f098f247adc367dffc27845853e9959b9e88b01cb301658cfe4194352d8d2bb32e18467c786a7fe15f1d44b233ea35633d076d5e737870b7139949d1ab6318
+  languageName: node
+  linkType: hard
+
+"signature_pad@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "signature_pad@npm:2.3.2"
+  checksum: f64fdc0a2743bf7ad7d35ba5017241dc840092d52912a01a76000eece03ba998535d30140e4b69476746711538e9f56507c390ca9def60ee86deb42cea335cd7
+  languageName: node
+  linkType: hard
+
+"signature_pad@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "signature_pad@npm:4.1.0"
+  checksum: 449c034840f464e7c77fad3c378303a81734f0a78c300d662011b57f193956988021cdea4e7884973828347ca41a87f0ee9e8624d1185992a8e7476c468099db
   languageName: node
   linkType: hard
 
@@ -2116,6 +2147,13 @@ next@latest:
   dependencies:
     is-number: ^7.0.0
   checksum: f76fa01b3d5be85db6a2a143e24df9f60dd047d151062d0ba3df62953f2f697b16fe5dad9b0ac6191c7efc7b1d9dcaa4b768174b7b29da89d4428e64bc0a20ed
+  languageName: node
+  linkType: hard
+
+"trim-canvas@npm:^0.1.0, trim-canvas@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "trim-canvas@npm:0.1.2"
+  checksum: 0068b721fccfc1e9d268d7569e11c1b8de508267087bb6206bb77ade06f257872d0beb9e34dd362c3a58a8d99d302cf4773e418cf9b6374f2b0e10d55f55ecc2
   languageName: node
   linkType: hard
 
