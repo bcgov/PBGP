@@ -26,7 +26,7 @@ export const validationPipeConfig: ValidationPipeOptions = {
   forbidNonWhitelisted: false,
   enableDebugMessages: false,
   disableErrorMessages: true,
-  exceptionFactory: errors => {
+  exceptionFactory: (errors) => {
     const getErrorMessages = (error: ValidationError): ValidationErrorMessage[] => {
       const messages: ValidationErrorMessage[] = [];
       if (error.constraints) {
@@ -40,7 +40,7 @@ export const validationPipeConfig: ValidationPipeOptions = {
       }
       return messages;
     };
-    const errorMessages = errors.map(error => getErrorMessages(error));
+    const errorMessages = errors.map((error) => getErrorMessages(error));
     throw new BadRequestException(errorMessages);
   },
 };
@@ -62,7 +62,7 @@ export async function createNestApp(): Promise<{
   } else {
     app = await NestFactory.create<NestExpressApplication>(
       AppModule,
-      new ExpressAdapter(expressApp),
+      new ExpressAdapter(expressApp)
     );
     // Adding winston logger
     app.useLogger(new AppLogger());
