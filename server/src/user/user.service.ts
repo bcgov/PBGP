@@ -9,4 +9,12 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>
   ) {}
+
+  async getByExternalId(externalId: string): Promise<User> {
+    return this.userRepository.findOne({ where: { externalId } });
+  }
+
+  async addUser(data: Partial<User>): Promise<User> {
+    return this.userRepository.save(this.userRepository.create(data));
+  }
 }

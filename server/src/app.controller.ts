@@ -1,21 +1,7 @@
-import {
-  Controller,
-  Get,
-  HttpStatus,
-  InternalServerErrorException,
-  Patch,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiOperation, ApiProperty, ApiResponse } from '@nestjs/swagger';
+import { Controller, Get, HttpStatus } from '@nestjs/common';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AppService } from './app.service';
-import { SUCCESS_RESPONSE } from './common/constants';
-
-class UpdateScriptDTO {
-  @ApiProperty({ type: 'string', format: 'binary' })
-  file: any;
-}
+import { GetUser, PublicRoute } from './common/decorator';
 
 @Controller()
 export class AppController {
@@ -25,17 +11,15 @@ export class AppController {
     summary: 'Get current application version',
   })
   @ApiResponse({ status: HttpStatus.OK })
+  @PublicRoute()
   @Get('/version')
   getVersion(): object {
     return this.appService.getVersionInfo();
   }
 
-  @ApiOperation({
-    summary: 'Throw an internal server exception',
-  })
-  @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR })
-  @Get('/error')
-  getError(): object {
-    throw new InternalServerErrorException('Breaking uptime');
+  @ApiResponse({ status: HttpStatus.OK })
+  @Get('/validate')
+  validateUser(@GetUser() user): object {
+    return user;
   }
 }

@@ -2,22 +2,28 @@ import React from 'react';
 import { useKeycloak } from '@react-keycloak-fork/ssr';
 import type { SSRAuthClient } from '@react-keycloak-fork/ssr';
 
-const AuthContext = React.createContext<
-  | {
-      keycloak?: SSRAuthClient;
-      kcInitialized: boolean;
-      tokensInitialized: boolean;
-    }
-  | undefined
->(undefined);
+export interface UserInterface {
+  id: number;
+  roles: string[];
+  displayName: string;
+}
+export interface AuthInterface {
+  keycloak?: SSRAuthClient;
+  kcInitialized: boolean;
+  tokensInitialized: boolean;
+  user?: UserInterface;
+}
+
+const AuthContext = React.createContext<AuthInterface | undefined>(undefined);
 
 const AuthProvider: React.FC<{
   tokensInitialized: boolean;
+  user: UserInterface | undefined;
   children: React.ReactNode;
-}> = ({ tokensInitialized, children }) => {
+}> = ({ tokensInitialized, user, children }) => {
   const { keycloak, initialized } = useKeycloak();
 
-  const value = { keycloak, kcInitialized: initialized, tokensInitialized };
+  const value = { keycloak, kcInitialized: initialized, tokensInitialized, user };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
