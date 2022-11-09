@@ -8,6 +8,7 @@ import {
   SupportDocsChecklist,
   AuthorizationPage,
   FormSteps,
+  ApplicationPage
 } from '@components';
 
 interface FormContentProps {
@@ -19,7 +20,7 @@ export const FormContent: React.FC<FormContentProps> = ({ step, formTitle }) => 
   const showStepContent = () => {
     switch (formTitle) {
       case FormSteps.CONTACT_INFO:
-        return <ContactInfo />;
+        return <ApplicationPage />;
       case FormSteps.GENERAL_INFO:
         return <GeneralProjectInfo />;
       case FormSteps.FACILITY_INFO:
