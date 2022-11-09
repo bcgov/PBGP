@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
 @Entity()
-export class BCAAPForm extends CustomBaseEntity {
+export class FormMetaData extends CustomBaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

@@ -1,4 +1,4 @@
-import { BCAAPForm } from '@/BCAAPForm/bcaapform.entity';
+import { FormMetaData } from '@/FormMetaData/formmetadata.entity';
 import { ReviewStatuses } from '@/common/enums';
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
@@ -29,7 +29,7 @@ export class Application extends CustomBaseEntity {
   })
   status: ReviewStatuses;
 
-  @OneToOne(() => BCAAPForm)
+  @OneToOne(() => FormMetaData)
   @JoinColumn()
-  form: BCAAPForm;
+  form: FormMetaData;
 }
