@@ -9,6 +9,8 @@ import { AuthProvider, UserInterface } from '@contexts';
 import { keycloakConfig } from '@constants';
 import { StrictMode, useState } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 interface AppProps extends NextAppProps {
   cookies: unknown;
@@ -32,7 +34,11 @@ function App({ Component, pageProps, cookies }: AppProps) {
       const { data } = await axios.get('/validate');
       setUser(data);
       setTokensInitialized(true);
-    } catch (error) {}
+    } catch (error: any) {
+      if (error?.response?.status === 401) {
+        toast.error('You are not authorized! Kindly contact admin!');
+      }
+    }
   };
 
   return (
@@ -60,6 +66,15 @@ function App({ Component, pageProps, cookies }: AppProps) {
             </main>
             <Footer />
           </div>
+          <ToastContainer
+            style={{ width: '30%', maxWidth: '675px' }}
+            position='top-right'
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+          />
         </AuthProvider>
       </StrictMode>
     </SSRKeycloakProvider>
