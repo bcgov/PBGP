@@ -21,7 +21,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-svg-core@npm:^6.2.0":
+"@fortawesome/fontawesome-svg-core@npm:6.2.0":
   version: 6.2.0
   resolution: "@fortawesome/fontawesome-svg-core@npm:6.2.0"
   dependencies:
@@ -30,7 +30,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/free-solid-svg-icons@npm:^6.2.0":
+"@fortawesome/free-solid-svg-icons@npm:6.2.0":
   version: 6.2.0
   resolution: "@fortawesome/free-solid-svg-icons@npm:6.2.0"
   dependencies:
@@ -39,7 +39,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/react-fontawesome@npm:^0.2.0":
+"@fortawesome/react-fontawesome@npm:0.2.0":
   version: 0.2.0
   resolution: "@fortawesome/react-fontawesome@npm:0.2.0"
   dependencies:
@@ -214,7 +214,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-keycloak-fork/ssr@npm:^4.0.3":
+"@react-keycloak-fork/ssr@npm:4.0.3":
   version: 4.0.3
   resolution: "@react-keycloak-fork/ssr@npm:4.0.3"
   dependencies:
@@ -440,7 +440,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.1.3":
+"axios@npm:1.1.3":
   version: 1.1.3
   resolution: "axios@npm:1.1.3"
   dependencies:
@@ -591,6 +591,13 @@ __metadata:
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
   checksum: 2ac8cd2b2f5ec986a3c743935ec85b07bc174d5421a5efc8017e1f146a1cf5f781ae962618f416352103b32c9cd7e203276e8c28241bbe946160cab16149fb68
+  languageName: node
+  linkType: hard
+
+"clsx@npm:^1.1.1":
+  version: 1.2.1
+  resolution: "clsx@npm:1.2.1"
+  checksum: 30befca8019b2eb7dbad38cff6266cf543091dae2825c856a62a8ccf2c3ab9c2907c4d12b288b73101196767f66812365400a227581484a05f968b0307cfaf12
   languageName: node
   linkType: hard
 
@@ -1175,7 +1182,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"keycloak-js@npm:^19.0.3":
+"keycloak-js@npm:19.0.3":
   version: 19.0.3
   resolution: "keycloak-js@npm:19.0.3"
   dependencies:
@@ -1424,7 +1431,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-next@latest:
+"next@npm:12.3.1":
   version: 12.3.1
   resolution: "next@npm:12.3.1"
   dependencies:
@@ -1777,7 +1784,7 @@ next@latest:
   languageName: node
   linkType: hard
 
-"react-dropzone@npm:^14.2.3":
+"react-dropzone@npm:14.2.3":
   version: 14.2.3
   resolution: "react-dropzone@npm:14.2.3"
   dependencies:
@@ -1811,7 +1818,7 @@ next@latest:
   languageName: node
   linkType: hard
 
-"react-signature-canvas@npm:^1.0.6":
+"react-signature-canvas@npm:1.0.6":
   version: 1.0.6
   resolution: "react-signature-canvas@npm:1.0.6"
   dependencies:
@@ -1822,6 +1829,18 @@ next@latest:
     react: 0.14 - 18
     react-dom: 0.14 - 18
   checksum: 4fe5f0c41162f7c26dd5e8dc8305583016f75eb95a3f6c1207b6234d20b7e3348033e20d26f9f8d0d59c57a63a1679e27e4e5d285f2537ea25f8cc73f3626c71
+  languageName: node
+  linkType: hard
+
+"react-toastify@npm:9.1.1":
+  version: 9.1.1
+  resolution: "react-toastify@npm:9.1.1"
+  dependencies:
+    clsx: ^1.1.1
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: 2039255539961a9b4d77b2656f120b20abe46cb0c699a7f3c0af23b4ef669d9c4d24dae6b8f4954b5efd83edf6d6e23614a29e94e9ee0d2647741fba9ba2db85
   languageName: node
   linkType: hard
 
@@ -1925,27 +1944,28 @@ next@latest:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@fortawesome/fontawesome-svg-core": ^6.2.0
-    "@fortawesome/free-solid-svg-icons": ^6.2.0
-    "@fortawesome/react-fontawesome": ^0.2.0
-    "@react-keycloak-fork/ssr": ^4.0.3
+    "@fortawesome/fontawesome-svg-core": 6.2.0
+    "@fortawesome/free-solid-svg-icons": 6.2.0
+    "@fortawesome/react-fontawesome": 0.2.0
+    "@react-keycloak-fork/ssr": 4.0.3
     "@types/node": 17.0.35
     "@types/react": 18.0.9
     "@types/react-dom": 18.0.5
     autoprefixer: ^10.4.7
-    axios: ^1.1.3
+    axios: 1.1.3
     classnames: 2.3.2
     formik: 2.2.9
-    keycloak-js: ^19.0.3
-    next: latest
+    keycloak-js: 19.0.3
+    next: 12.3.1
     postcss: ^8.4.14
     react: 18.1.0
     react-dom: 18.1.0
-    react-dropzone: ^14.2.3
-    react-signature-canvas: ^1.0.6
-    signature_pad: ^4.1.0
+    react-dropzone: 14.2.3
+    react-signature-canvas: 1.0.6
+    react-toastify: 9.1.1
+    signature_pad: 4.1.0
     tailwindcss: ^3.1.2
-    trim-canvas: ^0.1.2
+    trim-canvas: 0.1.2
     typescript: 4.7.2
   languageName: unknown
   linkType: soft
@@ -2007,17 +2027,17 @@ next@latest:
   languageName: node
   linkType: hard
 
+"signature_pad@npm:4.1.0":
+  version: 4.1.0
+  resolution: "signature_pad@npm:4.1.0"
+  checksum: 449c034840f464e7c77fad3c378303a81734f0a78c300d662011b57f193956988021cdea4e7884973828347ca41a87f0ee9e8624d1185992a8e7476c468099db
+  languageName: node
+  linkType: hard
+
 "signature_pad@npm:^2.3.2":
   version: 2.3.2
   resolution: "signature_pad@npm:2.3.2"
   checksum: f64fdc0a2743bf7ad7d35ba5017241dc840092d52912a01a76000eece03ba998535d30140e4b69476746711538e9f56507c390ca9def60ee86deb42cea335cd7
-  languageName: node
-  linkType: hard
-
-"signature_pad@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "signature_pad@npm:4.1.0"
-  checksum: 449c034840f464e7c77fad3c378303a81734f0a78c300d662011b57f193956988021cdea4e7884973828347ca41a87f0ee9e8624d1185992a8e7476c468099db
   languageName: node
   linkType: hard
 
@@ -2180,7 +2200,7 @@ next@latest:
   languageName: node
   linkType: hard
 
-"trim-canvas@npm:^0.1.0, trim-canvas@npm:^0.1.2":
+"trim-canvas@npm:0.1.2, trim-canvas@npm:^0.1.0":
   version: 0.1.2
   resolution: "trim-canvas@npm:0.1.2"
   checksum: 0068b721fccfc1e9d268d7569e11c1b8de508267087bb6206bb77ade06f257872d0beb9e34dd362c3a58a8d99d302cf4773e418cf9b6374f2b0e10d55f55ecc2
