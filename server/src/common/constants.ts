@@ -33,3 +33,15 @@ export enum ActivitiesActionType {
   RED = '',
   GREY = 'MIXED',
 }
+
+export enum REQUEST_METHODS {
+  GET = 'get',
+  POST = 'post',
+  PATCH = 'patch',
+  PUT = 'put',
+  DELETE = 'delete',
+}
+
+// CHEFS Stuff
+export const CHEFS_FORM_IDS = ['4b19eee6-f42d-481f-8279-cbc28ab68cf0'];
+export const CHEFS_BASE_URL = 'https://submit.digital.gov.bc.ca/app/api/v1';

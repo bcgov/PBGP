@@ -1,5 +1,5 @@
-import { SUCCESS_RESPONSE } from '@/common/constants';
-import { SaveApplicationDto } from '@/common/dto/save-application.dto';
+import { SUCCESS_RESPONSE } from '../common/constants';
+import { SaveApplicationDto } from '../common/dto/save-application.dto';
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import { Application } from './application.entity';
