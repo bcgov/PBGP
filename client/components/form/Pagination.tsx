@@ -24,40 +24,41 @@ export const Pagination: React.FC<PaginationProps> = (props) => {
     nextPage,
   } = props;
   return (
-    <div className='py-2'>
-      <div>
-        <p className='text-sm text-gray-700'>
-          <span className='font-medium'>
-            {totalApplications != 0
-              ? currentPage * applicationsPerPage - applicationsPerPage + 1
-              : totalApplications}
-          </span>
-          -
-          <span className='font-medium'>
-            {' '}
-            {currentPage * applicationsPerPage > totalApplications
-              ? totalApplications
-              : currentPage * applicationsPerPage}{' '}
-          </span>
-          of
-          <span className='font-medium'> {totalApplications} </span>
-        </p>
-      </div>
-      <nav className='block'></nav>
-      {totalApplications != 0 && (
+    <div className='w-full bg-white flex my-2 justify-between'>
+      <div></div>
+      <div className='grid grid-cols-2 gap-2'>
         <div>
-          <nav
-            className='relative z-0 inline-flex rounded-md shadow-sm -space-x-px'
+          <p className='text-sm text-right py-2 text-gray-700'>
+            <span className='font-medium'>
+              {totalApplications != 0
+                ? currentPage * applicationsPerPage - applicationsPerPage + 1
+                : totalApplications}
+            </span>
+            -
+            <span className='font-medium'>
+              {' '}
+              {currentPage * applicationsPerPage > totalApplications
+                ? totalApplications
+                : currentPage * applicationsPerPage}{' '}
+            </span>
+            of
+            <span className='font-medium'> {totalApplications} </span>
+          </p>
+        </div>
+
+        {totalApplications != 0 && (
+          <div
+            className='relative z-0 inline-flex rounded-md shadow-sm -space-x-px gap-1'
             aria-label='Pagination'
           >
             <Button onClick={firstPage} variant='outline' disabled={currentPage == 1}>
               <span className='border-l-2 border-gray-900'>
-                <FontAwesomeIcon icon={faChevronLeft} className='h-6 text-bcBluePrimary' />
+                <FontAwesomeIcon icon={faChevronLeft} className='h-4 text-bcBluePrimary' />
               </span>
             </Button>
             <Button onClick={previousPage} variant='outline' disabled={currentPage == 1}>
               <span>
-                <FontAwesomeIcon icon={faChevronLeft} className='h-6 text-bcBluePrimary' />
+                <FontAwesomeIcon icon={faChevronLeft} className='h-4 text-bcBluePrimary' />
               </span>
             </Button>
 
@@ -67,7 +68,7 @@ export const Pagination: React.FC<PaginationProps> = (props) => {
               disabled={currentPage * applicationsPerPage > totalApplications}
             >
               <span>
-                <FontAwesomeIcon icon={faChevronRight} className='h-6 text-bcBluePrimary' />
+                <FontAwesomeIcon icon={faChevronRight} className='h-4 text-bcBluePrimary' />
               </span>
             </Button>
 
@@ -77,12 +78,12 @@ export const Pagination: React.FC<PaginationProps> = (props) => {
               disabled={currentPage * applicationsPerPage > totalApplications}
             >
               <span className='border-r-2 border-gray-900'>
-                <FontAwesomeIcon icon={faChevronRight} className='h-6 text-bcBluePrimary' />
+                <FontAwesomeIcon icon={faChevronRight} className='h-4 text-bcBluePrimary' />
               </span>
             </Button>
-          </nav>
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
