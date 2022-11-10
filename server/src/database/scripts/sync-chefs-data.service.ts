@@ -50,7 +50,9 @@ export class SyncChefsDataService {
             ...options,
             url: this.getSubmissionUrl(submission),
           });
-          const dbSubmission = await this.applicationRepo.findOne({ where: { submissionId: submission } });
+          const dbSubmission = await this.applicationRepo.findOne({
+            where: { submissionId: submission },
+          });
 
           if (dbSubmission) {
             // Update
@@ -61,7 +63,7 @@ export class SyncChefsDataService {
             // Create FormMetaData as well later, then pass the ID to the application
             const appService = new ApplicationService(this.applicationRepo);
             const newSubmissionData: SaveApplicationDto = {
-              submissionId: submissionResponse.data.submission.id;
+              submissionId: submissionResponse.data.submission.id,
               submission: submissionResponse.data.submission.submission.data,
               confirmationId: submissionResponse.data.submission.confirmationId,
               facilityName: submissionResponse.data.submission.submission.data.facilityName,
