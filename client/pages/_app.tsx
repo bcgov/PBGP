@@ -2,24 +2,36 @@ import '../styles/globals.css';
 
 import Head from 'next/head';
 import type { AppProps as NextAppProps } from 'next/app';
+import App from 'next/app';
 import { SSRKeycloakProvider, SSRCookies, SSRAuthClient } from '@react-keycloak-fork/ssr';
 
 import { Footer, Header } from '@components';
 import { AuthProvider, UserInterface } from '@contexts';
-import { keycloakConfig } from '@constants';
 import { StrictMode, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import getConfig from 'next/config';
 
+type TokensType = Pick<SSRAuthClient, 'token' | 'refreshToken'>;
 interface AppProps extends NextAppProps {
   cookies: unknown;
 }
+// Declaring run-time variables
+const { publicRuntimeConfig } = getConfig();
 
-type TokensType = Pick<SSRAuthClient, 'token' | 'refreshToken'>;
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_URL;
+const keycloakConfig = {
+  url: publicRuntimeConfig.NEXT_PUBLIC_KC_AUTH_URL,
+  realm: publicRuntimeConfig.NEXT_PUBLIC_KC_AUTH_REALM,
+  clientId: publicRuntimeConfig.NEXT_PUBLIC_KC_AUTH_CLIENT_ID,
+};
 
-function App({ Component, pageProps, cookies }: AppProps) {
+const BASE_URL = publicRuntimeConfig.NEXT_PUBLIC_SERVER_URL;
+const REDIRECT_URL = publicRuntimeConfig.NEXT_PUBLIC_REDIRECT_URI;
+
+axios.defaults.baseURL = BASE_URL;
+
+function CustomApp({ Component, pageProps, cookies }: AppProps) {
   const [tokensInitialized, setTokensInitialized] = useState(false);
   const [user, setUser] = useState<UserInterface>();
 
@@ -48,7 +60,7 @@ function App({ Component, pageProps, cookies }: AppProps) {
       onTokens={handleTokens}
       initOptions={{
         pkceMethod: 'S256',
-        redirectUri: process.env.NEXT_PUBLIC_REDIRECT_URI,
+        redirectUri: REDIRECT_URL,
       }}
     >
       <StrictMode>
@@ -81,4 +93,11 @@ function App({ Component, pageProps, cookies }: AppProps) {
   );
 }
 
-export default App;
+CustomApp.getInitialProps = async (appContext: any): Promise<any> => {
+  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  const appProps = await App.getInitialProps(appContext);
+
+  return { ...appProps };
+};
+
+export default CustomApp;

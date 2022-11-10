@@ -1,3 +1,4 @@
+import { FormSteps } from '../../constants';
 import {
   ContactInfo,
   GeneralProjectInfo,
@@ -7,8 +8,7 @@ import {
   FundingProjectCostInfo,
   SupportDocsChecklist,
   AuthorizationPage,
-  FormSteps,
-} from '@components';
+} from '../form-sections';
 
 interface FormContentProps {
   step: number;
