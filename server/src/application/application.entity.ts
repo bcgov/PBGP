@@ -1,5 +1,5 @@
-import { FormMetaData } from '@/FormMetaData/formmetadata.entity';
-import { ReviewStatuses } from '@/common/enums';
+import { FormMetaData } from '../FormMetaData/formmetadata.entity';
+import { ReviewStatuses } from '../common/enums';
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 

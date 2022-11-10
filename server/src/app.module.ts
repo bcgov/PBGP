@@ -6,16 +6,16 @@ import { AppLogger } from './common/logger.service';
 import { LoggerMiddleware } from './logger.middleware';
 import { UserModule } from './user/user.module';
 import { ApplicationModule } from './application/application.module';
-import { AuthMiddleware } from './common/middleware/auth.middleware';
 import { AuthModule } from './auth/auth.module';
+import { FormMetaDataModule } from './FormMetaData/formmetadata.module';
 
 @Module({
-  imports: [DatabaseModule, AuthModule, ApplicationModule, UserModule],
+  imports: [DatabaseModule, AuthModule, FormMetaDataModule, ApplicationModule, UserModule],
   controllers: [AppController],
   providers: [Logger, AppLogger, AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(LoggerMiddleware, AuthMiddleware).forRoutes('*');
+    consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }

@@ -10,4 +10,4 @@ import { FormMetaDataController } from './formmetadata.controller';
   controllers: [FormMetaDataController],
   providers: [FormMetaDataService],
 })
-export class ApplicationModule {}
+export class FormMetaDataModule {}
