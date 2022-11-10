@@ -2,8 +2,10 @@ import { Module, Logger } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
+import { SyncChefsDataService } from './scripts/sync-chefs-data.service';
 
 import config from '../ormconfig';
+import { Application } from '../application/application.entity';
 
 // const getEnvironmentSpecificConfig = (env?: string) => {
 //   switch (env) {
@@ -43,8 +45,8 @@ const appOrmConfig: PostgresConnectionOptions = {
 };
 
 @Module({
-  imports: [TypeOrmModule.forRoot(appOrmConfig)],
-  providers: [Logger],
-  exports: [TypeOrmModule]
+  imports: [TypeOrmModule.forRoot(appOrmConfig), TypeOrmModule.forFeature([Application])],
+  providers: [Logger, SyncChefsDataService],
+  exports: [TypeOrmModule, SyncChefsDataService],
 })
 export class DatabaseModule {}

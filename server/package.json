@@ -11,7 +11,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:local": "nest start --exec \"node -r ./env.js\"",
-    "start:dev": "nest start --watch",
+    "start:dev": "NODE_ENV=development nest start --watch",
     "start:dev:local": "nest start --preserveWatchOutput --watch --exec \"node -r ./env.js\"",
     "start:debug": "nest start --debug --watch",
     "start:debug:local": "nest start --debug --watch --exec \"node -r ./env.js\"",
@@ -23,7 +23,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "NODE_ENV=test jest --config ./jest-e2e.json --runInBand",
     "typeorm": "ts-node -r tsconfig-paths/register ../../node_modules/typeorm/cli.js --config src/ormconfig.ts",
-    "db:sync-chefs-data": "ts-node ./src/database/scripts/sync-chefs-data.ts"
+    "db:sync-chefs-data": "NODE_ENV=development node dist/database/scripts/sync-chefs-data.js"
   },
   "dependencies": {
     "@nestjs/common": "8.2.3",

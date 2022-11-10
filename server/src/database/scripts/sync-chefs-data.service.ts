@@ -43,7 +43,17 @@ export class SyncChefsDataService {
             ...options,
             url: this.getSubmissionUrl(submission),
           });
-          console.log(submissionResponse.data);
+          const submissionEntity = this.applicationRepo.find({ where: { id: submission } });
+
+          if (submissionEntity) {
+            // Update
+            console.log('Submission exists: updating');
+          } else {
+            // Create
+            console.log("Submission doesn't exist: creating");
+          }
+
+          //   console.log(submissionResponse.data);
         }
       } catch (e) {
         console.log(e);

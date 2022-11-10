@@ -1,9 +1,10 @@
-import { Application } from '../../application/application.entity';
-import { Repository } from 'typeorm';
 import { SyncChefsDataService } from './sync-chefs-data.service';
+import { AppModule } from '../../app.module';
+import { NestFactory } from '@nestjs/core';
 
 (async () => {
-  const syncChefsDataService = new SyncChefsDataService(new Repository<Application>());
+  const appContext = await NestFactory.createApplicationContext(AppModule);
+  const syncChefsDataService = appContext.get(SyncChefsDataService);
 
   syncChefsDataService.syncChefsData();
 })();
