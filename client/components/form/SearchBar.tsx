@@ -5,7 +5,7 @@ interface SearchBarProps {
   
   export const SearchBar = ({ placeholderText = 'Search Applications', handleChange }: SearchBarProps) => {
     return (
-      <div>
+     
         <div className='relative w-full'>
           
           <input
@@ -32,7 +32,7 @@ interface SearchBarProps {
             </svg>
           </div>
         </div>
-      </div>
+      
     );
   };
   

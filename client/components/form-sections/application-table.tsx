@@ -12,8 +12,11 @@ const TableHeader: React.FC = () => {
   //   const { initialValues } = usePlanningActivitiesGap();
   const headers = [
     'Confirmation ID',
-    'Identifier number',
-    'Last Reviewed by',
+    'Facility',
+    'Project',
+    'Estimated Cost',
+    'Asks',
+    'Assigned to',
     'Last update',
     'Status',
   ];
@@ -37,7 +40,8 @@ const TableBody: React.FC = (applications: any) => {
   const handleSelectRow = (index: number) => {
     alert(index);
   };
-
+  const tdStyles =
+    'table-td px-6 py-4 text-left text-sm font-strong text-bcBluePrimary flexitems-center justify-between';
   return (
     <tbody>
       {applications.applications &&
@@ -48,11 +52,14 @@ const TableBody: React.FC = (applications: any) => {
               onClick={() => handleSelectRow(row.BCAAP_Form_ID)}
               className='bg-white border-b table-row-fixed'
             >
-              <td className={`flexitems-center justify-between`}>{row.Confirmation_ID}</td>
-              <td className={`flexitems-center justify-between`}>{row.BCAAP_Form_ID}</td>
-              <td className={`flexitems-center justify-between`}>{row.Assigned_To}</td>
-              <td className={`flexitems-center justify-between`}>{row.Created_At}</td>
-              <td className={`flexitems-center justify-between`}>{row.Status}</td>
+              <td className={tdStyles}>{row.Confirmation_ID}</td>
+              <td className={tdStyles}>{row.BCAAP_Form_ID}</td>
+              <td className={tdStyles}>{row.Assigned_To}</td>
+              <td className={tdStyles}>{row.Created_At}</td>
+              <td className={tdStyles}>{row.Status}</td>
+              <td className={tdStyles}>{row.Assigned_To}</td>
+              <td className={tdStyles}>{row.Created_At}</td>
+              <td className={tdStyles}>{row.Status}</td>
             </tr>
           </>
         ))}
@@ -77,7 +84,7 @@ const ApplicationTable: React.FC = (applications: any) => {
 
 export const ApplicationPage: React.FC<ActivitiesGapProps> = ({ title }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [applicationsPerPage] = useState<number>(15);
+  const [applicationsPerPage] = useState<number>(10);
   const [searchValue, setSearchValue]: [string, (search: string) => void] = useState('');
 
   const handleSearch = (e: { target: { value: string } }) => {
@@ -119,19 +126,16 @@ export const ApplicationPage: React.FC<ActivitiesGapProps> = ({ title }) => {
 
   return (
     <div className='planning-form-box'>
-      <div className='flex-1 flex flex-col min-h-0'>
-        <div className='flex justify-center'>
-          <div className='w-full bg-white flex my-2 justify-between'>
-            <h1 className='text-xl text-bcBluePrimary text-left w-full flex-col items-start'>
-              Applications
-            </h1>
-            <div className='grid grid-cols-2 gap-2'>
-              <SearchBar handleChange={handleSearch} />
-              <Button variant='primary'>Export PDF</Button>
-            </div>
-          </div>
+      <div className='w-full bg-white flex my-2 justify-between'>
+        <h1 className='text-2xl font-bold h-6 text-bcBluePrimary text-left flex-col items-start'>
+          Applications
+        </h1>
+        <div className='grid grid-cols-2 gap-2'>
+          <SearchBar handleChange={handleSearch} />
+          <Button variant='primary'>Export PDF</Button>
         </div>
       </div>
+
       <ApplicationTable applications={currentApplications} />
       <Pagination
         currentPage={currentPage}
