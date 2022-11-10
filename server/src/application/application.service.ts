@@ -21,8 +21,8 @@ export class ApplicationService {
     return;
   }
 
-  async createApplication(): Promise<Application> {
-    const application = this.applicationRepository.create();
+  async createApplication(applicationDto: SaveApplicationDto): Promise<Application> {
+    const application = this.applicationRepository.create(applicationDto);
 
     await this.applicationRepository.save(application);
 

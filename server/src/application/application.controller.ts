@@ -17,8 +17,9 @@ export class ApplicationController {
   }
 
   @Post()
-  createApplication(): Promise<Application> {
-    return this.applicationService.createApplication();
+  @ApiBody({ type: SaveApplicationDto })
+  createApplication(@Body() applicationDto: SaveApplicationDto): Promise<Application> {
+    return this.applicationService.createApplication(applicationDto);
   }
 
   @Patch('/:applicationId')
