@@ -30,7 +30,7 @@ export class ApplicationController {
     @Param('applicationId') applicationId: string,
     @Body() applicationDto: SaveApplicationDto
   ) {
-    await this.applicationService.saveApplication(applicationId, applicationDto);
+    await this.applicationService.updateApplication(applicationId, applicationDto);
     return SUCCESS_RESPONSE;
   }
 }

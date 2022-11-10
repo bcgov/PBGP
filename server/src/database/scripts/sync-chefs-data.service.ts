@@ -3,11 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Application } from '../../application/application.entity';
-import {
-  CHEFS_BASE_URL,
-  CHEFS_FORM_IDS,
-  REQUEST_METHODS,
-} from '../../common/constants';
+import { CHEFS_BASE_URL, CHEFS_FORM_IDS, REQUEST_METHODS } from '../../common/constants';
 import { ApplicationService } from '@/application/application.service';
 import { SaveApplicationDto } from '@/common/dto/save-application.dto';
 import { ReviewStatuses } from '@/common/enums';
@@ -50,30 +46,31 @@ export class SyncChefsDataService {
             ...options,
             url: this.getSubmissionUrl(submission),
           });
+          const responseData = submissionResponse.data.submission;
           const dbSubmission = await this.applicationRepo.findOne({
             where: { submissionId: submission },
           });
+          const appService = new ApplicationService(this.applicationRepo);
+
+          const newSubmissionData: SaveApplicationDto = {
+            submissionId: responseData.id,
+            submission: responseData.submission.data,
+            confirmationId: responseData.confirmationId,
+            facilityName: responseData.submission.data.facilityName,
+            assignedTo: null,
+            status: ReviewStatuses.INITIAL_REVIEW,
+          };
 
           if (dbSubmission) {
             // Update
             console.log('Submission exists: updating');
+            await appService.updateApplication(dbSubmission.id, newSubmissionData);
           } else {
             // Create
             console.log("Submission doesn't exist: creating");
             // Create FormMetaData as well later, then pass the ID to the application
-            const appService = new ApplicationService(this.applicationRepo);
-            const newSubmissionData: SaveApplicationDto = {
-              submissionId: submissionResponse.data.submission.id,
-              submission: submissionResponse.data.submission.submission.data,
-              confirmationId: submissionResponse.data.submission.confirmationId,
-              facilityName: submissionResponse.data.submission.submission.data.facilityName,
-              assignedTo: null,
-              status: ReviewStatuses.INITIAL_REVIEW,
-            };
-            const application = await appService.createApplication(newSubmissionData);
+            await appService.createApplication(newSubmissionData);
           }
-
-          //   console.log(submissionResponse.data);
         }
       } catch (e) {
         console.log(e);

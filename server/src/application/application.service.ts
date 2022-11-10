@@ -29,7 +29,10 @@ export class ApplicationService {
     return application;
   }
 
-  async saveApplication(applicationId: string, applicationDto: SaveApplicationDto): Promise<void> {
+  async updateApplication(
+    applicationId: string,
+    applicationDto: SaveApplicationDto
+  ): Promise<void> {
     await this.applicationRepository.update(applicationId, applicationDto);
   }
 }
