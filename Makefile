@@ -125,6 +125,20 @@ db-postgres-tunnel:
 # 	@oc process -f openshift/ches.prep.yml -p APP_NAME=$(APP_NAME) | oc create -n $(TARGET_NAMESPACE) -f -
 # 	@oc process -f openshift/keycloak.prep.yml -p APP_NAME=$(APP_NAME) | oc create -n $(TARGET_NAMESPACE) -f -
 
+# server-config-test:
+# 	@oc -n $(TARGET_NAMESPACE)  process -f openshift/server.dc.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) CONFIG_VERSION=$(COMMIT_SHA)  | oc apply -n $(TARGET_NAMESPACE) -f - --dry-run=client
+
+# server-config: server-config-test
+# 	@oc -n $(TARGET_NAMESPACE) process -f openshift/server.dc.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) CONFIG_VERSION=$(COMMIT_SHA) | oc apply -n $(TARGET_NAMESPACE) -f -
+
+# server-build-config-test:
+# 	@echo "Testing Building config in $(TOOLS_NAMESPACE) namespace"
+# 	@oc -n $(TOOLS_NAMESPACE) process -f openshift/server.bc.yml -p REF=$(BUILD_REF) -p APP_NAME=$(APP_NAME) | oc apply -n $(TOOLS_NAMESPACE) -f - --dry-run=client
+
+# build-config: server-build-config-test
+# 	@echo "Processiong and applying Building config in $(TOOLS_NAMESPACE) namespace"
+# 	@oc -n $(TOOLS_NAMESPACE) process -f openshift/server.bc.yml -p REF=$(BUILD_REF) -p APP_NAME=$(APP_NAME) | oc apply -n $(TOOLS_NAMESPACE) -f -
+
 app-create:
 	@oc process -f openshift/app.bc.yml -p APP_NAME=$(APP_NAME) APP_TYPE=server | oc apply -n $(TOOLS_NAMESPACE) -f -
 	@oc process -f openshift/app.bc.yml -p APP_NAME=$(APP_NAME) APP_TYPE=client | oc apply -n $(TOOLS_NAMESPACE) -f -
@@ -135,28 +149,16 @@ client-create:
 server-create:
 	@oc process -f openshift/server.dc.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) | oc apply -n $(TARGET_NAMESPACE) -f -
 
-server-config-test:
-	@oc -n $(TARGET_NAMESPACE)  process -f openshift/server.dc.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) CONFIG_VERSION=$(COMMIT_SHA)  | oc apply -n $(TARGET_NAMESPACE) -f - --dry-run=client
+client-build:
+	@echo "Building client image in $(TOOLS_NAMESPACE) namespace"
+	@oc cancel-build bc/$(APP_NAME)-client -n $(TOOLS_NAMESPACE)
+	@oc start-build $(APP_NAME)-client -n $(TOOLS_NAMESPACE) --wait --follow=true --build-arg VERSION="$(LAST_COMMIT)"
 
-server-config: server-config-test
-	@oc -n $(TARGET_NAMESPACE) process -f openshift/server.dc.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) CONFIG_VERSION=$(COMMIT_SHA) | oc apply -n $(TARGET_NAMESPACE) -f -
-
-server-build-config-test:
-	@echo "Testing Building config in $(TOOLS_NAMESPACE) namespace"
-	@oc -n $(TOOLS_NAMESPACE) process -f openshift/server.bc.yml -p REF=$(BUILD_REF) -p APP_NAME=$(APP_NAME) | oc apply -n $(TOOLS_NAMESPACE) -f - --dry-run=client
-
-build-config: server-build-config-test
-	@echo "Processiong and applying Building config in $(TOOLS_NAMESPACE) namespace"
-	@oc -n $(TOOLS_NAMESPACE) process -f openshift/server.bc.yml -p REF=$(BUILD_REF) -p APP_NAME=$(APP_NAME) | oc apply -n $(TOOLS_NAMESPACE) -f -
-
-server-build:
+server-build: client-build
 	@echo "Building server image in $(TOOLS_NAMESPACE) namespace"
 	@oc cancel-build bc/$(APP_NAME)-server -n $(TOOLS_NAMESPACE)
 	@oc start-build $(APP_NAME)-server -n $(TOOLS_NAMESPACE) --wait --follow=true --build-arg VERSION="$(LAST_COMMIT)"
 
 deploy:
 	@oc -n $(TOOLS_NAMESPACE) tag $(APP_NAME)-server:latest $(APP_NAME)-server:$(OS_NAMESPACE_SUFFIX)
-
-# @oc -n $(TOOLS_NAMESPACE) tag $(APP_NAME)-server:latest $(APP_NAME)-server:$(COMMIT_SHA)
-# @oc -n $(TOOLS_NAMESPACE) tag $(APP_NAME)-client:latest $(APP_NAME)-client:$(OS_NAMESPACE_SUFFIX)	
-# @oc tag $(APP_NAME)-server:latest $(APP_NAME)-server:$(OS_NAMESPACE_SUFFIX)
+	@oc -n $(TOOLS_NAMESPACE) tag $(APP_NAME)-client:latest $(APP_NAME)-client:$(OS_NAMESPACE_SUFFIX)
