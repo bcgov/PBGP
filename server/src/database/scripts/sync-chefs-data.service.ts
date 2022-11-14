@@ -7,6 +7,7 @@ import { REQUEST_METHODS } from '../../common/constants';
 import { ApplicationService } from '@/application/application.service';
 import { SaveApplicationDto } from '@/common/dto/save-application.dto';
 import { ReviewStatuses } from '@/common/enums';
+import { AxiosOptions } from '@/common/interfaces';
 
 // CHEFS Constants
 const CHEFS_FORM_IDS = ['4b19eee6-f42d-481f-8279-cbc28ab68cf0'];
@@ -25,6 +26,38 @@ export class SyncChefsDataService {
   }
   private getSubmissionUrl(submissionId: string): string {
     return `${CHEFS_BASE_URL}/submissions/${submissionId}`;
+  }
+
+  private async createOrUpdateSubmission(
+    submissionId: string,
+    axiosOptions: AxiosOptions
+  ): Promise<void> {
+    const submissionResponse = await axios(axiosOptions);
+    const responseData = submissionResponse.data.submission;
+    const dbSubmission = await this.applicationRepo.findOne({
+      where: { submissionId: submissionId },
+    });
+
+    const newSubmissionData: SaveApplicationDto = {
+      submissionId: responseData.id,
+      submission: responseData.submission.data,
+      confirmationId: responseData.confirmationId,
+      facilityName: responseData.submission.data.facilityName,
+      assignedTo: null,
+      status: ReviewStatuses.INITIAL_REVIEW,
+    };
+
+    if (dbSubmission) {
+      // Update
+      Logger.log('Submission exists: updating');
+      await this.appService.updateApplication(dbSubmission.id, newSubmissionData);
+    } else {
+      // Create
+      Logger.log("Submission doesn't exist: creating");
+
+      // Create FormMetaData as well later, then pass the ID to the application
+      await this.appService.createApplication(newSubmissionData);
+    }
   }
 
   async syncChefsData(): Promise<void> {
@@ -50,35 +83,10 @@ export class SyncChefsDataService {
 
         for (const submissionId of submissionIds) {
           try {
-            const submissionResponse = await axios({
+            this.createOrUpdateSubmission(submissionId, {
               ...options,
               url: this.getSubmissionUrl(submissionId),
             });
-            const responseData = submissionResponse.data.submission;
-            const dbSubmission = await this.applicationRepo.findOne({
-              where: { submissionId: submissionId },
-            });
-
-            const newSubmissionData: SaveApplicationDto = {
-              submissionId: responseData.id,
-              submission: responseData.submission.data,
-              confirmationId: responseData.confirmationId,
-              facilityName: responseData.submission.data.facilityName,
-              assignedTo: null,
-              status: ReviewStatuses.INITIAL_REVIEW,
-            };
-
-            if (dbSubmission) {
-              // Update
-              Logger.log('Submission exists: updating');
-              await this.appService.updateApplication(dbSubmission.id, newSubmissionData);
-            } else {
-              // Create
-              Logger.log("Submission doesn't exist: creating");
-
-              // Create FormMetaData as well later, then pass the ID to the application
-              await this.appService.createApplication(newSubmissionData);
-            }
           } catch (e) {
             Logger.log(e);
           }
