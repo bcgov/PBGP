@@ -1,4 +1,4 @@
-name: FE PR Checks
+name: BE PR Checks
 
 env:
   GIT_LOCAL_BRANCH: ${{ github.sha }}
@@ -6,11 +6,11 @@ env:
 on: [pull_request]
 
 jobs:
-  fe-pr-checks:
+  be-pr-checks:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./client
+        working-directory: ./server
 
     steps:
       - uses: actions/checkout@v3
@@ -25,16 +25,12 @@ jobs:
         name: Cache yarn
         with:
           path: ./.yarn/cache
-          key: ${{ runner.os }}-fe-yarn-${{ hashFiles('client/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-fe-yarn-${{ hashFiles('client/yarn.lock') }}
+          key: ${{ runner.os }}-fe-yarn-${{ hashFiles('server/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-fe-yarn-${{ hashFiles('server/yarn.lock') }}
 
       - name: Install dependencies
         run: |
           yarn install --immutable
-
-      - name: Check format
-        run: |
-          yarn run format:check
 
       - name: Check lint
         run: |
