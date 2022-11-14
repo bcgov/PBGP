@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Form, Formik, FormikProps } from 'formik';
+import { Form, Formik } from 'formik';
 import { Field, FormStepTitles, FormSteps, Button } from '@components';
-import { AuthorizationInterface } from 'constants/interfaces';
 import SignaturePad from 'react-signature-canvas';
 import SignatureCanvas from 'react-signature-canvas';
 
@@ -13,7 +12,7 @@ const initialValues = {
 const SignPad: React.FC<any> = () => {
   const [dataURL, setDataURL] = useState<string | null>(null);
   const [showSign, setShowSign] = useState<boolean | null>(false);
-  let padRef = useRef<SignatureCanvas>(null);
+  const padRef = useRef<SignatureCanvas>(null);
   const clear = () => {
     padRef.current?.clear();
   };
@@ -60,8 +59,9 @@ const SignPad: React.FC<any> = () => {
 
 export const AuthorizationPage: React.FC = () => {
   return (
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     <Formik initialValues={initialValues} onSubmit={() => {}}>
-      {({ values }: FormikProps<AuthorizationInterface>) => (
+      {() => (
         <Form className='flex justify-center'>
           <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center'>
             <div className='mb-4 flex items-center flex-col'>

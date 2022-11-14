@@ -28,7 +28,7 @@ export const Radio: RadioType = ({ title, legend, name, options, horizontal }) =
         className={classnames(
           'flex',
           { 'flex-col gap-4': !horizontal },
-          { 'flex-row gap-8': horizontal }
+          { 'flex-row gap-8': horizontal },
         )}
       >
         {options.map((option, index) => (
@@ -85,7 +85,7 @@ const BooleanRadio: React.FC<BooleanRadioProps> = ({
         className={classnames(
           'flex',
           { 'flex-col gap-4': !horizontal },
-          { 'flex-row gap-8': horizontal }
+          { 'flex-row gap-8': horizontal },
         )}
       >
         <label className='flex items-center cursor-pointer leading-none'>

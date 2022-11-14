@@ -1,6 +1,5 @@
-import { Form, Formik, FormikProps } from 'formik';
+import { Form, Formik } from 'formik';
 import { Textarea, FormStepTitles, FormSteps } from '@components';
-import { EnvironmentalInfoInterface } from 'constants/interfaces';
 
 const initialValues = {
   environmentalProjectDescription: '',
@@ -11,8 +10,9 @@ const initialValues = {
 
 export const EnvironmentalConsiderations: React.FC = () => {
   return (
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     <Formik initialValues={initialValues} onSubmit={() => {}}>
-      {({ values }: FormikProps<EnvironmentalInfoInterface>) => (
+      {() => (
         <Form className='flex justify-center'>
           <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center'>
             <div className='mb-4 flex items-center flex-col'>

@@ -9,13 +9,7 @@ interface CheckboxProps {
   styles?: string;
 }
 
-export const CheckBoxExplain: React.FC<CheckboxProps> = ({
-  name,
-  label,
-  value,
-  textvalue,
-  styles = '',
-}) => {
+export const CheckBoxExplain: React.FC<CheckboxProps> = ({ name, label, value, textvalue }) => {
   return (
     <>
       <div className='flex flex- w-full justify-start my-2'>

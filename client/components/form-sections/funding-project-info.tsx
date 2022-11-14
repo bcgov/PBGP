@@ -1,6 +1,5 @@
-import { Form, Formik, FormikProps } from 'formik';
-import { Field, Radio, Select, Option, FormStepTitles, FormSteps } from '@components';
-import { FundingProjectCostInfoInterface } from 'constants/interfaces';
+import { Form, Formik } from 'formik';
+import { Field, Radio, FormStepTitles, FormSteps } from '@components';
 
 const initialValues = {
   contingencyPlan: '',
@@ -14,8 +13,9 @@ const initialValues = {
 
 export const FundingProjectCostInfo: React.FC = () => {
   return (
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     <Formik initialValues={initialValues} onSubmit={() => {}}>
-      {({ values }: FormikProps<FundingProjectCostInfoInterface>) => (
+      {() => (
         <Form className='flex justify-center'>
           <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center'>
             <div className='mb-4 flex items-center flex-col'>

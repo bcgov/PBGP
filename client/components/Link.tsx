@@ -8,7 +8,7 @@ export interface LinkProps extends NextLinkProps {
   children: React.ReactNode;
 }
 
-export const Link: React.FC<LinkProps> = (props) => {
+export const Link: React.FC<LinkProps> = props => {
   const { href, variant, disabled, shallow, replace, children } = props;
 
   if (disabled) {

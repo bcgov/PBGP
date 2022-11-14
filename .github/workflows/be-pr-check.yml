@@ -1,0 +1,41 @@
+name: BE PR Checks
+
+env:
+  GIT_LOCAL_BRANCH: ${{ github.sha }}
+
+on: [pull_request]
+
+jobs:
+  be-pr-checks:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+
+    steps:
+      - uses: actions/checkout@v3
+        name: checkout
+
+      - name: Setup pre-reqs
+        run: |
+          npm install yarn -g && yarn set version ./.yarn/releases/yarn-3.2.4.cjs
+        shell: bash
+
+      - uses: actions/cache@v2
+        name: Cache yarn
+        with:
+          path: server/.yarn/cache
+          key: ${{ runner.os }}-fe-yarn-${{ hashFiles('server/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-fe-yarn-${{ hashFiles('server/yarn.lock') }}
+
+      - name: Install dependencies
+        run: |
+          yarn install --immutable
+
+      - name: Check lint
+        run: |
+          yarn run lint
+
+      - name: Test build
+        run: |
+          yarn build
