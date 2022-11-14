@@ -16,7 +16,8 @@ const CHEFS_BASE_URL = 'https://submit.digital.gov.bc.ca/app/api/v1';
 export class SyncChefsDataService {
   constructor(
     @InjectRepository(Application)
-    private readonly applicationRepo: Repository<Application> // private readonly appService: ApplicationService = new ApplicationService(applicationRepo)
+    private readonly applicationRepo: Repository<Application>,
+    private readonly appService: ApplicationService = new ApplicationService(applicationRepo)
   ) {}
 
   private getFormUrl(formId: string): string {
@@ -55,7 +56,6 @@ export class SyncChefsDataService {
             const dbSubmission = await this.applicationRepo.findOne({
               where: { submissionId: submissionid },
             });
-            const appService = new ApplicationService(this.applicationRepo);
 
             const newSubmissionData: SaveApplicationDto = {
               submissionId: responseData.id,
@@ -69,12 +69,12 @@ export class SyncChefsDataService {
             if (dbSubmission) {
               // Update
               console.log('Submission exists: updating');
-              await appService.updateApplication(dbSubmission.id, newSubmissionData);
+              await this.appService.updateApplication(dbSubmission.id, newSubmissionData);
             } else {
               // Create
               console.log("Submission doesn't exist: creating");
               // Create FormMetaData as well later, then pass the ID to the application
-              await appService.createApplication(newSubmissionData);
+              await this.appService.createApplication(newSubmissionData);
             }
           } catch (e) {
             console.log(e);
