@@ -32,8 +32,6 @@ jobs:
           yarn install --immutable
 
       - name: Build dependencies
-        run: yarn build
-
-      - name: Close containers
-        run: make close-test
-        if: ${{ always() }}
+        run: |
+          cd client
+          yarn build
