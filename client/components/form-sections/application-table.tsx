@@ -17,7 +17,7 @@ const TableHeader: React.FC = () => {
   const tdStyles =
     'table-td table-header px-6 py-4 text-left text-sm font-strong border-b-2  border-amber-200';
   return (
-    <thead className='border-b bg-gray-100 table-row-fixed table-header'>
+    <thead className='border-b bg-gray-100 table-header'>
       <tr>
         {headers &&
           headers.map((title: string, index: number) => (
@@ -43,7 +43,7 @@ const TableBody: React.FC = (applications: any) => {
           <tr
             key={`row${index}`}
             onClick={() => handleSelectRow(row.BCAAP_Form_ID)}
-            className='bg-white border-b-2 table-row-fixed even:bg-gray-50
+            className='bg-white border-b-2 even:bg-gray-50
               border-gray-100'
           >
             <td className={tdStyles}>{row.Confirmation_ID}</td>

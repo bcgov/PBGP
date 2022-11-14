@@ -46,7 +46,7 @@ export const Pagination: React.FC<PaginationProps> = (props) => {
           </p>
         </div>
 
-        {totalApplications != 0 && (
+        {totalApplications != 0 && totalApplications > applicationsPerPage && (
           <div
             className='relative z-0 inline-flex rounded-md shadow-sm -space-x-px gap-1'
             aria-label='Pagination'
