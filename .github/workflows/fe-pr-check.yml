@@ -22,16 +22,16 @@ jobs:
       - uses: actions/cache@v2
         name: Cache yarn
         with:
-          path: ./.yarn/cache
-          key: ${{ runner.os }}-fe-yarn-${{ hashFiles('./yarn.lock') }}
-          restore-keys: ${{ runner.os }}-fe-yarn-${{ hashFiles('./yarn.lock') }}
+          path: client/.yarn/cache
+          key: ${{ runner.os }}-fe-yarn-${{ hashFiles('client/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-fe-yarn-${{ hashFiles('client/yarn.lock') }}
 
       - name: Install dependencies
         run: |
           cd client
           yarn install --immutable
 
-      - name: Build dependencies
+      - name: Test build
         run: |
           cd client
           yarn build
