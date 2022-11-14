@@ -17,6 +17,7 @@ const initialValues = {
 
 export const GeneralProjectInfo: React.FC = () => {
   return (
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     <Formik initialValues={initialValues} onSubmit={() => {}}>
       {({ values }: FormikProps<GeneralInfoInterface>) => (
         <Form className='flex justify-center'>

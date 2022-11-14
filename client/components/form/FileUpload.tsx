@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
@@ -9,15 +9,15 @@ export interface FileUploadProps {
   description: string;
 }
 
-export const FileUpload: React.FC<FileUploadProps> = ({ title, description, handleChange }) => {
-  const onDrop = useCallback((acceptedFiles: any) => {
+export const FileUpload: React.FC<FileUploadProps> = ({ title, description }) => {
+  const onDrop = useCallback(() => {
     // Pass the new File as param
     // handleChange(acceptedFiles);
   }, []);
-  const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({ onDrop });
   const files =
     acceptedFiles.length > 0 &&
-    acceptedFiles.map((file) => {
+    acceptedFiles.map(file => {
       return <span key={file.name}>{file.name}</span>;
     });
 

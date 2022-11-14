@@ -8,7 +8,7 @@ export interface OptionType {
   selected?: boolean;
 }
 
-export const Select: React.FC<FieldProps> = (props) => {
+export const Select: React.FC<FieldProps> = props => {
   const { name, label, disabled, description, children } = props;
 
   return (

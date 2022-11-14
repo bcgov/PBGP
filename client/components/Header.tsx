@@ -8,7 +8,7 @@ import { useAuthContext } from '@contexts';
 
 export const Header: React.FC = () => {
   const router = useRouter();
-  const { keycloak, user } = useAuthContext();
+  const { keycloak } = useAuthContext();
   const headerRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {

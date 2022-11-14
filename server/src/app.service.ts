@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  constructor() {}
-
   getVersionInfo(): object {
     return {
       buildId: process.env.BUILD_ID ?? 'NA',

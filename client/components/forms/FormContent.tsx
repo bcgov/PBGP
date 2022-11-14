@@ -15,7 +15,7 @@ interface FormContentProps {
   formTitle: string;
 }
 
-export const FormContent: React.FC<FormContentProps> = ({ step, formTitle }) => {
+export const FormContent: React.FC<FormContentProps> = ({ formTitle }) => {
   const showStepContent = () => {
     switch (formTitle) {
       case FormSteps.CONTACT_INFO:

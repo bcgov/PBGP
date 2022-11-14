@@ -76,7 +76,7 @@ export interface FundingProjectCostInfoInterface {
 }
 
 export interface SupportDocsInterface {
-  docList: any[string],
+  docList: any[string];
 }
 
 export interface AuthorizationInterface {

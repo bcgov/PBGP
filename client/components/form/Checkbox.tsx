@@ -47,7 +47,6 @@ interface CheckboxArrayProps {
 
 export const CheckboxArray: React.FC<CheckboxArrayProps> = ({
   description,
-  name,
   legend,
   options,
   classes,
@@ -57,7 +56,7 @@ export const CheckboxArray: React.FC<CheckboxArrayProps> = ({
       <legend className='text-xl text-bcBlack font-bold w-full'>{legend}</legend>
       <p className='text-gray-400 mb-2 text-sm'>{description}</p>
       <div className={`grid ${classes}}`}>
-        {options.map((option) => (
+        {options.map(option => (
           <Checkbox
             key={option.value}
             name={option.name}

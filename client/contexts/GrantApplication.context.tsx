@@ -84,7 +84,8 @@ export const GrantApplicationProvider = ({ children }: any) => {
 
   const updateNextTriggered = () => dispatch({ type: GrantApplicationActions.NEXT_TRIGGERED });
   const updateProceedToNext = () => dispatch({ type: GrantApplicationActions.PROCEED_TO_NEXT });
-  const updateWaitForValidation = () => dispatch({ type: GrantApplicationActions.WAIT_FOR_VALIDATION });
+  const updateWaitForValidation = () =>
+    dispatch({ type: GrantApplicationActions.WAIT_FOR_VALIDATION });
   const updateSessionId = (sessionId: string) =>
     dispatch({ type: GrantApplicationActions.UPDATE_SESSION_ID, payload: { sessionId } });
 
@@ -92,7 +93,10 @@ export const GrantApplicationProvider = ({ children }: any) => {
     dispatch({ type: GrantApplicationActions.UPDATE_SHOW_MODAL, payload: { showModal } });
 
   const updateCanProceedToPrevious = (canProceedToPrevious: boolean) =>
-    dispatch({ type: GrantApplicationActions.PROCEED_TO_PREVIOUS, payload: { canProceedToPrevious } });
+    dispatch({
+      type: GrantApplicationActions.PROCEED_TO_PREVIOUS,
+      payload: { canProceedToPrevious },
+    });
 
   return (
     <GrantApplicationContext.Provider

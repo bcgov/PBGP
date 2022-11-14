@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Formik, FormikProps } from 'formik';
+import React from 'react';
+import { Form, Formik } from 'formik';
 import { FormStepTitles, FormSteps, FileUpload } from '@components';
-import { SupportDocsInterface } from 'constants/interfaces';
 
 const initialValues = {
   docList: [],
 };
 
 export const SupportDocsChecklist: React.FC = () => {
-  const [fileArray, setFileArray] = useState<any>([]);
-  
-  const  handleChange = (file: any) => {
-    let name = file[0].name;
-    setFileArray((p: any) => [...p, String(name)]);
-  }
+  // const [fileArray, setFileArray] = useState<any>([]);
+
+  const handleChange = () => {
+    // const name = file[0].name;
+    // setFileArray((p: any) => [...p, String(name)]);
+  };
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     <Formik initialValues={initialValues} onSubmit={() => {}}>
-      {({ values }: FormikProps<SupportDocsInterface>) => (
+      {() => (
         <Form className='flex justify-center'>
           <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center'>
             <div className='mb-4 flex items-center flex-col'>
