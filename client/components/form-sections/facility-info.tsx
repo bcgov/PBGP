@@ -1,7 +1,6 @@
-import { Form, Formik, FormikProps } from 'formik';
+import { Form, Formik } from 'formik';
 import { Radio, CheckboxArray, Textarea } from '@components';
 import { FacilityType, FacilityUsage, StatusPerTransport } from '../../constants';
-import { FacilityInfoInterface } from 'constants/interfaces';
 
 const initialValues = {
   facilityType: '',
@@ -16,8 +15,9 @@ const initialValues = {
 
 export const FacilityInfo: React.FC = () => {
   return (
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     <Formik initialValues={initialValues} onSubmit={() => {}}>
-      {({ values }: FormikProps<FacilityInfoInterface>) => (
+      {() => (
         <Form className='flex justify-center'>
           <div className='w-2/4 p-4 gap-y-6 bg-white flex flex-col items-center'>
             <div className='mb-4 flex items-center flex-col'>

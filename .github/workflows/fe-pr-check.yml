@@ -8,6 +8,9 @@ on: [pull_request]
 jobs:
   pr-checks:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
 
     steps:
       - uses: actions/checkout@v3
@@ -15,23 +18,28 @@ jobs:
 
       - name: Setup pre-reqs
         run: |
-          cd client
           npm install yarn -g && yarn set version ./.yarn/releases/yarn-3.2.4.cjs
         shell: bash
 
       - uses: actions/cache@v2
         name: Cache yarn
         with:
-          path: client/.yarn/cache
-          key: ${{ runner.os }}-fe-yarn-${{ hashFiles('client/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-fe-yarn-${{ hashFiles('client/yarn.lock') }}
+          path: ./.yarn/cache
+          key: ${{ runner.os }}-fe-yarn-${{ hashFiles('./yarn.lock') }}
+          restore-keys: ${{ runner.os }}-fe-yarn-${{ hashFiles('./yarn.lock') }}
 
       - name: Install dependencies
         run: |
-          cd client
           yarn install --immutable
 
-      - name: Test FE build
+      - name: Check format
         run: |
-          cd client
+          yarn run format:check
+
+      - name: Check lint
+        run: |
+          yarn run lint
+
+      - name: Test build
+        run: |
           yarn build

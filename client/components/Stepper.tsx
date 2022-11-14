@@ -6,7 +6,7 @@ interface StepProps {
   currentStep: number;
 }
 
-const Step: React.FC<StepProps> = ({ index, step, label, isLast, currentStep }) => {
+const Step: React.FC<StepProps> = ({ index, label, isLast, currentStep }) => {
   return (
     <div key={index} className={!isLast ? 'w-full flex items-center' : 'flex items-center'}>
       <div className='relative flex flex-col items-center '>
