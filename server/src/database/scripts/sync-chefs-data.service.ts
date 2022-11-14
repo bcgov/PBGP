@@ -4,10 +4,10 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Application } from '../../application/application.entity';
 import { REQUEST_METHODS } from '../../common/constants';
-import { ApplicationService } from '@/application/application.service';
-import { SaveApplicationDto } from '@/common/dto/save-application.dto';
-import { ReviewStatuses } from '@/common/enums';
-import { AxiosOptions } from '@/common/interfaces';
+import { ApplicationService } from '../../application/application.service';
+import { SaveApplicationDto } from '../../common/dto/save-application.dto';
+import { ReviewStatuses } from '../../common/enums';
+import { AxiosOptions } from '../../common/interfaces';
 
 // CHEFS Constants
 const CHEFS_FORM_IDS = ['4b19eee6-f42d-481f-8279-cbc28ab68cf0'];
