@@ -25,8 +25,8 @@ jobs:
         name: Cache yarn
         with:
           path: ./.yarn/cache
-          key: ${{ runner.os }}-fe-yarn-${{ hashFiles('./yarn.lock') }}
-          restore-keys: ${{ runner.os }}-fe-yarn-${{ hashFiles('./yarn.lock') }}
+          key: ${{ runner.os }}-fe-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: ${{ runner.os }}-fe-yarn-${{ hashFiles('yarn.lock') }}
 
       - name: Install dependencies
         run: |
