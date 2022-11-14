@@ -5,7 +5,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format:check": "yarn prettier --check ."
+    "format:check": "yarn prettier --check .",
+    "format:write": "yarn prettier --write ."
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "6.2.0",

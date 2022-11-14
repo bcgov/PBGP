@@ -21,7 +21,7 @@ export const buttonBase = `w-auto inline-flex justify-center items-center rounde
   disabled:opacity-50
   focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:text-sm`;
 
-export const Button: React.FC<ButtonProps> = (props) => {
+export const Button: React.FC<ButtonProps> = props => {
   const { variant, type, children, disabled, loading, onClick } = props;
   return (
     <button

@@ -13,7 +13,7 @@ export interface FieldProps extends FieldConfig {
   children?: React.ReactNode;
 }
 
-export const Field: React.FC<FieldProps> = (props) => {
+export const Field: React.FC<FieldProps> = props => {
   const {
     name,
     label,
@@ -46,7 +46,7 @@ export const Field: React.FC<FieldProps> = (props) => {
             border-b-2 border-bcBlack pl-1 disabled:bg-bcDisabled`,
             {
               'border-red-500': meta.touched && meta.error,
-            }
+            },
           )
         }
         disabled={disabled}
