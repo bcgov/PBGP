@@ -1,5 +1,5 @@
 import { Button, SearchBar } from '@components';
-import { Pagination } from '../../components/form/Pagination';
+import { Pagination } from '../components/form/Pagination';
 import { useState } from 'react';
 import initialValues from './example_submission_data.json';
 
