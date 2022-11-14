@@ -13,7 +13,7 @@ export type PaginationProps = {
   nextPage: () => void;
 };
 
-export const Pagination: React.FC<PaginationProps> = (props) => {
+export const Pagination: React.FC<PaginationProps> = props => {
   const {
     currentPage,
     applicationsPerPage,

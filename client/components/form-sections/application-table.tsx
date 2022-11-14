@@ -96,7 +96,7 @@ export const ApplicationDashboard: React.FC<any> = () => {
   const indexOfFirstApplication = indexOfLastApplication - applicationsPerPage;
   const currentApplications = filteredApplications.slice(
     indexOfFirstApplication,
-    indexOfLastApplication
+    indexOfLastApplication,
   );
 
   // Change pages
