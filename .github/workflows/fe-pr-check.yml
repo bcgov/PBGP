@@ -1,0 +1,34 @@
+name: FE PR Checks
+
+env:
+  GIT_LOCAL_BRANCH: ${{ github.sha }}
+
+on:
+  pull_request:
+    paths:
+      - "client"
+
+jobs:
+  pr-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        name: checkout
+
+      - uses: actions/cache@v2
+        name: Cache yarn
+        with:
+          path: ./.yarn/cache
+          key: ${{ runner.os }}-fe-yarn-${{ hashFiles('./yarn.lock') }}
+          restore-keys: ${{ runner.os }}-fe-yarn-${{ hashFiles('./yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build dependencies
+        run: yarn build
+
+      - name: Close containers
+        run: make close-test
+        if: ${{ always() }}
