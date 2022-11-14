@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Application } from '../../application/application.entity';
@@ -17,7 +17,7 @@ export class SyncChefsDataService {
   constructor(
     @InjectRepository(Application)
     private readonly applicationRepo: Repository<Application>,
-    private readonly appService: ApplicationService = new ApplicationService(applicationRepo)
+    private readonly appService: ApplicationService
   ) {}
 
   private getFormUrl(formId: string): string {
@@ -31,9 +31,9 @@ export class SyncChefsDataService {
     const method = REQUEST_METHODS.GET;
     const headers = { 'Content-Type': 'application/x-www-formid-urlencoded' };
 
-    for (const formid of CHEFS_FORM_IDS) {
+    for (const formId of CHEFS_FORM_IDS) {
       const auth = {
-        username: formid,
+        username: formId,
         password: process.env.CHEFS_FORM_API_KEY,
       };
       const options = {
@@ -43,18 +43,20 @@ export class SyncChefsDataService {
       };
 
       try {
-        const formResponse = await axios({ ...options, url: this.getFormUrl(formid) });
-        const submissionIds = formResponse.data.map((submission) => submission.submissionId);
+        const formResponse = await axios({ ...options, url: this.getFormUrl(formId) });
+        const submissionIds = formResponse.data
+          .filter((submission) => submission.formSubmissionStatusCode === 'SUBMITTED')
+          .map((submission) => submission.submissionId);
 
-        for (const submissionid of submissionIds) {
+        for (const submissionId of submissionIds) {
           try {
             const submissionResponse = await axios({
               ...options,
-              url: this.getSubmissionUrl(submissionid),
+              url: this.getSubmissionUrl(submissionId),
             });
             const responseData = submissionResponse.data.submission;
             const dbSubmission = await this.applicationRepo.findOne({
-              where: { submissionId: submissionid },
+              where: { submissionId: submissionId },
             });
 
             const newSubmissionData: SaveApplicationDto = {
@@ -68,20 +70,21 @@ export class SyncChefsDataService {
 
             if (dbSubmission) {
               // Update
-              console.log('Submission exists: updating');
+              Logger.log('Submission exists: updating');
               await this.appService.updateApplication(dbSubmission.id, newSubmissionData);
             } else {
               // Create
-              console.log("Submission doesn't exist: creating");
+              Logger.log("Submission doesn't exist: creating");
+
               // Create FormMetaData as well later, then pass the ID to the application
               await this.appService.createApplication(newSubmissionData);
             }
           } catch (e) {
-            console.log(e);
+            Logger.log(e);
           }
         }
       } catch (e) {
-        console.log(e);
+        Logger.log(e);
       }
     }
   }

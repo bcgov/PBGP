@@ -7,20 +7,12 @@ import { LoggerMiddleware } from './logger.middleware';
 import { UserModule } from './user/user.module';
 import { ApplicationModule } from './application/application.module';
 import { AuthModule } from './auth/auth.module';
-import { SyncChefsDataService } from './database/scripts/sync-chefs-data.service';
 import { FormMetaDataModule } from './FormMetaData/formmetadata.module';
 
 @Module({
-  imports: [
-    DatabaseModule,
-    AuthModule,
-    FormMetaDataModule,
-    FormMetaDataModule,
-    ApplicationModule,
-    UserModule,
-  ],
+  imports: [DatabaseModule, AuthModule, FormMetaDataModule, ApplicationModule, UserModule],
   controllers: [AppController],
-  providers: [Logger, AppLogger, AppService, SyncChefsDataService],
+  providers: [Logger, AppLogger, AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
