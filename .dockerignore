@@ -1,0 +1,7 @@
+.eslintrc
+Dockerfile
+client/node_modules
+server/node_modules
+node_modules
+.pgdata
+server/dist
