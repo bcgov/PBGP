@@ -21,8 +21,6 @@ jobs:
 
       - uses: actions/cache@v2
         name: Cache yarn
-        run: |
-          cd client
         with:
           path: ./.yarn/cache
           key: ${{ runner.os }}-fe-yarn-${{ hashFiles('./yarn.lock') }}
