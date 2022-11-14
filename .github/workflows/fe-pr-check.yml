@@ -12,8 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: checkout
-        with:
-          path: client
 
       - name: Setup pre-reqs
         run: |
