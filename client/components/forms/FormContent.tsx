@@ -8,7 +8,6 @@ import {
   FundingProjectCostInfo,
   SupportDocsChecklist,
   AuthorizationPage,
-  ApplicationPage
 } from '../form-sections';
 
 interface FormContentProps {
@@ -20,7 +19,7 @@ export const FormContent: React.FC<FormContentProps> = ({ step, formTitle }) => 
   const showStepContent = () => {
     switch (formTitle) {
       case FormSteps.CONTACT_INFO:
-        return <ApplicationPage />;
+        return <ContactInfo />;
       case FormSteps.GENERAL_INFO:
         return <GeneralProjectInfo />;
       case FormSteps.FACILITY_INFO:
