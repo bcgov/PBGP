@@ -4,8 +4,8 @@ import { useState } from 'react';
 import initialValues from './example_submission_data.json';
 
 export interface ActivitiesGapProps {
-  step: number;
-  title: string;
+  // step: number;
+  // title: string;
 }
 
 const TableHeader: React.FC = () => {
@@ -82,7 +82,7 @@ const ApplicationTable: React.FC = (applications: any) => {
   );
 };
 
-export const ApplicationPage: React.FC<ActivitiesGapProps> = ({ title }) => {
+export const ApplicationDashboard: React.FC<ActivitiesGapProps> = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [applicationsPerPage] = useState<number>(10);
   const [searchValue, setSearchValue]: [string, (search: string) => void] = useState('');
