@@ -2,6 +2,9 @@ import { Button, SearchBar } from '@components';
 import { Pagination } from '../form';
 import { useState } from 'react';
 import { ApplicationTableData } from '../../constants';
+import { ApplicationDataInterface } from '../../constants/interfaces';
+
+type Props = { applications: ApplicationDataInterface[] };
 
 const TableHeader: React.FC = () => {
   const headers = [
@@ -30,7 +33,7 @@ const TableHeader: React.FC = () => {
   );
 };
 
-const TableBody: React.FC = (applications: any) => {
+const TableBody: React.FC<Props> = (applications) => {
   const handleSelectRow = (index: number) => {
     alert(index);
   };
@@ -60,7 +63,7 @@ const TableBody: React.FC = (applications: any) => {
   );
 };
 
-const ApplicationTable: React.FC = (applications: any) => {
+const ApplicationTable: React.FC<Props> = (applications) => {
   return (
     <div className='customTable'>
       <table className='min-w-full text-center'>
