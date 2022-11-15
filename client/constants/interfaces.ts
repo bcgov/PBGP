@@ -85,14 +85,14 @@ export interface AuthorizationInterface {
 }
 
 export interface ApplicationDataInterface {
-    Application_ID: string;
-    Submission: string;
-    Confirmation_ID: string;
-    Facility_Name: string;
-    Assigned_To: string;
-    Status: string;
-    Created_At: string;
-    Updated_At: string;
-    Chefs_ID: string;
-    BCAAP_Form_ID: string;
+  Application_ID: string;
+  Submission: string;
+  Confirmation_ID: string;
+  Facility_Name: string;
+  Assigned_To: string;
+  Status: string;
+  Created_At: string;
+  Updated_At: string;
+  Chefs_ID: string;
+  BCAAP_Form_ID: string;
 }

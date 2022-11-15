@@ -33,7 +33,7 @@ const TableHeader: React.FC = () => {
   );
 };
 
-const TableBody: React.FC<Props> = (applications) => {
+const TableBody: React.FC<Props> = applications => {
   const handleSelectRow = (index: number) => {
     alert(index);
   };
@@ -63,7 +63,7 @@ const TableBody: React.FC<Props> = (applications) => {
   );
 };
 
-const ApplicationTable: React.FC<Props> = (applications) => {
+const ApplicationTable: React.FC<Props> = applications => {
   return (
     <div className='customTable'>
       <table className='min-w-full text-center'>
