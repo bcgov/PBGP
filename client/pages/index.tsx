@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import { ApplicationDashboard } from '../components/form-sections';
 
 const Dashboard: NextPage = () => {
-  const [tab, setTab] = useState(1);
+  const [tab, setTab] = useState<number>(1);
 
   const list = ['Home', 'History Applications'];
   return (
@@ -13,7 +13,7 @@ const Dashboard: NextPage = () => {
       <div className='w-full pt-2 bg-bcLightBackground'>
         <ul className='flex ml-20 space-x-1'>
           {list.map((item: string, index: number) => (
-            <li>
+            <li key={`tab-${index}`}>
               <a
                 href='#'
                 onClick={() => setTab(index + 1)}
