@@ -1,5 +1,5 @@
-import { SUCCESS_RESPONSE } from '@/common/constants';
-import { SaveApplicationDto } from '@/common/dto/save-application.dto';
+import { SUCCESS_RESPONSE } from '../common/constants';
+import { SaveApplicationDto } from '../common/dto/save-application.dto';
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import { Application } from './application.entity';
@@ -17,8 +17,9 @@ export class ApplicationController {
   }
 
   @Post()
-  createApplication(): Promise<Application> {
-    return this.applicationService.createApplication();
+  @ApiBody({ type: SaveApplicationDto })
+  createApplication(@Body() applicationDto: SaveApplicationDto): Promise<Application> {
+    return this.applicationService.createApplication(applicationDto);
   }
 
   @Patch('/:applicationId')
@@ -29,7 +30,7 @@ export class ApplicationController {
     @Param('applicationId') applicationId: string,
     @Body() applicationDto: SaveApplicationDto
   ) {
-    await this.applicationService.saveApplication(applicationId, applicationDto);
+    await this.applicationService.updateApplication(applicationId, applicationDto);
     return SUCCESS_RESPONSE;
   }
 }

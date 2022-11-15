@@ -12,6 +12,9 @@ export class Application extends CustomBaseEntity {
   // It's dynamic, so putting any here
   submission: any;
 
+  @Column({ type: 'varchar', length: '300', nullable: false, unique: true })
+  submissionId: string;
+
   @Column({ type: 'varchar', length: '200', nullable: false })
   confirmationId: string;
 

@@ -2,15 +2,16 @@ import * as dotenv from 'dotenv';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import { DatabaseNamingStrategy } from './database/database.naming-strategy';
 import DatabaseLogger from './database/database-logger';
-import { join } from 'path';
+// import { join } from 'path';
 dotenv.config();
 // Check typeORM documentation for more information.
 
-const isTestMode = process.env.NODE_ENV === 'test';
+// const isTestMode = process.env.NODE_ENV === 'test';
+// COmmenting these lines out for now
 const entities =
-  process.env.NODE_ENV === 'development' || isTestMode
-    ? join(__dirname, '../**/**.entity{.ts,.js}')
-    : 'dist/**/*.entity{ .ts,.js}';
+  // process.env.NODE_ENV === 'development' || isTestMode
+  //   ? join(__dirname, '../**/**.entity{.ts,.js}')
+  'dist/**/*.entity{ .ts,.js}';
 
 const config: PostgresConnectionOptions = {
   host: process.env.POSTGRES_HOST,

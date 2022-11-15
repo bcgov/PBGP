@@ -33,3 +33,11 @@ export enum ActivitiesActionType {
   RED = '',
   GREY = 'MIXED',
 }
+
+export enum REQUEST_METHODS {
+  GET = 'get',
+  POST = 'post',
+  PATCH = 'patch',
+  PUT = 'put',
+  DELETE = 'delete',
+}
