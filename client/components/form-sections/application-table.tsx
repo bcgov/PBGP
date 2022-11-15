@@ -131,7 +131,6 @@ export const ApplicationDashboard: React.FC<any> = () => {
           <Button variant='primary'>Export PDF</Button>
         </div>
       </div>
-
       <ApplicationTable applications={currentApplications} />
       <Pagination
         currentPage={currentPage}
