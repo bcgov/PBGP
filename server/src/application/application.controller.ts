@@ -1,9 +1,10 @@
 import { SUCCESS_RESPONSE } from '../common/constants';
 import { SaveApplicationDto } from '../common/dto/save-application.dto';
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
+import { GetApplicationsQuery } from '@/common/interfaces';
 
 @Controller('applications')
 export class ApplicationController {
@@ -14,6 +15,11 @@ export class ApplicationController {
     // To-do: Get the logged-in user data (id) and return only
     // the applicatio that belong to them.
     return this.applicationService.getApplication(applicationId);
+  }
+
+  @Get()
+  getApplications(@Query() query: GetApplicationsQuery): Promise<Application[]> {
+    return this.applicationService.getApplications(query);
   }
 
   @Post()
