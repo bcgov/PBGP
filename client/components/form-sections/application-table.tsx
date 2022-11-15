@@ -18,9 +18,9 @@ const TableHeader: React.FC = () => {
     'Status',
   ];
   const tdStyles =
-    'table-td table-header px-6 py-4 text-left text-sm font-strong border-b-2  border-amber-200';
+    'table-td table-header px-6 py-4 text-left text-sm font-strong border-b-2  border-bcYellowWarning';
   return (
-    <thead className='border-b bg-gray-100 table-header'>
+    <thead className='border-b bg-bcGrayInput table-header'>
       <tr>
         {headers &&
           headers.map((title: string, index: number) => (
@@ -33,7 +33,7 @@ const TableHeader: React.FC = () => {
   );
 };
 
-const TableBody: React.FC<Props> = applications => {
+const TableBody: React.FC<Props> = (applications) => {
   const handleSelectRow = (index: number) => {
     alert(index);
   };
@@ -46,8 +46,8 @@ const TableBody: React.FC<Props> = applications => {
           <tr
             key={`row${index}`}
             onClick={() => handleSelectRow(row.BCAAP_Form_ID)}
-            className='bg-white border-b-2 even:bg-gray-50
-              border-gray-100'
+            className='bg-white border-b-2 even:bg-bcGrayInput
+              border-gray-200'
           >
             <td className={tdStyles}>{row.Confirmation_ID}</td>
             <td className={tdStyles}>{row.BCAAP_Form_ID}</td>
@@ -63,9 +63,9 @@ const TableBody: React.FC<Props> = applications => {
   );
 };
 
-const ApplicationTable: React.FC<Props> = applications => {
+const ApplicationTable: React.FC<Props> = (applications) => {
   return (
-    <div className='customTable'>
+    <div>
       <table className='min-w-full text-center'>
         <TableHeader />
         {ApplicationTableData && applications.applications.length != 0 ? (
@@ -121,7 +121,7 @@ export const ApplicationDashboard: React.FC<any> = () => {
   };
 
   return (
-    <div className='planning-form-box'>
+    <div>
       <div className='w-full bg-white flex my-2 justify-between'>
         <h1 className='text-2xl font-bold h-6 text-bcBluePrimary text-left flex-col items-start'>
           Applications
