@@ -88,11 +88,11 @@ export class SyncChefsDataService {
               url: this.getSubmissionUrl(submissionId),
             });
           } catch (e) {
-            Logger.log(e);
+            Logger.error(e);
           }
         }
       } catch (e) {
-        Logger.log(e);
+        Logger.error(e);
       }
     }
   }
