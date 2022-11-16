@@ -6,7 +6,6 @@ name: OpenShift Build and Deploy to Dev
 on:
   push:
     branches:
-      - develop
       - GRANT-122-CD-DEV-ENV
 
 env:
