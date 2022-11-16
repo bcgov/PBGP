@@ -1,12 +1,23 @@
 import { SUCCESS_RESPONSE } from '../common/constants';
 import { SaveApplicationDto } from '../common/dto/save-application.dto';
 import { GetApplicationsDto } from '../common/dto/get-applications.dto';
-import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
 
 @Controller('applications')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ApplicationController {
   constructor(private applicationService: ApplicationService) {}
 
@@ -18,7 +29,7 @@ export class ApplicationController {
   }
 
   @Get()
-  getApplications(@Query() query: GetApplicationsDto): Promise<Application[]> {
+  getApplications(@Query() query: GetApplicationsDto): Promise<[Application[], number]> {
     return this.applicationService.getApplications(query);
   }
 

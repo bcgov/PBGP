@@ -12,24 +12,18 @@ export class ApplicationService {
     private applicationRepository: Repository<Application>
   ) {}
 
-  async getApplications(query: GetApplicationsDto): Promise<Application[]> | null {
-    const facilityName = query.facilityName;
-    const orderBy = query.orderBy ? query.orderBy : 'facilityName';
-    const order = query.order || 'ASC';
-    const skip = query.skip || 0;
-    const take = query.take || 25;
+  async getApplications(query: GetApplicationsDto): Promise<[Application[], number]> | null {
+    const queryBuilder = this.applicationRepository.createQueryBuilder('app');
 
-    const queryBuilder = this.applicationRepository
-      .createQueryBuilder('app')
-      .orderBy(`app.${orderBy}`, order)
-      .skip(skip)
-      .take(take);
+    if (query.facilityName)
+      queryBuilder.andWhere('app.facilityName = :facilityName', {
+        facilityName: query.facilityName,
+      });
+    if (query.orderBy) queryBuilder.orderBy(`app.${query.orderBy}`, query.order);
+    query.filter(queryBuilder);
 
-    if (facilityName) queryBuilder.andWhere('app.facilityName = :facilityName', { facilityName });
-
-    const applications = await queryBuilder.getMany();
-
-    return applications;
+    const applications = await queryBuilder.getManyAndCount();
+    return [applications[0], applications[1]];
   }
 
   async getApplication(applicationId: string): Promise<Application | undefined> {

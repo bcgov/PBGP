@@ -4,3 +4,8 @@ export enum ReviewStatuses {
   BROADER_REVIEW = 'Broader Review',
   WORKSHOP = 'Workshop',
 }
+
+export enum OrderByOptions {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}
