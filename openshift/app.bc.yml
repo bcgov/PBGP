@@ -12,7 +12,7 @@ parameters:
     required: true
   - name: REF
     description: Reference of repository that should be built
-    value: GRANT-120-dockerize-prod-build
+    value: develop
     required: true
   - name: IMAGE_TAG
     description: ImageStream tag for build and deploy
@@ -54,4 +54,4 @@ objects:
       resources:
         limits:
           cpu: "500m"
-          memory: 2Gi
+          memory: 1.5Gi

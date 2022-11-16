@@ -74,19 +74,27 @@ objects:
         spec:
           containers:
             - name: ${APP_NAME}-client
+              envFrom:
+                - configMapRef:
+                    name: ${APP_NAME}-client-env
               env:
                 - name: APP_ENV
                   value: ${IMAGE_TAG}
                 - name: NEXT_PUBLIC_KC_AUTH_URL
-                  value: "https://dev.loginproxy.gov.bc.ca/auth"
+                  valueFrom:
+                    secretKeyRef:
+                      key: auth-url
+                      name: ${APP_NAME}-keycloak
                 - name: NEXT_PUBLIC_KC_AUTH_REALM
-                  value: "standard"
+                  valueFrom:
+                    secretKeyRef:
+                      key: realm
+                      name: ${APP_NAME}-keycloak
                 - name: NEXT_PUBLIC_KC_AUTH_CLIENT_ID
-                  value: "ed-9154-dev-4226"
-                - name: NEXT_PUBLIC_REDIRECT_URI
-                  value: "https://pgbp-dev.apps.silver.devops.gov.bc.ca"
-                - name: NEXT_PUBLIC_SERVER_URL
-                  value: "https://pbgp-server-ed9154-dev.apps.silver.devops.gov.bc.ca/api/v1"
+                  valueFrom:
+                    secretKeyRef:
+                      key: client-id
+                      name: ${APP_NAME}-keycloak
                 - name: CONFIG_VERSION
                   value: ${CONFIG_VERSION}
               image: image-registry.openshift-image-registry.svc:5000/${IMAGE_NAMESPACE}/${APP_NAME}-client:${IMAGE_TAG}
@@ -112,7 +120,7 @@ objects:
                   cpu: 250m
                   memory: 512Mi
                 requests:
-                  cpu: 200m
+                  cpu: 100m
                   memory: 256Mi
               terminationMessagePath: /dev/termination-log
               terminationMessagePolicy: File
