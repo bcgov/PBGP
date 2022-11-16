@@ -7,3 +7,5 @@ export * from './Radio';
 export * from './Textarea';
 export * from './Checkbox';
 export * from './FileUpload';
+export * from './SearchBar';
+export * from './Pagination';

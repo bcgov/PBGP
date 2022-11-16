@@ -72,7 +72,7 @@ function CustomApp({ Component, pageProps, cookies }: AppProps) {
           <div className='h-full flex flex-col'>
             <Header />
             <main className='flex-grow flex justify-center bg-bcLightBackground'>
-              <div className=' w-full xl:w-layout mb-12'>
+              <div className='w-full'>
                 <Component {...pageProps} />
               </div>
             </main>

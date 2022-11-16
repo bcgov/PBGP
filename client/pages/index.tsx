@@ -1,55 +1,38 @@
 import { useState } from 'react';
-import { withAuth, Stepper, Button, FormSteps } from '@components';
+import { withAuth } from '@components';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import { PlanningSteps } from '@components';
-import { FormContent } from '../components/forms';
-import { PageTitle } from 'components/PageTitle';
+import { ApplicationDashboard } from '../components/form-sections';
 
 const Dashboard: NextPage = () => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const isFirstStep = currentStep === 1;
+  const [tab, setTab] = useState<number>(1);
 
-  const handleClick = (clickType: any) => {
-    let newStep = currentStep;
-    clickType == 'next' ? newStep++ : newStep--;
-    // Check if steps are within the boundary
-    if (newStep > 0 && newStep <= PlanningSteps.length) {
-      setCurrentStep(newStep);
-    }
-  };
+  const list = ['Home', 'History Applications'];
   return (
-    <div className='flex flex-col w-full px-10 py-5 bg-white'>
-      <PageTitle
-        title={`BC Air Access Program Application`}
-        description={`Learn more about eligibility, prepare documents and deadline of the program, please click here`}
-      />
-      <Stepper steps={PlanningSteps} currentStep={currentStep} />
-      <FormContent step={currentStep} formTitle={Object.keys(FormSteps)[currentStep - 1]} />
-      <div className='flex-1 flex flex-col min-h-0'>
-        <div className='flex justify-center'>
-          <div className='w-2/4 p-4 gap-y-6 bg-white flex justify-between'>
-            <Button variant='outline'>Cancel</Button>
-            <div className='grid grid-cols-2 gap-2'>
-              <Button
-                variant='outline'
-                type='button'
-                disabled={isFirstStep}
-                onClick={() => handleClick('')}
+    <div className='flex flex-col w-full bg-white'>
+      <div className='w-full pt-2 bg-bcLightBackground'>
+        <ul className='flex ml-20 space-x-1'>
+          {list.map((item: string, index: number) => (
+            <li key={`tab-${index}`}>
+              <a
+                href='#'
+                onClick={() => setTab(index + 1)}
+                className={` ${
+                  tab === index + 1 ? 'text-gray-800 font-bold border-b-2 border-gray-500' : ''
+                } inline-block px-8 py-4 text-gray-400 `}
               >
-                Back
-              </Button>
-              <Button
-                variant='primary'
-                type='button'
-                disabled={currentStep >= PlanningSteps.length}
-                onClick={() => handleClick('next')}
-              >
-                Continue
-              </Button>
-            </div>
-          </div>
+                {item}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className='px-6 py-4 bg-white'>
+        <div className={tab === 1 ? 'block' : 'hidden'}>
+          {' '}
+          <ApplicationDashboard />
         </div>
+        <div className={tab === 2 ? 'block' : 'hidden'}>History Applications</div>
       </div>
     </div>
   );
