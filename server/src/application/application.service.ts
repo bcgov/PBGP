@@ -13,17 +13,22 @@ export class ApplicationService {
   ) {}
 
   async getApplications(query: GetApplicationsQuery): Promise<Application[]> | null {
-    const where = { facilityName: Like(query.facilityName) };
-    const orderBy =
-      query.orderBy && Object.keys(SaveApplicationDto).includes(query.orderBy)
-        ? query.orderBy
-        : 'facilityName';
-    const order = query.order ? { [orderBy]: query.order } : { [orderBy]: 'ASC' };
+    const facilityName = query.facilityName;
+    const orderBy = query.orderBy ? query.orderBy : 'facilityName';
+    const order = query.order || 'ASC';
     const skip = query.skip || 0;
     const take = query.take || 25;
-    const options = query.facilityName ? { where, order, skip, take } : { order, skip, take };
 
-    const applications = await this.applicationRepository.find(options);
+    const queryBuilder = this.applicationRepository
+      .createQueryBuilder('app')
+      .orderBy(`app.${orderBy}`, order)
+      .skip(skip)
+      .take(take);
+
+    if (facilityName) queryBuilder.andWhere('app.facilityName = :facilityName', { facilityName });
+
+    const applications = await queryBuilder.getMany();
+
     return applications;
   }
 

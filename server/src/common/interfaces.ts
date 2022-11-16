@@ -9,7 +9,7 @@ export interface AxiosOptions {
 
 export interface GetApplicationsQuery {
   facilityName: string;
-  order: 'DESC' | 'ASC' | 1 | -1;
+  order: 'DESC' | 'ASC';
   orderBy: string;
   take: number;
   skip: number;
