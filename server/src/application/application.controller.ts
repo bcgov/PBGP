@@ -1,10 +1,10 @@
 import { SUCCESS_RESPONSE } from '../common/constants';
 import { SaveApplicationDto } from '../common/dto/save-application.dto';
+import { GetApplicationsDto } from '../common/dto/get-applications.dto';
 import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
-import { GetApplicationsQuery } from '@/common/interfaces';
 
 @Controller('applications')
 export class ApplicationController {
@@ -18,7 +18,7 @@ export class ApplicationController {
   }
 
   @Get()
-  getApplications(@Query() query: GetApplicationsQuery): Promise<Application[]> {
+  getApplications(@Query() query: GetApplicationsDto): Promise<Application[]> {
     return this.applicationService.getApplications(query);
   }
 

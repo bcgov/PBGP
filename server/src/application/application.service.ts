@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Application } from './application.entity';
-import { SaveApplicationDto } from '@/common/dto/save-application.dto';
-import { GetApplicationsQuery } from '@/common/interfaces';
+import { SaveApplicationDto } from '../common/dto/save-application.dto';
+import { GetApplicationsDto } from '../common/dto/get-applications.dto';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class ApplicationService {
     private applicationRepository: Repository<Application>
   ) {}
 
-  async getApplications(query: GetApplicationsQuery): Promise<Application[]> | null {
+  async getApplications(query: GetApplicationsDto): Promise<Application[]> | null {
     const facilityName = query.facilityName;
     const orderBy = query.orderBy ? query.orderBy : 'facilityName';
     const order = query.order || 'ASC';

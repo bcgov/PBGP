@@ -6,11 +6,3 @@ export interface AxiosOptions {
   auth: { username: string; password: string };
   url: string;
 }
-
-export interface GetApplicationsQuery {
-  facilityName: string;
-  order: 'DESC' | 'ASC';
-  orderBy: string;
-  take: number;
-  skip: number;
-}
