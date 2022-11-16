@@ -25,5 +25,5 @@ jobs:
         uses: actions/checkout@v2
       - name: Build & Deploy
         run: |
-          oc login --token="$AUTH_TOKEN" --server="$CLUSTER"
+          oc login --token=${{ secrets.OPENSHIFT_TOKEN }} --server="https://api.silver.devops.gov.bc.ca:6443"
           make server-build
