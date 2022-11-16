@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Application } from './application.entity';
 import { SaveApplicationDto } from '@/common/dto/save-application.dto';
 import { GetApplicationsQuery } from '@/common/interfaces';
-import { Like, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ApplicationService {
