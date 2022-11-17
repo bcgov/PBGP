@@ -1,11 +1,25 @@
 import { SUCCESS_RESPONSE } from '../common/constants';
 import { SaveApplicationDto } from '../common/dto/save-application.dto';
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
+import { GetApplicationsDto } from '../common/dto/get-applications.dto';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
+import { PaginationRO } from '../common/ro/pagination.ro';
 
 @Controller('applications')
+@ApiTags('application')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ApplicationController {
   constructor(private applicationService: ApplicationService) {}
 
@@ -14,6 +28,11 @@ export class ApplicationController {
     // To-do: Get the logged-in user data (id) and return only
     // the applicatio that belong to them.
     return this.applicationService.getApplication(applicationId);
+  }
+
+  @Get()
+  getApplications(@Query() query: GetApplicationsDto): Promise<PaginationRO<Application>> {
+    return this.applicationService.getApplications(query);
   }
 
   @Post()
