@@ -15,6 +15,7 @@ import {
 import { ApiBody } from '@nestjs/swagger';
 import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
+import { PaginationRO } from '../common/ro/pagination.ro';
 
 @Controller('applications')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -29,7 +30,7 @@ export class ApplicationController {
   }
 
   @Get()
-  getApplications(@Query() query: GetApplicationsDto): Promise<[Application[], number]> {
+  getApplications(@Query() query: GetApplicationsDto): Promise<PaginationRO<Application>> {
     return this.applicationService.getApplications(query);
   }
 
