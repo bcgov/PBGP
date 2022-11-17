@@ -31,6 +31,9 @@ export OS_NAMESPACE_SUFFIX?=dev
 export TARGET_NAMESPACE=$(OS_NAMESPACE_PREFIX)-$(OS_NAMESPACE_SUFFIX)
 export TOOLS_NAMESPACE=$(OS_NAMESPACE_PREFIX)-tools
 
+export NEXT_PUBLIC_REDIRECT_URI = https://pgbp-dev.apps.silver.devops.gov.bc.ca
+export NEXT_PUBLIC_SERVER_URL = https://pbgp-server-ed9154-dev.apps.silver.devops.gov.bc.ca/api/v1
+
 export BUILD_REF?=test-deployment
 
 define deployTag
@@ -139,9 +142,12 @@ db-postgres-tunnel:
 # 	@echo "Processiong and applying Building config in $(TOOLS_NAMESPACE) namespace"
 # 	@oc -n $(TOOLS_NAMESPACE) process -f openshift/server.bc.yml -p REF=$(BUILD_REF) -p APP_NAME=$(APP_NAME) | oc apply -n $(TOOLS_NAMESPACE) -f -
 
+app-env-prep:
+	@oc process -f openshift/app.prep.yml -p APP_NAME=$(APP_NAME) KC_AUTH_URL=$(KC_AUTH_URL) KC_AUTH_REALM=$(KC_AUTH_REALM) KC_AUTH_CLIENT_ID=$(KC_AUTH_CLIENT_ID) NEXT_PUBLIC_SERVER_URL=$(NEXT_PUBLIC_SERVER_URL) NEXT_PUBLIC_REDIRECT_URI=$(NEXT_PUBLIC_REDIRECT_URI) | oc create -n $(TARGET_NAMESPACE) -f -
+
 app-create:
-	@oc process -f openshift/app.bc.yml -p APP_NAME=$(APP_NAME) APP_TYPE=server | oc apply -n $(TOOLS_NAMESPACE) -f -
-	@oc process -f openshift/app.bc.yml -p APP_NAME=$(APP_NAME) APP_TYPE=client | oc apply -n $(TOOLS_NAMESPACE) -f -
+	@oc process -f openshift/app.bc.yml -p APP_NAME=$(APP_NAME) APP_TYPE=server IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) | oc apply -n $(TOOLS_NAMESPACE) -f -
+	@oc process -f openshift/app.bc.yml -p APP_NAME=$(APP_NAME) APP_TYPE=client IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) | oc apply -n $(TOOLS_NAMESPACE) -f -
 
 client-create:
 	@oc process -f openshift/client.dc.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) | oc apply -n $(TARGET_NAMESPACE) -f -
@@ -152,12 +158,12 @@ server-create:
 client-build:
 	@echo "Building client image in $(TOOLS_NAMESPACE) namespace"
 	@oc cancel-build bc/$(APP_NAME)-client -n $(TOOLS_NAMESPACE)
-	@oc start-build $(APP_NAME)-client -n $(TOOLS_NAMESPACE) --wait --follow=true --build-arg VERSION="$(LAST_COMMIT)"
+	@oc start-build $(APP_NAME)-client -n $(TOOLS_NAMESPACE) --build-arg VERSION="$(LAST_COMMIT)"
 
 server-build: client-build
 	@echo "Building server image in $(TOOLS_NAMESPACE) namespace"
 	@oc cancel-build bc/$(APP_NAME)-server -n $(TOOLS_NAMESPACE)
-	@oc start-build $(APP_NAME)-server -n $(TOOLS_NAMESPACE) --wait --follow=true --build-arg VERSION="$(LAST_COMMIT)"
+	@oc start-build $(APP_NAME)-server -n $(TOOLS_NAMESPACE) --build-arg VERSION="$(LAST_COMMIT)"
 
 deploy:
 	@oc -n $(TOOLS_NAMESPACE) tag $(APP_NAME)-server:latest $(APP_NAME)-server:$(OS_NAMESPACE_SUFFIX)

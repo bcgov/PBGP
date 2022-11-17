@@ -102,11 +102,20 @@ objects:
                 - name: CONFIG_VERSION
                   value: ${CONFIG_VERSION}
                 - name: KC_AUTH_URL
-                  value: "https://dev.loginproxy.gov.bc.ca/auth"
+                  valueFrom:
+                    secretKeyRef:
+                      key: auth-url
+                      name: ${APP_NAME}-keycloak
                 - name: KC_AUTH_REALM
-                  value: "standard"
+                  valueFrom:
+                    secretKeyRef:
+                      key: realm
+                      name: ${APP_NAME}-keycloak
                 - name: KC_AUTH_CLIENT_ID
-                  value: "ed-9154-dev-4226"
+                  valueFrom:
+                    secretKeyRef:
+                      key: client-id
+                      name: ${APP_NAME}-keycloak
               image: image-registry.openshift-image-registry.svc:5000/${IMAGE_NAMESPACE}/${APP_NAME}-server:${IMAGE_TAG}
               ports:
                 - containerPort: "${{SERVER_PORT}}"
@@ -130,7 +139,7 @@ objects:
                   cpu: 250m
                   memory: 512Mi
                 requests:
-                  cpu: 200m
+                  cpu: 100m
                   memory: 256Mi
               terminationMessagePath: /dev/termination-log
               terminationMessagePolicy: File
