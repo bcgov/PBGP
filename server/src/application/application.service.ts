@@ -22,6 +22,18 @@ export class ApplicationService {
       });
     }
 
+    if (query.confirmationId) {
+      queryBuilder.andWhere('app.confirmationId ILIKE :confirmationId', {
+        confirmationId: `%${query.confirmationId}%`,
+      });
+    }
+
+    if (query.assignedTo) {
+      queryBuilder.andWhere('app.assignedTo ILIKE :assignedTo', {
+        assignedTo: `%${query.assignedTo}%`,
+      });
+    }
+
     if (query.orderBy) {
       queryBuilder.orderBy({ [`app.${query.orderBy}`]: query.order });
     }

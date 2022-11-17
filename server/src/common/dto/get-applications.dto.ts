@@ -10,6 +10,18 @@ export class GetApplicationsDto extends PaginationDto {
   facilityName: string;
 
   @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  @MinLength(0)
+  confirmationId: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  @MinLength(0)
+  assignedTo: string;
+
+  @IsOptional()
   @IsEnum(OrderByOptions)
   order = OrderByOptions.ASC;
 
