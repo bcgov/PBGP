@@ -1,8 +1,9 @@
 import { Button, SearchBar } from '@components';
 import { Pagination } from '../form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ApplicationTableData } from '../../constants';
 import { ApplicationDataInterface } from '../../constants/interfaces';
+import axios from 'axios';
 
 type Props = { applications: ApplicationDataInterface[] };
 
@@ -50,12 +51,12 @@ const TableBody: React.FC<Props> = applications => {
               border-gray-200'
           >
             <td className={tdStyles}>{row.Confirmation_ID}</td>
-            <td className={tdStyles}>{row.BCAAP_Form_ID}</td>
+            <td className={tdStyles}>{row.Facility_Name}</td>
             <td className={tdStyles}>{row.Assigned_To}</td>
             <td className={tdStyles}>{row.Created_At}</td>
             <td className={tdStyles}>{row.Status}</td>
             <td className={tdStyles}>{row.Assigned_To}</td>
-            <td className={tdStyles}>{row.Created_At}</td>
+            <td className={tdStyles}>{row.Updated_At}</td>
             <td className={tdStyles}>{row.Status}</td>
           </tr>
         ))}
@@ -78,21 +79,39 @@ const ApplicationTable: React.FC<Props> = applications => {
   );
 };
 
+const FilterBy: React.FC<Props> = applications => {
+  return (
+    <div className='w-full border py-4 px-8 mb-2'>
+      Filter By:
+    </div>
+  );
+};
+
 export const ApplicationDashboard: React.FC<any> = () => {
+  const [data, setData] = useState<[]>();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [applicationsPerPage] = useState<number>(10);
   const [searchValue, setSearchValue]: [string, (search: string) => void] = useState('');
+
+  useEffect(()=> {
+    const fetchData = async () => {
+      const res = await axios.get(`http://localhost:8080?q=${searchValue}`)
+      setData(res.data);
+    }
+    // fetchData()
+  }, [searchValue])
 
   const handleSearch = (e: { target: { value: string } }) => {
     setSearchValue(e.target.value);
   };
 
   // Filter data with search value
+  const keys = ['Application_ID', 'Facility_Name', 'Assigned_To'];
   const filteredApplications =
     ApplicationTableData &&
-    ApplicationTableData.filter((item: any) => {
-      return item.Confirmation_ID.toLowerCase().includes(searchValue.toLowerCase());
-    });
+    ApplicationTableData.filter((item: any) =>
+      keys.some(key => item[key].toLowerCase().includes(searchValue.toLowerCase())),
+    );
 
   // Get current Applications
   const indexOfLastApplication = currentPage * applicationsPerPage;
@@ -126,11 +145,15 @@ export const ApplicationDashboard: React.FC<any> = () => {
         <h1 className='text-2xl font-bold h-6 text-bcBluePrimary text-left flex-col items-start'>
           Applications
         </h1>
-        <div className='grid grid-cols-2 gap-2'>
+        <div className='grid grid-cols-2 gap-1'>
           <SearchBar handleChange={handleSearch} />
-          <Button variant='primary'>Export PDF</Button>
+          <div className='grid grid-cols-2 gap-1'>
+            <Button variant='outline'>Filter</Button>
+            <Button variant='primary'>Export PDF</Button>
+          </div>
         </div>
       </div>
+      <FilterBy />
       <ApplicationTable applications={currentApplications} />
       <Pagination
         currentPage={currentPage}
