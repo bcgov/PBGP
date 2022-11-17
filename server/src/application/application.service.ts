@@ -24,8 +24,8 @@ export class ApplicationService {
 
     if (query.orderBy) {
       queryBuilder.orderBy({ [`app.${query.orderBy}`]: query.order });
-      query.filter(queryBuilder);
     }
+    query.filter(queryBuilder);
 
     const applications = await queryBuilder.getManyAndCount();
     return new PaginationRO<Application>([applications[0], applications[1]]);
