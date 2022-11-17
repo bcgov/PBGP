@@ -12,12 +12,13 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
 import { PaginationRO } from '../common/ro/pagination.ro';
 
 @Controller('applications')
+@ApiTags('application')
 @UseInterceptors(ClassSerializerInterceptor)
 export class ApplicationController {
   constructor(private applicationService: ApplicationService) {}

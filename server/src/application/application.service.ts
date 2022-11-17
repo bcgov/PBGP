@@ -16,12 +16,16 @@ export class ApplicationService {
   async getApplications(query: GetApplicationsDto): Promise<PaginationRO<Application>> | null {
     const queryBuilder = this.applicationRepository.createQueryBuilder('app');
 
-    if (query.facilityName)
-      queryBuilder.andWhere('app.facilityName like :facilityName', {
+    if (query.facilityName) {
+      queryBuilder.andWhere('app.facilityName ILIKE :facilityName', {
         facilityName: `%${query.facilityName}%`,
       });
-    if (query.orderBy) queryBuilder.orderBy({ [`app.${query.orderBy}`]: query.order });
-    query.filter(queryBuilder);
+    }
+
+    if (query.orderBy) {
+      queryBuilder.orderBy({ [`app.${query.orderBy}`]: query.order });
+      query.filter(queryBuilder);
+    }
 
     const applications = await queryBuilder.getManyAndCount();
     return new PaginationRO<Application>([applications[0], applications[1]]);
