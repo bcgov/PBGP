@@ -34,7 +34,7 @@ export const ApplicationDashboard: React.FC<any> = () => {
   const setApplicationData = async (params: any) => {
     try {
       const data = await fetchData(params);
-      setState(state => ({ ...state, data: data.data.result, totalApplications: data.data.total }));
+      setState(state => ({ ...state, data: data.result, totalApplications: data.total }));
     } catch (err) {
       // console.log('Error occured when fetching applications');
     }
