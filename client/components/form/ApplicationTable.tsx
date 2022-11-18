@@ -33,7 +33,6 @@ const TableBody: React.FC<Props> = data => {
   const handleSelectRow = (index: number) => {
     alert(index);
   };
-  console.log("++++++++++++++++++ TableBody", data.applications)
   const tdStyles =
     'table-td px-6 py-4 text-left text-sm font-strong flexitems-center justify-between';
   return (
