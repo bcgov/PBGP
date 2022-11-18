@@ -2,7 +2,7 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
 @Entity({
-  name: 'pbgp_user'
+  name: 'pbgp_user',
 })
 export class User extends CustomBaseEntity {
   @PrimaryGeneratedColumn('uuid', { name: 'user_id' })

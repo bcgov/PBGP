@@ -26,7 +26,7 @@ export class AuthService {
         displayName: display_name,
         userName: idir_username,
         isAdmin,
-        isAuthorized
+        isAuthorized,
       });
     }
 
