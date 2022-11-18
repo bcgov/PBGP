@@ -1,9 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
-@Entity()
+@Entity({
+  name: 'pbgp_form_metadata',
+})
 export class FormMetaData extends CustomBaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid', { name: 'form_metadata_id' })
   id: string;
 
   @Column({ type: 'varchar', length: '200', nullable: false })

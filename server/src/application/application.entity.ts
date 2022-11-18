@@ -3,9 +3,11 @@ import { ReviewStatuses } from '../common/enums';
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
-@Entity()
+@Entity({
+  name: 'pbgp_application',
+})
 export class Application extends CustomBaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid', { name: 'application_id' })
   id: string;
 
   @Column({ type: 'jsonb', nullable: true })
@@ -33,6 +35,6 @@ export class Application extends CustomBaseEntity {
   status: ReviewStatuses;
 
   @OneToOne(() => FormMetaData)
-  @JoinColumn()
+  @JoinColumn({ name: 'form_metadata_id' })
   form: FormMetaData;
 }

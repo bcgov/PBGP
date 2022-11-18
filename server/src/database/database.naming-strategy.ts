@@ -26,10 +26,10 @@ export class DatabaseNamingStrategy
   joinTableName(
     firstTableName: string,
     secondTableName: string,
-    firstPropertyName: string,
+    firstPropertyName: string
   ): string {
     return snakeCase(
-      firstTableName + '_' + firstPropertyName.replace(/\./gi, '_') + '_' + secondTableName,
+      firstTableName + '_' + firstPropertyName.replace(/\./gi, '_') + '_' + secondTableName
     );
   }
 
@@ -39,7 +39,7 @@ export class DatabaseNamingStrategy
 
   classTableInheritanceParentColumnName(
     parentTableName: string,
-    parentTableIdPropertyName: string,
+    parentTableIdPropertyName: string
   ): string {
     return snakeCase(parentTableName + '_' + parentTableIdPropertyName);
   }

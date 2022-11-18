@@ -29,7 +29,7 @@ export class GenericException extends HttpException {
         error: error.errorType,
         message: error.errorMessage || originalError?.message,
       },
-      errorCode,
+      errorCode
     );
 
     this.originalError = originalError;

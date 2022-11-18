@@ -32,9 +32,10 @@ jobs:
         run: |
           yarn install --immutable
 
-      - name: Check lint
+      - name: Check lint & format
         run: |
           yarn run lint
+          yarn run format:check
 
       - name: Test build
         run: |

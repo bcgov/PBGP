@@ -42,7 +42,7 @@ import { ApplicationService } from '..//application/application.service';
 const appOrmConfig: PostgresConnectionOptions = {
   ...config,
   migrationsRun: false,
-  synchronize: true
+  synchronize: true,
 };
 
 @Module({
