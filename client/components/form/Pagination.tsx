@@ -33,7 +33,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
               {totalApplications != 0
                 ? currentPage * applicationsPerPage - applicationsPerPage + 1
                 : totalApplications}
-            </span>
+            </span>{' '}
             -
             <span className='font-medium'>
               {' '}
@@ -65,7 +65,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
             <Button
               onClick={nextPage}
               variant='outline'
-              disabled={currentPage * applicationsPerPage > totalApplications}
+              disabled={currentPage == Math.ceil(totalApplications / applicationsPerPage)}
             >
               <span>
                 <FontAwesomeIcon icon={faChevronRight} className='h-4 text-bcBluePrimary' />
@@ -75,7 +75,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
             <Button
               onClick={lastPage}
               variant='outline'
-              disabled={currentPage * applicationsPerPage > totalApplications}
+              disabled={currentPage == Math.ceil(totalApplications / applicationsPerPage)}
             >
               <span className='border-r-2 border-gray-900'>
                 <FontAwesomeIcon icon={faChevronRight} className='h-4 text-bcBluePrimary' />
