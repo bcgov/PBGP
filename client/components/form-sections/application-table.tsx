@@ -8,26 +8,31 @@ import axios from 'axios';
 type Props = { applications: ApplicationDataInterface[] };
 
 const FilterBy: React.FC<Props> = applications => {
-  return (
-    <div className='w-full border py-4 px-8 mb-2'>
-      Filter By:
-    </div>
-  );
+  return <div className='w-full border py-4 px-8 mb-2'>Filter By:</div>;
 };
 
 export const ApplicationDashboard: React.FC<any> = () => {
-  const [data, setData] = useState<[]>();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [applicationsPerPage] = useState<number>(10);
   const [searchValue, setSearchValue]: [string, (search: string) => void] = useState('');
+  const [data, setData] = useState<ApplicationDataInterface>();
 
-  useEffect(()=> {
-    const fetchData = async () => {
-      const res = await axios.get(`http://localhost:8080?q=${searchValue}`)
-      setData(res.data);
-    }
-    // fetchData()
-  }, [searchValue])
+  const fetchData = async () => {
+    const url = `http://localhost:8080/api/v1/applications?facilityName=${searchValue}&orderBy=status`;
+    const res = await axios.get(url);
+    return res;
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await fetchData();
+        setData(data.data.result);
+      } catch (err) {
+        console.log('Error occured when fetching applications');
+      }
+    })();
+  }, [searchValue]);
 
   const handleSearch = (e: { target: { value: string } }) => {
     setSearchValue(e.target.value);
@@ -82,7 +87,13 @@ export const ApplicationDashboard: React.FC<any> = () => {
         </div>
       </div>
       <FilterBy />
-      <ApplicationTable applications={currentApplications} />
+     
+     {data && 
+      <ApplicationTable applications={data} />
+     }
+      
+     
+      
       <Pagination
         currentPage={currentPage}
         applicationsPerPage={applicationsPerPage}
