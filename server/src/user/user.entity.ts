@@ -1,9 +1,11 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
-@Entity()
+@Entity({
+  name: 'pbgp_user',
+})
 export class User extends CustomBaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid', { name: 'user_id' })
   id: string;
 
   @Column({ type: 'varchar', length: 100, nullable: false, unique: true })

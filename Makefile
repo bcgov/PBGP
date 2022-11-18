@@ -65,11 +65,11 @@ run-local:
 
 run-local-client:
 	@echo "+\n++ Make: Running locally ...\n+"
-	@docker-compose -f docker-compose.dev.yml up client
+	@docker-compose -f docker-compose.dev.yml up client --build
 
 run-local-server:
 	@echo "+\n++ Make: Running locally ...\n+"
-	@docker-compose -f docker-compose.dev.yml up server
+	@docker-compose -f docker-compose.dev.yml up server --build
 
 run-local-db:
 	@echo "+\n++ Make: Running db locally ...\n+"

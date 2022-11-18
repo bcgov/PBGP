@@ -12,11 +12,12 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
 import { PaginationRO } from '../common/ro/pagination.ro';
 
+@ApiBearerAuth()
 @Controller('applications')
 @ApiTags('application')
 @UseInterceptors(ClassSerializerInterceptor)

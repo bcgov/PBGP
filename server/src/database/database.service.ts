@@ -5,7 +5,7 @@ import { Connection, Repository } from 'typeorm';
 export class DatabaseService {
   constructor(
     @Inject('Connection')
-    public connection: Connection,
+    public connection: Connection
   ) {}
 
   async getRepository<T>(entity: any): Promise<Repository<T>> {

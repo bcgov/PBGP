@@ -14,7 +14,7 @@ export class PaginationRO<T> {
     this.total = data && data[1];
     this.count = data[0] ? data[0].length : 0;
     this.result = [];
-    this.result = data[0].map(each => {
+    this.result = data[0].map((each) => {
       return each;
     });
   }

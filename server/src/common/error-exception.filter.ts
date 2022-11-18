@@ -59,7 +59,7 @@ export class ErrorExceptionFilter implements ExceptionFilter {
 
     const privateKeys: string[] = ['password', 'payload'];
     const body = typeof request.body === 'string' ? JSON.parse(request.body) : request.body;
-    privateKeys.forEach(key => {
+    privateKeys.forEach((key) => {
       if (body[key]) {
         delete body[key];
       }
