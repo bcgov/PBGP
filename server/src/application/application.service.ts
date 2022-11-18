@@ -23,14 +23,8 @@ export class ApplicationService {
     }
 
     if (query.confirmationId) {
-      queryBuilder.andWhere('app.confirmationId = :confirmationId', {
+      queryBuilder.andWhere('app.confirmationId ILIKE :confirmationId', {
         confirmationId: `%${query.confirmationId}%`,
-      });
-    }
-
-    if (query.assignedTo) {
-      queryBuilder.andWhere('app.assignedTo = :assignedTo', {
-        assignedTo: `%${query.assignedTo}%`,
       });
     }
 
