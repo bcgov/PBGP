@@ -14,7 +14,6 @@ const Dashboard: NextPage = () => {
   return null;
 };
 
-
 export default dynamic(() => Promise.resolve(withAuth(Dashboard)), {
   ssr: false,
 });
