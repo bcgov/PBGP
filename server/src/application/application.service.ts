@@ -22,6 +22,12 @@ export class ApplicationService {
       });
     }
 
+    if (query.confirmationId) {
+      queryBuilder.andWhere('app.confirmationId ILIKE :confirmationId', {
+        confirmationId: `%${query.confirmationId}%`,
+      });
+    }
+
     if (query.orderBy) {
       queryBuilder.orderBy({ [`app.${query.orderBy}`]: query.order });
     }
