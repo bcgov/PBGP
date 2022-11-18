@@ -1,10 +1,7 @@
-import { Button, Field, SearchBar, ApplicationTable } from '@components';
+import { Button, ApplicationTable } from '@components';
 import { Pagination } from '../form';
 import { useEffect, useState } from 'react';
-import { ApplicationDataInterface } from '../../constants/interfaces';
 import axios from 'axios';
-
-type Props = { applications: ApplicationDataInterface[] };
 
 export const ApplicationDashboard: React.FC<any> = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -33,7 +30,7 @@ export const ApplicationDashboard: React.FC<any> = () => {
       setData(data.data.result);
       setTotalApplications(data.data.total);
     } catch (err) {
-      console.log('Error occured when fetching applications');
+      // console.log('Error occured when fetching applications');
     }
   };
 
