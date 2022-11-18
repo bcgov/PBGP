@@ -16,4 +16,5 @@ export enum ApplicationSortOptions {
   ASSIGNED_TO = 'assignedTo',
   STATUS = 'status',
   SUBMISSION_ID = 'submissionId',
+  UPDATED_AT = 'updatedAt',
 }
