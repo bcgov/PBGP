@@ -4,37 +4,47 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faFilter } from '@fortawesome/free-solid-svg-icons';
+// import { useSearchParams } from 'react-router-dom';
 
 export const ApplicationDashboard: React.FC<any> = () => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [applicationsPerPage] = useState<number>(2);
-  const [totalApplications, setTotalApplications] = useState<number>();
-  const [searchFacilityName, setSearchFacilityName] = useState<string>('');
-  const [searchConfirmatioID, setSearchConfirmatioID] = useState<string>('');
-  const [data, setData] = useState<any>([]);
+  const [state, setState] = useState({
+    searchFacilityName: '',
+    searchConfirmatioID: '',
+    applicationsPerPage: 1,
+    totalApplications: 0,
+    currentPage: 1,
+    data: [],
+  });
 
-  const fetchData = async (clearData: boolean) => {
-    let url;
-    if (clearData) {
-      url = `${
-        process.env.NEXT_PUBLIC_SERVER_URL
-      }/applications?facilityName=${''}&confirmationId=${''}&orderBy=status&page=${currentPage}&limit=${applicationsPerPage}`;
-    } else {
-      url = `${process.env.NEXT_PUBLIC_SERVER_URL}/applications?facilityName=${searchFacilityName}&confirmationId=${searchConfirmatioID}&orderBy=status&page=${currentPage}&limit=${applicationsPerPage}`;
-    }
-    const res = await axios.get(url);
+  const {
+    searchFacilityName,
+    searchConfirmatioID,
+    applicationsPerPage,
+    totalApplications,
+    currentPage,
+    data,
+  } = state;
+
+  const fetchData = async (params: any) => {
+    const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/applications`;
+    const res = await axios.get(url, params);
     return res;
   };
 
-  const setApplicationData = async (clearData: boolean) => {
+  const setApplicationData = async (params: any) => {
     try {
-      const data = await fetchData(clearData);
-      setData(data.data.result);
-      setTotalApplications(data.data.total);
+      const data = await fetchData(params);
+      setState(state => ({ ...state, data: data.data.result, totalApplications: data.data.total }));
     } catch (err) {
       // console.log('Error occured when fetching applications');
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      setApplicationData(false);
+    })();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -46,38 +56,65 @@ export const ApplicationDashboard: React.FC<any> = () => {
   const nextPage = () => {
     if (!totalApplications || currentPage == Math.ceil(totalApplications / applicationsPerPage))
       return;
-    setCurrentPage(currentPage + 1);
+    setState(state => ({ ...state, currentPage: currentPage + 1 }));
+    const params = {
+      params: { page: currentPage + 1 },
+    };
+    setApplicationData(params);
   };
   const previousPage = () => {
     if (currentPage == 1) return;
-    setCurrentPage(currentPage - 1);
+
+    setState(state => ({ ...state, currentPage: currentPage - 1 }));
+    const params = {
+      params: { page: currentPage - 1 },
+    };
+    setApplicationData(params);
   };
   const firstPage = () => {
     if (currentPage == 1) return;
-    setCurrentPage(1);
+
+    setState(state => ({ ...state, currentPage: 1 }));
+    const params = {
+      params: { page: 1 },
+    };
+    setApplicationData(params);
   };
   const lastPage = () => {
     if (!totalApplications || currentPage == Math.ceil(totalApplications / applicationsPerPage))
       return;
-    setCurrentPage(Math.ceil(totalApplications / applicationsPerPage));
+
+    setState(state => ({
+      ...state,
+      currentPage: Math.ceil(totalApplications / applicationsPerPage),
+    }));
+
+    const params = {
+      params: {
+        page: Math.ceil(totalApplications / applicationsPerPage),
+        limit: applicationsPerPage,
+      },
+    };
+    setApplicationData(params);
   };
 
   const checkInputs = searchFacilityName.length == 0 && searchConfirmatioID.length == 0;
 
   const handleFilter = () => {
     if (checkInputs) return;
-    (async () => {
-      setApplicationData(false);
-    })();
+    const params = {
+      params: { facilityName: searchFacilityName, confirmationId: searchConfirmatioID },
+    };
+    setApplicationData(params);
   };
 
   const handleClear = () => {
     if (checkInputs) return;
-    setSearchFacilityName('');
-    setSearchConfirmatioID('');
-    (async () => {
-      setApplicationData(true);
-    })();
+    // Clear Inputs
+    setState(state => ({ ...state, searchFacilityName: '', searchConfirmatioID: '' }));
+
+    const params = { params: { facilityName: '', confirmationId: '' } };
+    setApplicationData(params);
   };
 
   return (
@@ -94,14 +131,14 @@ export const ApplicationDashboard: React.FC<any> = () => {
             type='text'
             className='bg-white rounded border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             placeholder={'Facility Name'}
-            onChange={e => setSearchFacilityName(e.target.value)}
+            onChange={e => setState(p => ({ ...p, searchFacilityName: e.target.value }))}
             value={searchFacilityName}
           />
           <input
             type='text'
             className='bg-white rounded border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             placeholder={'Confirmation ID'}
-            onChange={e => setSearchConfirmatioID(e.target.value)}
+            onChange={e => setState(p => ({ ...p, searchConfirmatioID: e.target.value }))}
             value={searchConfirmatioID}
           />
 
