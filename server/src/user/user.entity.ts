@@ -17,4 +17,10 @@ export class User extends CustomBaseEntity {
   @Index()
   @Column({ type: 'varchar', length: 100, nullable: false, unique: true })
   externalId: string;
+
+  @Column({ type: 'bool', default: false })
+  isAuthorized: boolean;
+
+  @Column({ type: 'bool', default: false })
+  isAdmin: boolean;
 }

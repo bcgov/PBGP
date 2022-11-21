@@ -36,8 +36,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       done(new UnauthorizedException(), false);
     }
 
-    if (!payload?.client_roles?.includes('admin')) {
-      this.logger.warn(`User not assigned admin! Unauthorized user! ${JSON.stringify(payload)}`);
+    payload.user = await this.authService.getUser(payload);
+
+    if (!payload.user.isAuthorized) {
+      this.logger.warn(`Unauthorized user! ${JSON.stringify(payload)}`);
       done(
         new UnauthorizedException({
           message: 'User does not have permission to access this page! Kindly contact BCAAP Admin!',
@@ -45,8 +47,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         false
       );
     }
-
-    payload.user = await this.authService.getUser(payload);
 
     done(null, payload);
   }
