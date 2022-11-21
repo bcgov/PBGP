@@ -18,7 +18,7 @@ export class UserService {
     return this.userRepository.save(this.userRepository.create(data));
   }
 
-  async getusers(): Promise<User[]> {
+  async getUsers(): Promise<User[]> {
     return await this.userRepository.createQueryBuilder().limit(50).getMany();
   }
 }

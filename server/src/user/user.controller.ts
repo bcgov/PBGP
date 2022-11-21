@@ -11,6 +11,6 @@ export class UserController {
 
   @Get()
   getUsers(): Promise<User[]> {
-    return this.userService.getusers();
+    return this.userService.getUsers();
   }
 }
