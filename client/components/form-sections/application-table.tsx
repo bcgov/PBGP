@@ -2,6 +2,8 @@ import { Button, ApplicationTable } from '@components';
 import { Pagination } from '../form';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes, faFilter } from '@fortawesome/free-solid-svg-icons';
 
 export const ApplicationDashboard: React.FC<any> = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -60,13 +62,17 @@ export const ApplicationDashboard: React.FC<any> = () => {
     setCurrentPage(Math.ceil(totalApplications / applicationsPerPage));
   };
 
+  const checkInputs = searchFacilityName.length == 0 && searchConfirmatioID.length == 0;
+
   const handleFilter = () => {
+    if (checkInputs) return;
     (async () => {
       setApplicationData(false);
     })();
   };
 
   const handleClear = () => {
+    if (checkInputs) return;
     setSearchFacilityName('');
     setSearchConfirmatioID('');
     (async () => {
@@ -87,28 +93,26 @@ export const ApplicationDashboard: React.FC<any> = () => {
           <input
             type='text'
             className='bg-white rounded border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            placeholder={'Search'}
+            placeholder={'Facility Name'}
             onChange={e => setSearchFacilityName(e.target.value)}
             value={searchFacilityName}
           />
           <input
             type='text'
             className='bg-white rounded border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            placeholder={'Search'}
+            placeholder={'Confirmation ID'}
             onChange={e => setSearchConfirmatioID(e.target.value)}
             value={searchConfirmatioID}
           />
 
           <div className='grid grid-cols-2 gap-1'>
-            {searchFacilityName ||
-              (searchConfirmatioID && (
-                <Button onClick={handleClear} variant='outline'>
-                  Clear
-                </Button>
-              ))}
-
             <Button onClick={handleFilter} variant='primary'>
-              Filter
+              <FontAwesomeIcon icon={faFilter} className='h-4 mr-2' />
+              Filter Records
+            </Button>
+            <Button onClick={handleClear} variant='outline'>
+              <FontAwesomeIcon icon={faTimes} className='h-4 mr-2' />
+              Clear Filter
             </Button>
           </div>
         </div>
