@@ -17,4 +17,8 @@ export class UserService {
   async addUser(data: Partial<User>): Promise<User> {
     return this.userRepository.save(this.userRepository.create(data));
   }
+
+  async getusers(): Promise<User[]> {
+    return await this.userRepository.createQueryBuilder().limit(50).getMany();
+  }
 }
