@@ -25,18 +25,6 @@ export class GetApplicationsDto extends PaginationDto {
   assignedTo: string;
 
   @IsOptional()
-  @IsString()
-  @MaxLength(200)
-  @MinLength(0)
-  confirmationId: string;
-
-  @IsOptional()
-  @IsString()
-  @MaxLength(200)
-  @MinLength(0)
-  confirmationId: string;
-
-  @IsOptional()
   @IsEnum(OrderByOptions)
   order = OrderByOptions.ASC;
 
