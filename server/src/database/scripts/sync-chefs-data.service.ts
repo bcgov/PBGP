@@ -6,7 +6,6 @@ import { Application } from '../../application/application.entity';
 import { REQUEST_METHODS } from '../../common/constants';
 import { ApplicationService } from '../../application/application.service';
 import { SaveApplicationDto } from '../../common/dto/save-application.dto';
-import { ReviewStatuses } from '../../common/enums';
 import { AxiosOptions } from '../../common/interfaces';
 
 // CHEFS Constants
@@ -46,8 +45,6 @@ export class SyncChefsDataService {
       projectTitle: responseData.submission.data.projectTitle,
       totalEstimatedCost: responseData.submission.data.totalEstimatedCostOfProject,
       asks: responseData.submission.data.totalRequestBeingMadeOfBcaapACDNotToExceedB,
-      assignedTo: null,
-      status: ReviewStatuses.INITIAL_REVIEW,
     };
 
     if (dbSubmission) {

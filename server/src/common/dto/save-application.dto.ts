@@ -1,5 +1,3 @@
-import { ReviewStatuses } from '../enums';
-
 export declare class SaveApplicationDto {
   submissionId: string;
   submission: any; // dynamic
@@ -8,6 +6,4 @@ export declare class SaveApplicationDto {
   projectTitle: string;
   totalEstimatedCost: number;
   asks: number;
-  assignedTo: string;
-  status: ReviewStatuses;
 }
