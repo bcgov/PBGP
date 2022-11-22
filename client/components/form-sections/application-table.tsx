@@ -1,9 +1,9 @@
 import { Button, ApplicationTable } from '@components';
 import { Pagination } from '../form';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faFilter } from '@fortawesome/free-solid-svg-icons';
+import { useHttp } from '../../services/useHttp';
 // import { useSearchParams } from 'react-router-dom';
 
 export const ApplicationDashboard: React.FC<any> = () => {
@@ -25,16 +25,19 @@ export const ApplicationDashboard: React.FC<any> = () => {
     data,
   } = state;
 
-  const fetchData = async (params: any) => {
-    const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/applications`;
-    const res = await axios.get(url, params);
-    return res;
-  };
+  const { fetchData } = useHttp();
 
   const setApplicationData = async (params: any) => {
     try {
-      const data = await fetchData(params);
-      setState(state => ({ ...state, data: data.data.result, totalApplications: data.data.total }));
+      fetchData(
+        {
+          endpoint: '/applications',
+          params,
+        },
+        ({ result, total }: any) => {
+          setState(state => ({ ...state, data: result, totalApplications: total }));
+        },
+      );
     } catch (err) {
       // console.log('Error occured when fetching applications');
     }
