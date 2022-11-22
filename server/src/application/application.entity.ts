@@ -26,6 +26,15 @@ export class Application extends CustomBaseEntity {
   @Column({ type: 'varchar', length: '100', nullable: true })
   assignedTo: string;
 
+  @Column({ type: 'varchar', length: '100', nullable: true })
+  projectTitle: string;
+
+  @Column({ type: 'money', nullable: true })
+  totalEstimatedCost: number;
+
+  @Column({ type: 'money', nullable: true })
+  asks: number;
+
   @Column({
     type: 'varchar',
     length: '100',
