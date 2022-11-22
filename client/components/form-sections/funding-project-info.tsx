@@ -1,5 +1,6 @@
 import { Form, Formik } from 'formik';
-import { Field, Radio, FormStepTitles, FormSteps } from '@components';
+import { Field, Radio } from '@components';
+import { FormStepTitles, FormSteps } from '../../constants';
 
 const initialValues = {
   contingencyPlan: '',

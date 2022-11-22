@@ -1,6 +1,7 @@
 import { Form, Formik, FormikProps } from 'formik';
-import { Radio, Textarea, CheckBoxExplain, FormStepTitles, FormSteps } from '@components';
+import { Radio, Textarea, CheckBoxExplain } from '@components';
 import { FundingEligibilityInterface } from 'constants/interfaces';
+import { FormStepTitles, FormSteps } from '../../constants';
 
 const initialValues = {
   indigenousCommunityServed: '',

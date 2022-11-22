@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
-import { FormStepTitles, FormSteps, FileUpload } from '@components';
+import { FileUpload } from '@components';
+import { FormStepTitles, FormSteps } from '../../constants';
 
 const initialValues = {
   docList: [],
