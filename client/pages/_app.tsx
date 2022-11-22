@@ -5,7 +5,7 @@ import type { AppProps as NextAppProps } from 'next/app';
 import App from 'next/app';
 import { SSRKeycloakProvider, SSRCookies, SSRAuthClient } from '@react-keycloak-fork/ssr';
 
-import { API_ENDPOINT, Footer, Header } from '@components';
+import { Footer, Header } from '@components';
 import { AuthProvider, UserInterface } from '@contexts';
 import { StrictMode, useState } from 'react';
 import axios from 'axios';
@@ -13,6 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import getConfig from 'next/config';
 import { useHttp } from '../services/useHttp';
+import { API_ENDPOINT } from '../constants';
 
 type TokensType = Pick<SSRAuthClient, 'token' | 'refreshToken'>;
 interface AppProps extends NextAppProps {

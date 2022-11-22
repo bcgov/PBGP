@@ -2,6 +2,7 @@ import { Button } from '@components';
 import { useAuthContext } from '@contexts';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
+import { Routes } from '../constants';
 
 export default () => {
   const { keycloak, kcInitialized } = useAuthContext();
@@ -10,7 +11,7 @@ export default () => {
   useEffect(() => {
     if (!kcInitialized) return;
     if (keycloak?.authenticated) {
-      router.push('/');
+      router.push(Routes.HOME);
     }
   }, [router, kcInitialized, keycloak?.authenticated]);
 
