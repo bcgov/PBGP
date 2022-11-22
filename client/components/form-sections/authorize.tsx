@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { Form, Formik } from 'formik';
-import { Field, FormStepTitles, FormSteps, Button } from '@components';
+import { Field, Button } from '@components';
 import SignaturePad from 'react-signature-canvas';
 import SignatureCanvas from 'react-signature-canvas';
+import { FormSteps, FormStepTitles } from '../../constants';
 
 const initialValues = {
   projectManagerSignature: '',
