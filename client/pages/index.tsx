@@ -6,9 +6,8 @@ import { useEffect } from 'react';
 
 const Dashboard: NextPage = () => {
   const router = useRouter();
-
   useEffect(() => {
-    router.replace('/applications/');
+    router.replace('/applications');
   }, [router]);
 
   return null;
