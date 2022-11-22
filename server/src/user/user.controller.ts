@@ -19,7 +19,7 @@ export class UserController {
   }
 
   @Patch('/:id')
-  updateUser(@Param('id') userId: string, @Body() body: UserDto): Promise<User> {
+  updateUser(@Param('id') userId: string, @Body() body: UserDto): Promise<void> {
     return this.userService.updateUser(userId, body);
   }
 }
