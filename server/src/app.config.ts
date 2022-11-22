@@ -15,6 +15,7 @@ import { TrimPipe } from './common/trim.pipe';
 import { API_PREFIX } from './config';
 import { Documentation } from './common/documentation';
 import { APIAuthGuard } from './auth/api.guard';
+import { RolesGuard } from './auth/roles.guard';
 
 interface ValidationErrorMessage {
   property: string;
@@ -82,7 +83,7 @@ export async function createNestApp(): Promise<{
   app.useGlobalFilters(new ErrorExceptionFilter(app.get(AppLogger)));
 
   const reflector = app.get(Reflector);
-  app.useGlobalGuards(new APIAuthGuard(reflector));
+  app.useGlobalGuards(new APIAuthGuard(reflector), new RolesGuard(reflector));
 
   // Printing the environment variables
   // eslint-disable-next-line no-console
