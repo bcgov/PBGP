@@ -25,7 +25,7 @@ export const Header: React.FC = () => {
         <div className='layout-grid gap-0 h-full flex flex-row items-center align-center'>
           <Link href='/'>
             <a>
-              <img src={logo.src} alt='government of british columbia' width={160} height={45} />
+              <img src={logo.src} alt='Government of British Columbia' width={160} height={45} />
             </a>
           </Link>
           <div className='ml-7 pl-7 border-l-2 border-bcYellowPrimary'>

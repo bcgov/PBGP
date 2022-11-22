@@ -123,9 +123,7 @@ export const ApplicationDashboard: React.FC<any> = () => {
   return (
     <div>
       <div className='w-full bg-white flex my-2 justify-between'>
-        <h1 className='text-2xl font-bold h-6 text-bcBluePrimary text-left flex-col items-start'>
-          Applications
-        </h1>
+        <h1 className='text-2xl font-bold h-6 text-left flex-col items-start'>Applications</h1>
         <div className='grid grid-cols-2 gap-2'>
           <SearchBar handleChange={handleSearch} />
           <Button variant='primary'>Export PDF</Button>

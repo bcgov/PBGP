@@ -21,12 +21,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         cache: true,
         rateLimit: true,
         jwksRequestsPerMinute: 5,
-        jwksUri: `${process.env.KC_AUTH_URL}/realms/${process.env.KC_AUTH_REALM}/protocol/openid-connect/certs`,
+        jwksUri: `${process.env.KC_AUTH_URL}/realms/${process.env.KC_AUTH_REALM}/protocol/openid-connect/certs`
       }),
 
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       issuer: `${process.env.KC_AUTH_URL}/realms/${process.env.KC_AUTH_REALM}`,
-      algorithms: ['RS256'],
+      algorithms: ['RS256']
     });
   }
 
@@ -42,7 +42,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       this.logger.warn(`Unauthorized user! ${JSON.stringify(payload)}`);
       done(
         new UnauthorizedException({
-          message: 'User does not have permission to access this page! Kindly contact BCAAP Admin!',
+          message: 'You are not authorized! Kindly contact BCAAP Admin!'
         }),
         false
       );

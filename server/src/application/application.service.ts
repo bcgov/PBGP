@@ -18,19 +18,19 @@ export class ApplicationService {
 
     if (query.facilityName) {
       queryBuilder.andWhere('app.facilityName ILIKE :facilityName', {
-        facilityName: `%${query.facilityName}%`,
+        facilityName: `%${query.facilityName}%`
       });
     }
 
     if (query.confirmationId) {
       queryBuilder.andWhere('app.confirmationId = :confirmationId', {
-        confirmationId: `%${query.confirmationId}%`,
+        confirmationId: query.confirmationId
       });
     }
 
     if (query.assignedTo) {
       queryBuilder.andWhere('app.assignedTo = :assignedTo', {
-        assignedTo: `%${query.assignedTo}%`,
+        assignedTo: query.assignedTo
       });
     }
 
