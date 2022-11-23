@@ -32,10 +32,10 @@ export class SyncChefsDataService {
   }
 
   private async createOrFindFormMetadate(data: FormMetaDataDto): Promise<FormMetaData> {
-    const form = await this.formMetadataRepo.find({ chefsFormId: data.chefsFormId });
-    if (form && form[0]) {
+    const form = await this.formMetadataRepo.findOne({ where: { chefsFormId: data.chefsFormId } });
+    if (form) {
       Logger.log('FormMetaData exists: fetching');
-      return form[0];
+      return form;
     }
     Logger.log("FormMetaData doesn't exist: creating");
     return await this.formMetadataRepo.save(this.formMetadataRepo.create(data));
@@ -73,6 +73,8 @@ export class SyncChefsDataService {
         description: submissionResponse.data.form.description,
         active: submissionResponse.data.form.active,
         chefsFormId: submissionResponse.data.form.id,
+        versionId: submissionResponse.data.version.id,
+        versionSchema: submissionResponse.data.version.schema,
       };
       const formMetaData = await this.createOrFindFormMetadate(newFormData);
 

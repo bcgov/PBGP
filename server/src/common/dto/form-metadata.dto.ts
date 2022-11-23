@@ -1,4 +1,4 @@
-import { IsBoolean, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsBoolean, IsJSON, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class FormMetaDataDto {
   @IsString()
@@ -18,4 +18,12 @@ export class FormMetaDataDto {
   @MaxLength(100)
   @MinLength(5)
   chefsFormId: string;
+
+  @IsString()
+  @MaxLength(100)
+  @MinLength(5)
+  versionId: string;
+
+  @IsJSON()
+  versionSchema: any;
 }
