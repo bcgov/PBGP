@@ -16,11 +16,9 @@ export const ApplicationDashboard: React.FC<any> = () => {
   });
 
   const { searchFacilityName, searchConfirmationID, totalApplications, data } = state;
-
   const { push, query } = useRouter();
   const { fetchData } = useHttp();
-
-  const {page, limit} = query;
+  const { page, limit } = query;
 
   const setApplicationData = async (params: any) => {
     fetchData(
@@ -53,24 +51,16 @@ export const ApplicationDashboard: React.FC<any> = () => {
 
   // Change pages
   const nextPage = () => {
-    if (
-      !totalApplications ||
-      Number(page) == Math.ceil(totalApplications / Number(limit))
-    )
-      return;
-    push(
-      { query: { ...query, page: Number(page) + 1, limit: Number(limit) } },
-      undefined,
-      { shallow: true },
-    );
+    if (!totalApplications || Number(page) == Math.ceil(totalApplications / Number(limit))) return;
+    push({ query: { ...query, page: Number(page) + 1, limit: Number(limit) } }, undefined, {
+      shallow: true,
+    });
   };
   const previousPage = () => {
     if (Number(page) == 1) return;
-    push(
-      { query: { ...query, page: Number(page) - 1, limit: Number(limit) } },
-      undefined,
-      { shallow: true },
-    );
+    push({ query: { ...query, page: Number(page) - 1, limit: Number(limit) } }, undefined, {
+      shallow: true,
+    });
   };
   const firstPage = () => {
     if (Number(page) == 1) return;
@@ -79,11 +69,7 @@ export const ApplicationDashboard: React.FC<any> = () => {
     });
   };
   const lastPage = () => {
-    if (
-      !totalApplications ||
-      Number(page) == Math.ceil(totalApplications / Number(limit))
-    )
-      return;
+    if (!totalApplications || Number(page) == Math.ceil(totalApplications / Number(limit))) return;
     push(
       {
         query: {
@@ -109,7 +95,6 @@ export const ApplicationDashboard: React.FC<any> = () => {
     );
   };
 
-
   const handleClear = () => {
     const checkInputs = searchFacilityName.length == 0 && searchConfirmationID.length == 0;
     if (checkInputs) return;
@@ -123,13 +108,11 @@ export const ApplicationDashboard: React.FC<any> = () => {
     );
   };
 
-
-
   return (
     <div>
       <div className='w-full bg-white flex my-2 justify-between'>
         <h1 className='text-2xl font-bold h-6 text-bcBluePrimary text-left flex-col items-start'>
-          Applications 
+          Applications
         </h1>
       </div>
       <div className='w-full border py-4 px-8 mb-2'>
