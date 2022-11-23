@@ -1,10 +1,9 @@
-import { ReviewStatuses } from '../enums';
-
-export declare class SaveApplicationDto {
+export interface SaveApplicationDto {
   submissionId: string;
   submission: any; // dynamic
   confirmationId: string;
   facilityName: string;
-  assignedTo: string;
-  status: ReviewStatuses;
+  projectTitle: string;
+  totalEstimatedCost: number;
+  asks: number;
 }
