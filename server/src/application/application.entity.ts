@@ -1,6 +1,6 @@
 import { FormMetaData } from '../FormMetaData/formmetadata.entity';
 import { ReviewStatuses } from '../common/enums';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
 @Entity({
@@ -43,7 +43,6 @@ export class Application extends CustomBaseEntity {
   })
   status: ReviewStatuses;
 
-  @OneToOne(() => FormMetaData)
-  @JoinColumn({ name: 'form_metadata_id' })
+  @ManyToOne(() => FormMetaData, (form) => form.applications)
   form: FormMetaData;
 }

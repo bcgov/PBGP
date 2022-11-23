@@ -1,4 +1,4 @@
-export declare class SaveApplicationDto {
+export interface SaveApplicationDto {
   submissionId: string;
   submission: any; // dynamic
   confirmationId: string;

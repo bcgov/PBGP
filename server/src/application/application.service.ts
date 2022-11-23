@@ -5,6 +5,7 @@ import { SaveApplicationDto } from '../common/dto/save-application.dto';
 import { GetApplicationsDto } from '../common/dto/get-applications.dto';
 import { Repository } from 'typeorm';
 import { PaginationRO } from '../common/ro/pagination.ro';
+import { FormMetaData } from '../FormMetaData/formmetadata.entity';
 
 @Injectable()
 export class ApplicationService {
@@ -54,12 +55,14 @@ export class ApplicationService {
     return;
   }
 
-  async createApplication(applicationDto: SaveApplicationDto): Promise<Application> {
+  async createApplication(
+    applicationDto: SaveApplicationDto,
+    formMetaData: FormMetaData
+  ): Promise<Application> {
     const application = this.applicationRepository.create(applicationDto);
+    application.form = formMetaData;
 
-    await this.applicationRepository.save(application);
-
-    return application;
+    return await this.applicationRepository.save(application);
   }
 
   async updateApplication(

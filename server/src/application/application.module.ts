@@ -3,10 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Application } from './application.entity';
 import { ApplicationController } from './application.controller';
 import { ApplicationService } from './application.service';
-import { FormMetaDataModule } from '../FormMetaData/formmetadata.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Application]), FormMetaDataModule],
+  imports: [TypeOrmModule.forFeature([Application])],
   exports: [],
   controllers: [ApplicationController],
   providers: [ApplicationService],
