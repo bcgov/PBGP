@@ -1,6 +1,6 @@
-import { ApplicationDataInterface } from '../../constants/interfaces';
+import { ApplicationTableProps } from '../../constants/interfaces';
 
-type Props = { applications: ApplicationDataInterface[] };
+type Props = { applications: ApplicationTableProps[] };
 
 const TableHeader: React.FC = () => {
   const headers = [
