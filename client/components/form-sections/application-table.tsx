@@ -97,9 +97,6 @@ export const ApplicationDashboard: React.FC<any> = () => {
     );
   };
 
-  const disableFilters = () => {
-    return searchFacilityName.length == 0 && searchConfirmationID.length == 0;
-  }
   const handleFilter = () => {
     const checkInputs = searchFacilityName.length == 0 && searchConfirmationID.length == 0;
     if (checkInputs) return;
