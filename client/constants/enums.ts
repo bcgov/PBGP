@@ -8,3 +8,7 @@ export enum FormSteps {
   SUPPORT_DOCUMENTATION = 'SUPPORT_DOCUMENTATION',
   AUTHORIZATION = 'AUTHORIZATION',
 }
+
+export enum Endpoints {
+  APPLICATIONS = '/applications',
+}

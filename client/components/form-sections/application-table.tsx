@@ -5,27 +5,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { useHttp } from '../../services/useHttp';
 import { useRouter } from 'next/router';
+import { Endpoints } from '../../constants';
 
 export const ApplicationDashboard: React.FC<any> = () => {
   const [state, setState] = useState({
     searchFacilityName: '',
-    searchConfirmatioID: '',
+    searchConfirmationID: '',
     totalApplications: 0,
     data: [],
   });
 
-  const { searchFacilityName, searchConfirmatioID, totalApplications, data } = state;
+  const { searchFacilityName, searchConfirmationID, totalApplications, data } = state;
 
   const { push, query } = useRouter();
   const { fetchData } = useHttp();
 
+  const {page, limit} = query;
+
   const setApplicationData = async (params: any) => {
-    try {
-      const data = await fetchData(params);
-      setState(state => ({ ...state, data: data.result, totalApplications: data.total }));
-    } catch (err) {
-      // console.log('Error occured when fetching applications');
-    }
+    fetchData(
+      {
+        endpoint: Endpoints.APPLICATIONS,
+        params,
+      },
+      ({ result, total }: any) => {
+        setState(state => ({ ...state, data: result, totalApplications: total }));
+      },
+    );
   };
 
   useEffect(() => {
@@ -49,41 +55,41 @@ export const ApplicationDashboard: React.FC<any> = () => {
   const nextPage = () => {
     if (
       !totalApplications ||
-      Number(query.page) == Math.ceil(totalApplications / Number(query.limit))
+      Number(page) == Math.ceil(totalApplications / Number(limit))
     )
       return;
     push(
-      { query: { ...query, page: Number(query.page) + 1, limit: Number(query.limit) } },
+      { query: { ...query, page: Number(page) + 1, limit: Number(limit) } },
       undefined,
       { shallow: true },
     );
   };
   const previousPage = () => {
-    if (Number(query.page) == 1) return;
+    if (Number(page) == 1) return;
     push(
-      { query: { ...query, page: Number(query.page) - 1, limit: Number(query.limit) } },
+      { query: { ...query, page: Number(page) - 1, limit: Number(limit) } },
       undefined,
       { shallow: true },
     );
   };
   const firstPage = () => {
-    if (Number(query.page) == 1) return;
-    push({ query: { ...query, page: 1, limit: Number(query.limit) } }, undefined, {
+    if (Number(page) == 1) return;
+    push({ query: { ...query, page: 1, limit: Number(limit) } }, undefined, {
       shallow: true,
     });
   };
   const lastPage = () => {
     if (
       !totalApplications ||
-      Number(query.page) == Math.ceil(totalApplications / Number(query.limit))
+      Number(page) == Math.ceil(totalApplications / Number(limit))
     )
       return;
     push(
       {
         query: {
           ...query,
-          page: Math.ceil(totalApplications / Number(query.page)),
-          limit: Number(query.limit),
+          page: Math.ceil(totalApplications / Number(page)),
+          limit: Number(limit),
         },
       },
       undefined,
@@ -91,35 +97,42 @@ export const ApplicationDashboard: React.FC<any> = () => {
     );
   };
 
-  const checkInputs = searchFacilityName.length == 0 && searchConfirmatioID.length == 0;
+  const disableFilters = () => {
+    return searchFacilityName.length == 0 && searchConfirmationID.length == 0;
+  }
   const handleFilter = () => {
+    const checkInputs = searchFacilityName.length == 0 && searchConfirmationID.length == 0;
     if (checkInputs) return;
     push(
       {
-        query: { ...query, facilityName: searchFacilityName, confirmationId: searchConfirmatioID },
+        query: { ...query, facilityName: searchFacilityName, confirmationId: searchConfirmationID },
       },
       undefined,
       { shallow: true },
     );
   };
 
+
   const handleClear = () => {
+    const checkInputs = searchFacilityName.length == 0 && searchConfirmationID.length == 0;
     if (checkInputs) return;
     // Clear Inputs
-    setState(state => ({ ...state, searchFacilityName: '', searchConfirmatioID: '' }));
+    setState(state => ({ ...state, searchFacilityName: '', searchConfirmationID: '' }));
 
     push(
-      { query: { ...query, facilityName: '', confirmationId: '', limit: Number(query.limit) } },
+      { query: { ...query, facilityName: '', confirmationId: '', limit: Number(limit) } },
       undefined,
       { shallow: true },
     );
   };
 
+
+
   return (
     <div>
       <div className='w-full bg-white flex my-2 justify-between'>
         <h1 className='text-2xl font-bold h-6 text-bcBluePrimary text-left flex-col items-start'>
-          Applications {query.limit}
+          Applications 
         </h1>
       </div>
       <div className='w-full border py-4 px-8 mb-2'>
@@ -136,8 +149,8 @@ export const ApplicationDashboard: React.FC<any> = () => {
             type='text'
             className='bg-white rounded border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             placeholder={'Confirmation ID'}
-            onChange={e => setState(p => ({ ...p, searchConfirmatioID: e.target.value }))}
-            value={searchConfirmatioID}
+            onChange={e => setState(p => ({ ...p, searchConfirmationID: e.target.value }))}
+            value={searchConfirmationID}
           />
 
           <div className='grid grid-cols-2 gap-1'>
@@ -156,8 +169,8 @@ export const ApplicationDashboard: React.FC<any> = () => {
       {data && <ApplicationTable applications={data} />}
 
       <Pagination
-        currentPage={Number(query.page)}
-        applicationsPerPage={Number(query.limit)}
+        currentPage={Number(page)}
+        applicationsPerPage={Number(limit)}
         totalApplications={totalApplications}
         firstPage={firstPage}
         lastPage={lastPage}
