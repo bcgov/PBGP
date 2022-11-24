@@ -21,10 +21,11 @@ export const useHttp = (): HttpReturn => {
   const { keycloak } = useKeycloak();
 
   const errorHandler = (err: any) => {
-    let errorMessage = err?.response?.data?.message ?? 'Error fetching data';
+    let errorMessage = err?.response?.data?.errorMessage ?? 'Error fetching data';
     if (err?.response?.status === 401) {
       keycloak?.logout();
-      errorMessage = 'You are not authorized! Kindly contact admin!';
+      errorMessage =
+        errorMessage === 'Unauthorized' ? 'Session timed-out! Kindly login again!' : errorMessage;
     } else if (err?.response?.status === 400) {
       errorMessage = 'Kindly verify the input';
     }

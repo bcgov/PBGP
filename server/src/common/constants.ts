@@ -41,3 +41,7 @@ export enum REQUEST_METHODS {
   PUT = 'put',
   DELETE = 'delete',
 }
+
+export enum UserRoles {
+  ADMIN = 'ADMIN',
+}
