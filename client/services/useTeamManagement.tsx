@@ -1,18 +1,32 @@
 import { useEffect, useState } from 'react';
-import { API_ENDPOINT } from '../constants';
+import { API_ENDPOINT, REQUEST_METHOD } from '../constants';
 import { UserInterface } from '../contexts';
 import { useHttp } from './useHttp';
 import { useModal } from './useModal';
 
 export const useTeamManagement = () => {
   const [userData, setUserData] = useState<UserInterface[]>([]);
-  const { fetchData } = useHttp();
-  const { openModal } = useModal();
+  const { fetchData, sendApiRequest, isLoading } = useHttp();
+  const { openModal, closeModal } = useModal();
 
   const updateAdminAccess = (id: string, grantAccess: boolean) => {
-    //TODO: API call to backend and refresh the data
-    // eslint-disable-next-line no-console
-    console.log('Admin API call', id, grantAccess);
+    closeModal();
+    const body: any = {
+      isAdmin: grantAccess,
+    };
+    if (grantAccess) {
+      body.isAuthorized = grantAccess;
+    }
+    sendApiRequest(
+      {
+        endpoint: API_ENDPOINT.updateUserAccess(id),
+        method: REQUEST_METHOD.PATCH,
+        data: body,
+      },
+      () => {
+        fetchUsers();
+      },
+    );
   };
 
   const updateAdminAccessModal = (id: string, grantAccess: boolean) => {
@@ -33,9 +47,23 @@ export const useTeamManagement = () => {
   };
 
   const updatePortalAccess = (id: string, grantAccess: boolean) => {
-    //TODO: API call to backend and refresh the data
-    // eslint-disable-next-line no-console
-    console.log('Portal API call', id, grantAccess);
+    closeModal();
+    const body: any = {
+      isAuthorized: grantAccess,
+    };
+    if (!grantAccess) {
+      body.isAdmin = grantAccess;
+    }
+    sendApiRequest(
+      {
+        endpoint: API_ENDPOINT.updateUserAccess(id),
+        method: REQUEST_METHOD.PATCH,
+        data: body,
+      },
+      () => {
+        fetchUsers();
+      },
+    );
   };
 
   const updatePortalAccessModal = (id: string, grantAccess: boolean) => {
@@ -73,5 +101,6 @@ export const useTeamManagement = () => {
     userData,
     updateAdminAccessModal,
     updatePortalAccessModal,
+    isLoading,
   };
 };
