@@ -1,8 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
-import { UserDto } from '@/common/dto/user.dto';
+import { UserAccessDto } from '../common/dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -23,16 +23,12 @@ export class UserService {
     return await this.userRepository.createQueryBuilder().limit(50).getMany();
   }
 
-  async updateUser(userId: string, body: UserDto): Promise<void> {
-    try {
-      const user = await this.userRepository.findOne(userId);
+  async updateUserAccess(userId: string, body: UserAccessDto): Promise<void> {
+    const user = await this.userRepository.findOne(userId);
 
-      if (user) {
-        // Right now only updates isAuthorized and isAdmin, add more in the future as needed.
-        await this.userRepository.save({ ...user, ...body });
-      }
-    } catch (e) {
-      Logger.error(e);
+    if (user) {
+      // Right now only updates isAuthorized and isAdmin, add more in the future as needed.
+      await this.userRepository.save({ ...user, ...body });
     }
   }
 }
