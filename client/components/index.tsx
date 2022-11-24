@@ -8,6 +8,7 @@ export * from './Stepper';
 export * from './PageTitle';
 export * from './CheckBoxExplain';
 export * from './Layout';
+export * from './Modal';
 
 // HOCs
 export * from './withAuth';

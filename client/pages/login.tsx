@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { Routes } from '../constants';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
   const { keycloak, kcInitialized } = useAuthContext();
   const router = useRouter();

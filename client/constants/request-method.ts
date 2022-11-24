@@ -9,4 +9,5 @@ export enum REQUEST_METHOD {
 export const API_ENDPOINT = {
   VALIDATE_USER: '/validate',
   FETCH_USERS: '/users',
+  updateUserAccess: (id: string) => `/users/${id}/access`,
 };

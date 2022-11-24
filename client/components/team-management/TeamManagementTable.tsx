@@ -106,7 +106,13 @@ export const TeamManagementTable: React.FC<TableProps> = ({
             updatePortalAccess={updatePortalAccess}
           />
         ) : (
-          <p className='text-center text-sm mt-4'>No user found.</p>
+          <tbody>
+            <tr>
+              <td width={4}>
+                <p className='text-center text-sm mt-4'>No user found.</p>
+              </td>
+            </tr>
+          </tbody>
         )}
       </table>
     </div>
