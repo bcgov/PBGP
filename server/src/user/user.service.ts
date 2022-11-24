@@ -26,7 +26,6 @@ export class UserService {
   async updateUser(userId: string, body: UserDto): Promise<void> {
     try {
       const user = await this.userRepository.findOne(userId);
-      console.log(user);
 
       if (user) {
         // Right now only updates isAuthorized and isAdmin, add more in the future as needed.
