@@ -19,6 +19,7 @@ export class UserController {
   }
 
   @Patch('/:id/access')
+  @Roles(UserRoles.ADMIN)
   updateUser(@Param('id') userId: string, @Body() body: UserAccessDto): Promise<void> {
     return this.userService.updateUserAccess(userId, body);
   }
