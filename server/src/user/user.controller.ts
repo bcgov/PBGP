@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { UserAccessDto } from '../common/dto/user.dto';
+import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserRoles } from '../common/constants';
 import { Roles } from '../common/decorator';
@@ -15,5 +16,11 @@ export class UserController {
   @Roles(UserRoles.ADMIN)
   getUsers(): Promise<User[]> {
     return this.userService.getUsers();
+  }
+
+  @Patch('/:id/access')
+  @Roles(UserRoles.ADMIN)
+  updateUser(@Param('id') userId: string, @Body() body: UserAccessDto): Promise<void> {
+    return this.userService.updateUserAccess(userId, body);
   }
 }
