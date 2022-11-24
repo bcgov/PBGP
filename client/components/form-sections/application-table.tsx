@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { useHttp } from '../../services/useHttp';
+import { useQueryParams } from '../../services/useQueryParams';
 import { useRouter } from 'next/router';
 import { Endpoints } from '../../constants';
 
@@ -34,11 +35,8 @@ export const ApplicationDashboard: React.FC<any> = () => {
 
   useEffect(() => {
     (async () => {
-      push(
-        { query: { ...query, page: 1, limit: 1, facilityName: '', confirmationId: '' } },
-        undefined,
-        { shallow: true },
-      );
+      const params = { ...query, page: 1, limit: 1, facilityName: '', confirmationId: '' };
+      useQueryParams(push, query, params);
     })();
   }, []);
 
@@ -52,47 +50,38 @@ export const ApplicationDashboard: React.FC<any> = () => {
   // Change pages
   const nextPage = () => {
     if (!totalApplications || Number(page) == Math.ceil(totalApplications / Number(limit))) return;
-    push({ query: { ...query, page: Number(page) + 1, limit: Number(limit) } }, undefined, {
-      shallow: true,
-    });
+    const params = { ...query, page: Number(page) + 1, limit: Number(limit) };
+    useQueryParams(push, query, params);
   };
   const previousPage = () => {
     if (Number(page) == 1) return;
-    push({ query: { ...query, page: Number(page) - 1, limit: Number(limit) } }, undefined, {
-      shallow: true,
-    });
+    const params = { ...query, page: Number(page) - 1, limit: Number(limit) };
+    useQueryParams(push, query, params);
   };
   const firstPage = () => {
     if (Number(page) == 1) return;
-    push({ query: { ...query, page: 1, limit: Number(limit) } }, undefined, {
-      shallow: true,
-    });
+    const params = { ...query, page: 1, limit: Number(limit) };
+    useQueryParams(push, query, params);
   };
   const lastPage = () => {
     if (!totalApplications || Number(page) == Math.ceil(totalApplications / Number(limit))) return;
-    push(
-      {
-        query: {
-          ...query,
-          page: Math.ceil(totalApplications / Number(page)),
-          limit: Number(limit),
-        },
-      },
-      undefined,
-      { shallow: true },
-    );
+    const params = {
+      ...query,
+      page: Math.ceil(totalApplications / Number(page)),
+      limit: Number(limit),
+    };
+    useQueryParams(push, query, params);
   };
 
   const handleFilter = () => {
     const checkInputs = searchFacilityName.length == 0 && searchConfirmationID.length == 0;
     if (checkInputs) return;
-    push(
-      {
-        query: { ...query, facilityName: searchFacilityName, confirmationId: searchConfirmationID },
-      },
-      undefined,
-      { shallow: true },
-    );
+    const params = {
+      ...query,
+      facilityName: searchFacilityName,
+      confirmationId: searchConfirmationID,
+    };
+    useQueryParams(push, query, params);
   };
 
   const handleClear = () => {
@@ -100,12 +89,8 @@ export const ApplicationDashboard: React.FC<any> = () => {
     if (checkInputs) return;
     // Clear Inputs
     setState(state => ({ ...state, searchFacilityName: '', searchConfirmationID: '' }));
-
-    push(
-      { query: { ...query, facilityName: '', confirmationId: '', limit: Number(limit) } },
-      undefined,
-      { shallow: true },
-    );
+    const params = { ...query, facilityName: '', confirmationId: '', limit: Number(limit) };
+    useQueryParams(push, query, params);
   };
 
   return (
