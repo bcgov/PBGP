@@ -3,7 +3,8 @@ import { Layout, TeamManagementTable, withAuth } from '../components';
 import { useTeamManagement } from '../services';
 
 export const TeamManagement: React.FC<any> = () => {
-  const { userData, updateAdminAccess, updatePortalAccess } = useTeamManagement();
+  const { userData, updateAdminAccessModal, updatePortalAccessModal } = useTeamManagement();
+
   return (
     <Layout pageName='Team Management'>
       <div>
@@ -12,8 +13,8 @@ export const TeamManagement: React.FC<any> = () => {
         </div>
         <TeamManagementTable
           data={userData}
-          updateAdminAccess={updateAdminAccess}
-          updatePortalAccess={updatePortalAccess}
+          updateAdminAccess={updateAdminAccessModal}
+          updatePortalAccess={updatePortalAccessModal}
         />
       </div>
     </Layout>
