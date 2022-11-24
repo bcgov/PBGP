@@ -24,20 +24,16 @@ export class UserService {
   }
 
   async updateUser(userId: string, body: UserDto): Promise<void> {
-    const user = this.userRepository.findOne(userId);
+    try {
+      const user = await this.userRepository.findOne(userId);
+      console.log(user);
 
-    if (user) {
-      // Right now only updates isAuthorized and isAdmin, add more in the future as needed.
-      try {
-        await this.userRepository
-          .createQueryBuilder()
-          .update(User)
-          .set({ isAuthorized: body.isAuthorized, isAdmin: body.isAdmin })
-          .where('id = :id', { id: userId })
-          .execute();
-      } catch (e) {
-        Logger.error(e);
+      if (user) {
+        // Right now only updates isAuthorized and isAdmin, add more in the future as needed.
+        await this.userRepository.save({ ...user, ...body });
       }
+    } catch (e) {
+      Logger.error(e);
     }
   }
 }

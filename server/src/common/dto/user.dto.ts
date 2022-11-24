@@ -1,4 +1,4 @@
 export interface UserDto {
-  isAuthorized: boolean;
-  isAdmin: boolean;
+  isAuthorized?: boolean;
+  isAdmin?: boolean;
 }
