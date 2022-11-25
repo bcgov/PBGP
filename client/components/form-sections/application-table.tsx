@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { useHttp } from '../../services/useHttp';
-import { useQueryParams } from '../../services/useQueryParams';
+import { SetQueryParams } from '../../services/useQueryParams';
 import { useRouter } from 'next/router';
 import { Endpoints } from '../../constants';
 
@@ -36,7 +36,7 @@ export const ApplicationDashboard: React.FC<any> = () => {
   useEffect(() => {
     (async () => {
       const params = { ...query, page: 1, limit: 1, facilityName: '', confirmationId: '' };
-      useQueryParams(push, query, params);
+      SetQueryParams(push, query, params);
     })();
   }, []);
 
@@ -51,17 +51,17 @@ export const ApplicationDashboard: React.FC<any> = () => {
   const nextPage = () => {
     if (!totalApplications || Number(page) == Math.ceil(totalApplications / Number(limit))) return;
     const params = { ...query, page: Number(page) + 1, limit: Number(limit) };
-    useQueryParams(push, query, params);
+    SetQueryParams(push, query, params);
   };
   const previousPage = () => {
     if (Number(page) == 1) return;
     const params = { ...query, page: Number(page) - 1, limit: Number(limit) };
-    useQueryParams(push, query, params);
+    SetQueryParams(push, query, params);
   };
   const firstPage = () => {
     if (Number(page) == 1) return;
     const params = { ...query, page: 1, limit: Number(limit) };
-    useQueryParams(push, query, params);
+    SetQueryParams(push, query, params);
   };
   const lastPage = () => {
     if (!totalApplications || Number(page) == Math.ceil(totalApplications / Number(limit))) return;
@@ -70,7 +70,7 @@ export const ApplicationDashboard: React.FC<any> = () => {
       page: Math.ceil(totalApplications / Number(page)),
       limit: Number(limit),
     };
-    useQueryParams(push, query, params);
+    SetQueryParams(push, query, params);
   };
 
   const handleFilter = () => {
@@ -81,7 +81,7 @@ export const ApplicationDashboard: React.FC<any> = () => {
       facilityName: searchFacilityName,
       confirmationId: searchConfirmationID,
     };
-    useQueryParams(push, query, params);
+    SetQueryParams(push, query, params);
   };
 
   const handleClear = () => {
@@ -90,7 +90,7 @@ export const ApplicationDashboard: React.FC<any> = () => {
     // Clear Inputs
     setState(state => ({ ...state, searchFacilityName: '', searchConfirmationID: '' }));
     const params = { ...query, facilityName: '', confirmationId: '', limit: Number(limit) };
-    useQueryParams(push, query, params);
+    SetQueryParams(push, query, params);
   };
 
   return (
