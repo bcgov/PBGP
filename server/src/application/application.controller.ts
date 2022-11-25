@@ -16,6 +16,7 @@ import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
 import { PaginationRO } from '../common/ro/pagination.ro';
 import { Roles } from '../common/decorator';
+import { AssignToUserDto } from '../common/dto/assign-to-user.dto';
 
 @ApiBearerAuth()
 @Controller('applications')
@@ -47,12 +48,12 @@ export class ApplicationController {
     return SUCCESS_RESPONSE;
   }
 
-  @Patch('/:applicationId/assign-to-user/:externalUserId')
+  @Patch('/:applicationId/assign-to-user')
   @Roles(UserRoles.ADMIN)
   async assignToUser(
     @Param('applicationId') applicationId: string,
-    @Param('externalUserId') externalUserId: string
+    @Body() assignToUserDto: AssignToUserDto
   ): Promise<void> {
-    return this.applicationService.assignToUser(applicationId, externalUserId);
+    return this.applicationService.assignToUser(applicationId, assignToUserDto);
   }
 }

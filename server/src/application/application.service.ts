@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { PaginationRO } from '../common/ro/pagination.ro';
 import { FormMetaData } from '../FormMetaData/formmetadata.entity';
 import { UserService } from '../user/user.service';
+import { AssignToUserDto } from '../common/dto/assign-to-user.dto';
 
 @Injectable()
 export class ApplicationService {
@@ -74,15 +75,18 @@ export class ApplicationService {
     await this.applicationRepository.update(applicationId, applicationDto);
   }
 
-  async assignToUser(applicationId: string, externalUserId: string): Promise<void> {
+  async assignToUser(applicationId: string, assignToUserDto: AssignToUserDto): Promise<void> {
     const application = await this.getApplication(applicationId);
     if (application) {
-      const user = await this.userService.getByExternalId(externalUserId);
+      const user = await this.userService.getByExternalId(assignToUserDto.externalId);
       if (user) {
         application.user = user;
         application.assignedTo = user.externalId;
-        await this.applicationRepository.save(application);
+      } else {
+        application.user = null;
+        application.assignedTo = null;
       }
+      await this.applicationRepository.save(application);
     }
   }
 }
