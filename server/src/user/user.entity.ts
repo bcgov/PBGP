@@ -1,4 +1,5 @@
 import { Application } from '@/application/application.entity';
+import { Comment } from '@/comments/comment.entity';
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
@@ -27,4 +28,7 @@ export class User extends CustomBaseEntity {
 
   @OneToMany(() => Application, (application) => application.user)
   applications: Application[];
+
+  @ManyToOne(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 }
