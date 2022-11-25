@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Application } from '@/application/application.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
 @Entity({
@@ -10,4 +11,7 @@ export class Comment extends CustomBaseEntity {
 
   @Column({ type: 'varchar', length: 2000, nullable: false })
   comment: string;
+
+  @ManyToOne(() => Application, (application) => application.comments)
+  application: Application;
 }
