@@ -51,7 +51,7 @@ export class ApplicationController {
   @Roles(UserRoles.ADMIN)
   async assignToUser(
     @Param('applicationId') applicationId: string,
-    @Param('applicationId') externalUserId: string
+    @Param('externalUserId') externalUserId: string
   ): Promise<void> {
     return this.applicationService.assignToUser(applicationId, externalUserId);
   }

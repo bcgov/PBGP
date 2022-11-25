@@ -80,6 +80,7 @@ export class ApplicationService {
       const user = await this.userService.getByExternalId(externalUserId);
       if (user) {
         application.user = user;
+        application.assignedTo = user.externalId;
         await this.applicationRepository.save(application);
       }
     }
