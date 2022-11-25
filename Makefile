@@ -23,7 +23,7 @@ export GIT_LOCAL_BRANCH := $(or $(GIT_LOCAL_BRANCH),dev)
 
 export KC_AUTH_URL = https://dev.loginproxy.gov.bc.ca/auth
 export KC_AUTH_REALM = standard
-export KC_AUTH_CLIENT_ID = ed-9154-dev-4226
+export KC_AUTH_CLIENT_ID = pbgp-4412
 
 export APP_NAME:=pbgp
 export OS_NAMESPACE_PREFIX:=ed9154
@@ -83,7 +83,7 @@ local-client-workspace:
 	@docker exec -it $(PROJECT)-client sh
 
 local-server-workspace:
-	@docker exec -it $(PROJECT)-server bash
+	@docker exec -it $(PROJECT)-server sh
 
 local-db-workspace:
 	@docker exec -it $(PROJECT)-database bash

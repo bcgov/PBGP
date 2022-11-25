@@ -3,9 +3,11 @@ import { useKeycloak } from '@react-keycloak-fork/ssr';
 import type { SSRAuthClient } from '@react-keycloak-fork/ssr';
 
 export interface UserInterface {
-  id: number;
-  roles: string[];
+  id: string;
   displayName: string;
+  isAdmin: boolean;
+  isAuthorized: boolean;
+  userName?: string;
 }
 export interface AuthInterface {
   keycloak?: SSRAuthClient;

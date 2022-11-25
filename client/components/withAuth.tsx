@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 
 import { useAuthContext } from '@contexts';
 import { Spinner } from './Spinner';
+import { Routes } from '../constants';
 
 export const withAuth = (Component: NextComponentType<NextPageContext>) => {
   const Auth = () => {
@@ -12,7 +13,7 @@ export const withAuth = (Component: NextComponentType<NextPageContext>) => {
 
     useEffect(() => {
       if (kcInitialized && !keycloak?.authenticated) {
-        router.replace('/login');
+        router.replace(Routes.LOGIN);
       }
     }, [kcInitialized, keycloak?.authenticated]);
 

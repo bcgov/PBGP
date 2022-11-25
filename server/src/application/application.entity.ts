@@ -1,6 +1,6 @@
 import { FormMetaData } from '../FormMetaData/formmetadata.entity';
 import { ReviewStatuses } from '../common/enums';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
 @Entity({
@@ -26,6 +26,15 @@ export class Application extends CustomBaseEntity {
   @Column({ type: 'varchar', length: '100', nullable: true })
   assignedTo: string;
 
+  @Column({ type: 'varchar', length: '100', nullable: true })
+  projectTitle: string;
+
+  @Column({ type: 'money', nullable: true })
+  totalEstimatedCost: number;
+
+  @Column({ type: 'money', nullable: true })
+  asks: number;
+
   @Column({
     type: 'varchar',
     length: '100',
@@ -34,7 +43,6 @@ export class Application extends CustomBaseEntity {
   })
   status: ReviewStatuses;
 
-  @OneToOne(() => FormMetaData)
-  @JoinColumn({ name: 'form_metadata_id' })
+  @ManyToOne(() => FormMetaData, (form) => form.applications)
   form: FormMetaData;
 }

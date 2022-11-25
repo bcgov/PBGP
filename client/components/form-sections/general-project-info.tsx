@@ -1,6 +1,7 @@
 import { Form, Formik, FormikProps } from 'formik';
-import { Field, Radio, Textarea, FormStepTitles, FormSteps } from '@components';
+import { Field, Radio, Textarea } from '@components';
 import { GeneralInfoInterface } from 'constants/interfaces';
+import { FormStepTitles, FormSteps } from '../../constants';
 
 const initialValues = {
   estimatedCost: '',

@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Application } from '../application/application.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
 @Entity({
@@ -19,4 +20,13 @@ export class FormMetaData extends CustomBaseEntity {
 
   @Column({ type: 'varchar', length: '100', nullable: false })
   chefsFormId: string;
+
+  @Column({ type: 'varchar', length: '100', nullable: false })
+  versionId: string;
+
+  @Column({ type: 'jsonb', nullable: false })
+  versionSchema: any;
+
+  @OneToMany(() => Application, (application) => application.form)
+  applications: Application[];
 }

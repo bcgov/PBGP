@@ -6,8 +6,9 @@ import { Application } from '../../application/application.entity';
 import { REQUEST_METHODS } from '../../common/constants';
 import { ApplicationService } from '../../application/application.service';
 import { SaveApplicationDto } from '../../common/dto/save-application.dto';
-import { ReviewStatuses } from '../../common/enums';
 import { AxiosOptions } from '../../common/interfaces';
+import { FormMetaData } from '../../FormMetaData/formmetadata.entity';
+import { FormMetaDataDto } from '../../common/dto/form-metadata.dto';
 
 // CHEFS Constants
 const CHEFS_FORM_IDS = ['4b19eee6-f42d-481f-8279-cbc28ab68cf0'];
@@ -18,6 +19,8 @@ export class SyncChefsDataService {
   constructor(
     @InjectRepository(Application)
     private readonly applicationRepo: Repository<Application>,
+    @InjectRepository(FormMetaData)
+    private readonly formMetadataRepo: Repository<FormMetaData>,
     private readonly appService: ApplicationService
   ) {}
 
@@ -26,6 +29,16 @@ export class SyncChefsDataService {
   }
   private getSubmissionUrl(submissionId: string): string {
     return `${CHEFS_BASE_URL}/submissions/${submissionId}`;
+  }
+
+  private async createOrFindFormMetadate(data: FormMetaDataDto): Promise<FormMetaData> {
+    const form = await this.formMetadataRepo.findOne({ where: { chefsFormId: data.chefsFormId } });
+    if (form) {
+      Logger.log('FormMetaData exists: fetching');
+      return form;
+    }
+    Logger.log("FormMetaData doesn't exist: creating");
+    return await this.formMetadataRepo.save(this.formMetadataRepo.create(data));
   }
 
   private async createOrUpdateSubmission(
@@ -43,20 +56,29 @@ export class SyncChefsDataService {
       submission: responseData.submission.data,
       confirmationId: responseData.confirmationId,
       facilityName: responseData.submission.data.facilityName,
-      assignedTo: null,
-      status: ReviewStatuses.INITIAL_REVIEW,
+      projectTitle: responseData.submission.data.projectTitle,
+      totalEstimatedCost: responseData.submission.data.totalEstimatedCostOfProject,
+      asks: responseData.submission.data.totalRequestBeingMadeOfBcaapACDNotToExceedB,
     };
 
     if (dbSubmission) {
-      // Update
       Logger.log('Submission exists: updating');
       await this.appService.updateApplication(dbSubmission.id, newSubmissionData);
     } else {
-      // Create
       Logger.log("Submission doesn't exist: creating");
 
-      // Create FormMetaData as well later, then pass the ID to the application
-      await this.appService.createApplication(newSubmissionData);
+      Logger.log('Processing FormMetadata');
+      const newFormData: FormMetaDataDto = {
+        name: submissionResponse.data.form.name,
+        description: submissionResponse.data.form.description,
+        active: submissionResponse.data.form.active,
+        chefsFormId: submissionResponse.data.form.id,
+        versionId: submissionResponse.data.version.id,
+        versionSchema: submissionResponse.data.version.schema,
+      };
+      const formMetaData = await this.createOrFindFormMetadate(newFormData);
+
+      await this.appService.createApplication(newSubmissionData, formMetaData);
     }
   }
 

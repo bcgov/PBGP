@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
+import { UserAccessDto } from '../common/dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -20,5 +21,14 @@ export class UserService {
 
   async getUsers(): Promise<User[]> {
     return await this.userRepository.createQueryBuilder().limit(50).getMany();
+  }
+
+  async updateUserAccess(userId: string, body: UserAccessDto): Promise<void> {
+    const user = await this.userRepository.findOne(userId);
+
+    if (user) {
+      // Right now only updates isAuthorized and isAdmin, add more in the future as needed.
+      await this.userRepository.save({ ...user, ...body });
+    }
   }
 }

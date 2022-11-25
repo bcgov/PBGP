@@ -1,5 +1,6 @@
 import { Form, Formik } from 'formik';
-import { Textarea, FormStepTitles, FormSteps } from '@components';
+import { Textarea } from '@components';
+import { FormStepTitles, FormSteps } from '../../constants';
 
 const initialValues = {
   environmentalProjectDescription: '',

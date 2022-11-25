@@ -1,6 +1,7 @@
 import { Form, Formik, FormikProps } from 'formik';
-import { Field, Radio, Select, Option, FormStepTitles, FormSteps } from '@components';
+import { Field, Radio, Select, Option } from '@components';
 import { ContactInfoInterface } from 'constants/interfaces';
+import { FormStepTitles, FormSteps } from '../../constants';
 
 const initialValues = {
   facilityName: '',
