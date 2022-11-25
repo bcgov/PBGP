@@ -62,17 +62,14 @@ const TableBody: React.FC<Props> = data => {
 export const ApplicationTable: React.FC<Props> = data => {
   return (
     <div>
-      
-       
-        {data && data.applications.length != 0 ? (
-          <table className='min-w-full text-center'>
+      {data && data.applications.length != 0 ? (
+        <table className='min-w-full text-center'>
           <TableHeader />
           <TableBody applications={data.applications} />
-          </table>
-        ) : (
-          <div className='text-center text-sm mt-4'>No applications found.</div>
-        )}
-     
+        </table>
+      ) : (
+        <div className='text-center text-sm mt-4'>No applications found.</div>
+      )}
     </div>
   );
 };
