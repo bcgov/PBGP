@@ -1,4 +1,4 @@
-import { SUCCESS_RESPONSE } from '../common/constants';
+import { SUCCESS_RESPONSE, UserRoles } from '../common/constants';
 import { SaveApplicationDto } from '../common/dto/save-application.dto';
 import { GetApplicationsDto } from '../common/dto/get-applications.dto';
 import {
@@ -15,6 +15,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
 import { PaginationRO } from '../common/ro/pagination.ro';
+import { Roles } from '../common/decorator';
 
 @ApiBearerAuth()
 @Controller('applications')
@@ -44,5 +45,14 @@ export class ApplicationController {
   ) {
     await this.applicationService.updateApplication(applicationId, applicationDto);
     return SUCCESS_RESPONSE;
+  }
+
+  @Patch('/:applicationId/assign-to-user/:externalUserId')
+  @Roles(UserRoles.ADMIN)
+  async assignToUser(
+    @Param('applicationId') applicationId: string,
+    @Param('applicationId') externalUserId: string
+  ): Promise<void> {
+    return this.applicationService.assignToUser(applicationId, externalUserId);
   }
 }

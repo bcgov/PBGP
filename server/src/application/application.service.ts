@@ -6,12 +6,14 @@ import { GetApplicationsDto } from '../common/dto/get-applications.dto';
 import { Repository } from 'typeorm';
 import { PaginationRO } from '../common/ro/pagination.ro';
 import { FormMetaData } from '../FormMetaData/formmetadata.entity';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class ApplicationService {
   constructor(
     @InjectRepository(Application)
-    private applicationRepository: Repository<Application>
+    private applicationRepository: Repository<Application>,
+    private userService: UserService
   ) {}
 
   async getApplications(query: GetApplicationsDto): Promise<PaginationRO<Application>> | null {
@@ -70,5 +72,16 @@ export class ApplicationService {
     applicationDto: SaveApplicationDto
   ): Promise<void> {
     await this.applicationRepository.update(applicationId, applicationDto);
+  }
+
+  async assignToUser(applicationId: string, externalUserId: string): Promise<void> {
+    const application = await this.getApplication(applicationId);
+    if (application) {
+      const user = await this.userService.getByExternalId(externalUserId);
+      if (user) {
+        application.user = user;
+        await this.applicationRepository.save(application);
+      }
+    }
   }
 }
