@@ -8,6 +8,7 @@ import { PaginationRO } from '../common/ro/pagination.ro';
 import { FormMetaData } from '../FormMetaData/formmetadata.entity';
 import { UserService } from '../user/user.service';
 import { AssignToUserDto } from '../common/dto/assign-to-user.dto';
+import { Comment } from '../comments/comment.entity';
 
 @Injectable()
 export class ApplicationService {
@@ -97,5 +98,10 @@ export class ApplicationService {
       application.assignedTo = null;
     }
     await this.applicationRepository.save(application);
+  }
+
+  async getApplicationComments(applicationId: string): Promise<Comment[]> {
+    const query = this.applicationRepository.createQueryBuilder('ap');
+    return;
   }
 }
