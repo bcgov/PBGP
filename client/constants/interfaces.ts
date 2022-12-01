@@ -84,7 +84,7 @@ export interface AuthorizationInterface {
   financialOfficerSignature: string;
 }
 
-export interface ApplicationDataInterface {
+export interface ApplicationTableProps {
   Application_ID: string;
   Submission: string;
   Confirmation_ID: string;

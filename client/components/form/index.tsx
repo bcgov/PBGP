@@ -9,3 +9,4 @@ export * from './Checkbox';
 export * from './FileUpload';
 export * from './SearchBar';
 export * from './Pagination';
+export * from './ApplicationTable';

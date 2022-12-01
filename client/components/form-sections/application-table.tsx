@@ -1,139 +1,142 @@
-import { Button, SearchBar } from '@components';
+import { Button, ApplicationTable } from '@components';
 import { Pagination } from '../form';
-import { useState } from 'react';
-import { ApplicationTableData } from '../../constants';
-import { ApplicationDataInterface } from '../../constants/interfaces';
-
-type Props = { applications: ApplicationDataInterface[] };
-
-const TableHeader: React.FC = () => {
-  const headers = [
-    'Confirmation ID',
-    'Facility',
-    'Project',
-    'Estimated Cost',
-    'Asks',
-    'Assigned to',
-    'Last update',
-    'Status',
-  ];
-  const tdStyles =
-    'table-td table-header px-6 py-4 text-left text-sm font-strong border-b-2  border-bcYellowWarning';
-  return (
-    <thead className='border-b bg-bcGrayInput table-header'>
-      <tr>
-        {headers &&
-          headers.map((title: string, index: number) => (
-            <th key={`th${index}`} className={tdStyles}>
-              {title}
-            </th>
-          ))}
-      </tr>
-    </thead>
-  );
-};
-
-const TableBody: React.FC<Props> = applications => {
-  const handleSelectRow = (index: number) => {
-    alert(index);
-  };
-  const tdStyles =
-    'table-td px-6 py-4 text-left text-sm font-strong flexitems-center justify-between';
-  return (
-    <tbody>
-      {applications.applications &&
-        applications.applications.map((row: any, index: number) => (
-          <tr
-            key={`row${index}`}
-            onClick={() => handleSelectRow(row.BCAAP_Form_ID)}
-            className='bg-white border-b-2 even:bg-bcGrayInput
-              border-gray-200'
-          >
-            <td className={tdStyles}>{row.Confirmation_ID}</td>
-            <td className={tdStyles}>{row.BCAAP_Form_ID}</td>
-            <td className={tdStyles}>{row.Assigned_To}</td>
-            <td className={tdStyles}>{row.Created_At}</td>
-            <td className={tdStyles}>{row.Status}</td>
-            <td className={tdStyles}>{row.Assigned_To}</td>
-            <td className={tdStyles}>{row.Created_At}</td>
-            <td className={tdStyles}>{row.Status}</td>
-          </tr>
-        ))}
-    </tbody>
-  );
-};
-
-const ApplicationTable: React.FC<Props> = applications => {
-  return (
-    <div>
-      <table className='min-w-full text-center'>
-        <TableHeader />
-        {ApplicationTableData && applications.applications.length != 0 ? (
-          <TableBody applications={applications.applications} />
-        ) : (
-          <p className='text-center text-sm mt-4'>No applications found.</p>
-        )}
-      </table>
-    </div>
-  );
-};
+import { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes, faFilter } from '@fortawesome/free-solid-svg-icons';
+import { useHttp } from '../../services/useHttp';
+import { SetQueryParams } from '../../services/useQueryParams';
+import { useRouter } from 'next/router';
+import { Endpoints } from '../../constants';
 
 export const ApplicationDashboard: React.FC<any> = () => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [applicationsPerPage] = useState<number>(10);
-  const [searchValue, setSearchValue]: [string, (search: string) => void] = useState('');
+  const [state, setState] = useState({
+    searchFacilityName: '',
+    searchConfirmationID: '',
+    totalApplications: 0,
+    data: [],
+  });
 
-  const handleSearch = (e: { target: { value: string } }) => {
-    setSearchValue(e.target.value);
+  const { searchFacilityName, searchConfirmationID, totalApplications, data } = state;
+  const { push, query } = useRouter();
+  const { fetchData } = useHttp();
+  const { page, limit } = query;
+
+  const setApplicationData = async (params: any) => {
+    fetchData(
+      {
+        endpoint: Endpoints.APPLICATIONS,
+        params,
+      },
+      ({ result, total }: any) => {
+        setState(state => ({ ...state, data: result, totalApplications: total }));
+      },
+    );
   };
 
-  // Filter data with search value
-  const filteredApplications =
-    ApplicationTableData &&
-    ApplicationTableData.filter((item: any) => {
-      return item.Confirmation_ID.toLowerCase().includes(searchValue.toLowerCase());
-    });
+  useEffect(() => {
+    (async () => {
+      const params = { ...query, page: 1, limit: 1, facilityName: '', confirmationId: '' };
+      SetQueryParams(push, query, params);
+    })();
+  }, []);
 
-  // Get current Applications
-  const indexOfLastApplication = currentPage * applicationsPerPage;
-  const indexOfFirstApplication = indexOfLastApplication - applicationsPerPage;
-  const currentApplications = filteredApplications.slice(
-    indexOfFirstApplication,
-    indexOfLastApplication,
-  );
+  useEffect(() => {
+    (async () => {
+      if (Object.keys(query).length === 0) return;
+      setApplicationData(query);
+    })();
+  }, [query]);
 
   // Change pages
   const nextPage = () => {
-    if (currentPage == Math.floor(filteredApplications.length / applicationsPerPage) + 1) return;
-    setCurrentPage(currentPage + 1);
+    if (!totalApplications || Number(page) == Math.ceil(totalApplications / Number(limit))) return;
+    const params = { ...query, page: Number(page) + 1, limit: Number(limit) };
+    SetQueryParams(push, query, params);
   };
   const previousPage = () => {
-    if (currentPage == 1) return;
-    setCurrentPage(currentPage - 1);
+    if (Number(page) == 1) return;
+    const params = { ...query, page: Number(page) - 1, limit: Number(limit) };
+    SetQueryParams(push, query, params);
   };
   const firstPage = () => {
-    if (currentPage == 1) return;
-    setCurrentPage(1);
+    if (Number(page) == 1) return;
+    const params = { ...query, page: 1, limit: Number(limit) };
+    SetQueryParams(push, query, params);
   };
   const lastPage = () => {
-    if (currentPage == filteredApplications.length / applicationsPerPage) return;
-    setCurrentPage(Math.floor(filteredApplications.length / applicationsPerPage) + 1);
+    if (!totalApplications || Number(page) == Math.ceil(totalApplications / Number(limit))) return;
+    const params = {
+      ...query,
+      page: Math.ceil(totalApplications / Number(page)),
+      limit: Number(limit),
+    };
+    SetQueryParams(push, query, params);
+  };
+
+  const handleFilter = () => {
+    const checkInputs = searchFacilityName.length == 0 && searchConfirmationID.length == 0;
+    if (checkInputs) return;
+    const params = {
+      ...query,
+      facilityName: searchFacilityName,
+      confirmationId: searchConfirmationID,
+    };
+    SetQueryParams(push, query, params);
+  };
+
+  const handleClear = () => {
+    const checkInputs = searchFacilityName.length == 0 && searchConfirmationID.length == 0;
+    if (checkInputs) return;
+    // Clear Inputs
+    setState(state => ({ ...state, searchFacilityName: '', searchConfirmationID: '' }));
+    const params = { ...query, facilityName: '', confirmationId: '', limit: Number(limit) };
+    SetQueryParams(push, query, params);
   };
 
   return (
     <div>
       <div className='w-full bg-white flex my-2 justify-between'>
-        <h1 className='text-2xl font-bold h-6 text-left flex-col items-start'>Applications</h1>
-        <div className='grid grid-cols-2 gap-2'>
-          <SearchBar handleChange={handleSearch} />
-          <Button variant='primary'>Export PDF</Button>
+        <h1 className='text-2xl font-bold h-6 text-bcBluePrimary text-left flex-col items-start'>
+          Applications
+        </h1>
+      </div>
+      <div className='w-full border py-4 px-8 mb-2'>
+        Filter By:
+        <div className='grid grid-cols-3 gap-1'>
+          <input
+            type='text'
+            className='bg-white rounded border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            placeholder={'Facility Name'}
+            onChange={e => setState(p => ({ ...p, searchFacilityName: e.target.value }))}
+            value={searchFacilityName}
+          />
+          <input
+            type='text'
+            className='bg-white rounded border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            placeholder={'Confirmation ID'}
+            onChange={e => setState(p => ({ ...p, searchConfirmationID: e.target.value }))}
+            value={searchConfirmationID}
+          />
+
+          <div className='grid grid-cols-2 gap-1'>
+            <Button onClick={handleFilter} variant='primary'>
+              <FontAwesomeIcon icon={faFilter} className='h-4 mr-2' />
+              Filter Records
+            </Button>
+            <Button onClick={handleClear} variant='outline'>
+              <FontAwesomeIcon icon={faTimes} className='h-4 mr-2' />
+              Clear Filter
+            </Button>
+          </div>
         </div>
       </div>
-      <ApplicationTable applications={currentApplications} />
+
+      {data && <ApplicationTable applications={data} />}
+
       <Pagination
-        currentPage={currentPage}
-        applicationsPerPage={applicationsPerPage}
-        totalApplications={filteredApplications.length}
+        currentPage={Number(page)}
+        applicationsPerPage={Number(limit)}
+        totalApplications={totalApplications}
         firstPage={firstPage}
         lastPage={lastPage}
         previousPage={previousPage}
