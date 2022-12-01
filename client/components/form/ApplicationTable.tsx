@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ApplicationTableProps } from '../../constants/interfaces';
 
 type Props = { applications: ApplicationTableProps[] };
@@ -39,21 +40,22 @@ const TableBody: React.FC<Props> = data => {
     <tbody>
       {data.applications &&
         data.applications.map((row: any, index: number) => (
-          <tr
-            key={`row${index}`}
-            onClick={() => handleSelectRow(row.BCAAP_Form_ID)}
-            className='bg-white border-b-2 even:bg-bcGrayInput
+          <Link href={`applications/${row.confirmationId}`}>
+            <tr
+              key={`row${index}`}
+              className='bg-white border-b-2 even:bg-bcGrayInput
               border-gray-200'
-          >
-            <td className={tdStyles}>{row.confirmationId}</td>
-            <td className={tdStyles}>{row.facilityName}</td>
-            <td className={tdStyles}>{row.Assigned_To}</td>
-            <td className={tdStyles}>{row.createdAt}</td>
-            <td className={tdStyles}>{row.Status}</td>
-            <td className={tdStyles}>{row.assignedTo}</td>
-            <td className={tdStyles}>{row.updatedAt}</td>
-            <td className={tdStyles}>{row.status}</td>
-          </tr>
+            >
+              <td className={tdStyles}>{row.confirmationId}</td>
+              <td className={tdStyles}>{row.facilityName}</td>
+              <td className={tdStyles}>{row.Assigned_To}</td>
+              <td className={tdStyles}>{row.createdAt}</td>
+              <td className={tdStyles}>{row.Status}</td>
+              <td className={tdStyles}>{row.assignedTo}</td>
+              <td className={tdStyles}>{row.updatedAt}</td>
+              <td className={tdStyles}>{row.status}</td>
+            </tr>
+          </Link>
         ))}
     </tbody>
   );
