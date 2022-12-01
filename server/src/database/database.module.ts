@@ -9,6 +9,7 @@ import { Application } from '../application/application.entity';
 import { ApplicationService } from '..//application/application.service';
 import { FormMetaDataService } from '../FormMetaData/formmetadata.service';
 import { FormMetaData } from '../FormMetaData/formmetadata.entity';
+import { UserModule } from '../user/user.module';
 
 // const getEnvironmentSpecificConfig = (env?: string) => {
 //   switch (env) {
@@ -51,6 +52,7 @@ const appOrmConfig: PostgresConnectionOptions = {
   imports: [
     TypeOrmModule.forRoot(appOrmConfig),
     TypeOrmModule.forFeature([Application, FormMetaData]),
+    UserModule,
   ],
   providers: [Logger, SyncChefsDataService, ApplicationService, FormMetaDataService],
   exports: [TypeOrmModule],

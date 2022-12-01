@@ -2,6 +2,7 @@ import { FormMetaData } from '../FormMetaData/formmetadata.entity';
 import { ReviewStatuses } from '../common/enums';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
+import { User } from '@/user/user.entity';
 
 @Entity({
   name: 'pbgp_application',
@@ -45,4 +46,9 @@ export class Application extends CustomBaseEntity {
 
   @ManyToOne(() => FormMetaData, (form) => form.applications)
   form: FormMetaData;
+
+  // Might belong to multiple users in the future, so
+  // change to ManyToMany accordingly if needed.
+  @ManyToOne(() => User, (user) => user.applications)
+  user: User;
 }

@@ -1,4 +1,5 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Application } from '@/application/application.entity';
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
 @Entity({
@@ -23,4 +24,7 @@ export class User extends CustomBaseEntity {
 
   @Column({ type: 'bool', default: false })
   isAdmin: boolean;
+
+  @OneToMany(() => Application, (application) => application.user)
+  applications: Application[];
 }

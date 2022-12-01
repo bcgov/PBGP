@@ -15,6 +15,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
 import { PaginationRO } from '../common/ro/pagination.ro';
+import { AssignToUserDto } from '../common/dto/assign-to-user.dto';
 
 @ApiBearerAuth()
 @Controller('applications')
@@ -44,5 +45,18 @@ export class ApplicationController {
   ) {
     await this.applicationService.updateApplication(applicationId, applicationDto);
     return SUCCESS_RESPONSE;
+  }
+
+  @Patch('/:applicationId/assign')
+  async assignToUser(
+    @Param('applicationId') applicationId: string,
+    @Body() assignToUserDto: AssignToUserDto
+  ): Promise<void> {
+    return this.applicationService.assignToUser(applicationId, assignToUserDto);
+  }
+
+  @Patch('/:applicationId/unassign')
+  async unassignUser(@Param('applicationId') applicationId: string): Promise<void> {
+    return this.applicationService.unassignUser(applicationId);
   }
 }
