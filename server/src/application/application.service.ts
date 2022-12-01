@@ -78,15 +78,24 @@ export class ApplicationService {
   async assignToUser(applicationId: string, assignToUserDto: AssignToUserDto): Promise<void> {
     const application = await this.getApplication(applicationId);
     if (application) {
-      const user = await this.userService.getByExternalId(assignToUserDto.externalId);
+      const user = await this.userService.getUser(assignToUserDto.userId);
       if (user) {
         application.user = user;
         application.assignedTo = user.externalId;
-      } else {
-        application.user = null;
-        application.assignedTo = null;
       }
       await this.applicationRepository.save(application);
     }
+  }
+
+  async unassignUser(applicationId: string): Promise<void> {
+    const application = await this.getApplication(applicationId);
+    if (application) {
+      // simplified for now, but if there are multiple users that
+      // can be assigned/unassigned - will need to include the passed
+      // user ID's.
+      application.user = null;
+      application.assignedTo = null;
+    }
+    await this.applicationRepository.save(application);
   }
 }

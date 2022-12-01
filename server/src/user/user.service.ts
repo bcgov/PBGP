@@ -14,6 +14,10 @@ export class UserService {
     return this.userRepository.findOne({ where: { externalId } });
   }
 
+  async getUser(id: string): Promise<User> {
+    return await this.userRepository.findOne(id);
+  }
+
   async addUser(data: Partial<User>): Promise<User> {
     return this.userRepository.save(this.userRepository.create(data));
   }

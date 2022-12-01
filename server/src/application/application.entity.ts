@@ -47,6 +47,8 @@ export class Application extends CustomBaseEntity {
   @ManyToOne(() => FormMetaData, (form) => form.applications)
   form: FormMetaData;
 
+  // Might belong to multiple users in the future, so
+  // change to ManyToMany accordingly if needed.
   @ManyToOne(() => User, (user) => user.applications)
   user: User;
 }

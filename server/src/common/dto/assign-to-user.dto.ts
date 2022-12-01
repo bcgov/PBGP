@@ -4,5 +4,5 @@ export class AssignToUserDto {
   @IsString()
   @MaxLength(100)
   @MinLength(0)
-  externalId: string;
+  userId: string;
 }
