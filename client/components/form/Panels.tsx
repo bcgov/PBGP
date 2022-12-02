@@ -10,7 +10,7 @@ export interface PanelsProps {
 export const Panels: React.FC<PanelsProps> = ({ children, title }) => {
   const [open, setOpen] = useState<boolean>(false);
   return (
-    <div className='open:bg-white border border-2 border-slate-300  mt-4 open:shadow-lg rounded-sm transform-gpu delay-75 duration-100 ease-in-out'>
+    <div className='open:bg-white border border-2 border-slate-300  mt-1 open:shadow-lg rounded-sm transform-gpu delay-75 duration-100 ease-in-out'>
       <div
         onClick={() => setOpen(!open)}
         className='leading-6  bg-slate-200 p-4 text-slate-900 dark:text-white font-semibold select-none'

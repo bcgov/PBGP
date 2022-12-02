@@ -50,7 +50,7 @@ export default function ApplicationDetails() {
         <Link href='/applications'>Applications</Link> | Confirmation ID: {details.confirmationId}
       </div>
       <h1 className='text-5xl w-full text-bcBluePrimary text-left mb-2'>{details.projectTitle || 'Project Title'}</h1>
-      <div className='flex mb-2'>
+      <div className='flex mb-4'>
         <div className='w-1/3 grid grid-cols-2 gap-2'>
           <Button variant='outline'>
             <FontAwesomeIcon icon={faUser} className='h-4 mr-2 text-bcBluePrimary' /> Assign
@@ -66,7 +66,7 @@ export default function ApplicationDetails() {
         </div>
       </div>
 
-      <div className='grid grid-cols-6 gap-2'>
+      <div className='grid grid-cols-6 mb-4 gap-2'>
         {topStatusObj.map((item, index) => {
           return (
             <div
