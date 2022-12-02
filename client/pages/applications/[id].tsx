@@ -81,20 +81,26 @@ export default function ApplicationDetails() {
         })}
       </div>
 
-      <Panels title='Why do they call it Ovaltine?'>
-        <p>The mug is round. The jar is round. They should call it Roundtine.</p>
+      <Panels title='Contact Information'>
+        <p>Add Component</p>
       </Panels>
-      <Panels title='Why do they call it Ovaltine?'>
-        <p>The mug is round. The jar is round. They should call it Roundtine.</p>
+      <Panels title='General Project Information and Description'>
+        <p>Add Component</p>
       </Panels>
-      <Panels title='Why do they call it Ovaltine?'>
-        <p>The mug is round. The jar is round. They should call it Roundtine.</p>
+      <Panels title='Funding Eligibility'>
+        <p>Add Component</p>
       </Panels>
-      <Panels title='Why do they call it Ovaltine?'>
-        <p>The mug is round. The jar is round. They should call it Roundtine.</p>
+      <Panels title='Funding and Project Cost Estimate Information'>
+        <p>Add Component</p>
+      </Panels>
+      <Panels title='Support Documentation and Checklist'>
+        <p>Add Component</p>
+      </Panels>
+      <Panels title='Authorization'>
+        <p>Add Component</p>
       </Panels>
 
-      <div className='w-full'>{JSON.stringify(details, null, 4)}</div>
+      {/* <div className='w-full'>{JSON.stringify(details, null, 4)}</div> */}
     </div>
   );
 }
