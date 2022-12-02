@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button, Panels } from '@components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faComment } from '@fortawesome/free-solid-svg-icons';
+import { FormSteps, FormStepTitles } from '../../constants';
 
 export default function ApplicationDetails() {
   const [details, setDetails] = useState<any>({});
@@ -45,10 +46,10 @@ export default function ApplicationDetails() {
 
   return (
     <div className='min-h-screen p-10 w-full bg-white'>
-      <div className='w-full'>
+      <div className='w-full text-bcBluePrimary'>
         <Link href='/applications'>Applications</Link> | Confirmation ID: {details.confirmationId}
       </div>
-      <h1 className='text-5xl w-full text-left mb-2'>{details.projectTitle || 'Project Title'}</h1>
+      <h1 className='text-5xl w-full text-bcBluePrimary text-left mb-2'>{details.projectTitle || 'Project Title'}</h1>
       <div className='flex mb-2'>
         <div className='w-1/3 grid grid-cols-2 gap-2'>
           <Button variant='outline'>
@@ -81,22 +82,29 @@ export default function ApplicationDetails() {
         })}
       </div>
 
-      <Panels title='Contact Information'>
+        {}
+      <Panels title={FormStepTitles[FormSteps.CONTACT_INFO]}>
         <p>Add Component</p>
       </Panels>
-      <Panels title='General Project Information and Description'>
+      <Panels title={FormStepTitles[FormSteps.GENERAL_INFO]}>
         <p>Add Component</p>
       </Panels>
-      <Panels title='Funding Eligibility'>
+      <Panels title={FormStepTitles[FormSteps.FACILITY_INFO]}>
         <p>Add Component</p>
       </Panels>
-      <Panels title='Funding and Project Cost Estimate Information'>
+      <Panels title={FormStepTitles[FormSteps.FUNDING_ELIGIBILITY]}>
         <p>Add Component</p>
       </Panels>
-      <Panels title='Support Documentation and Checklist'>
+      <Panels title={FormStepTitles[FormSteps.ENVIRONMENTAL_CONSIDERATION]}>
         <p>Add Component</p>
       </Panels>
-      <Panels title='Authorization'>
+      <Panels title={FormStepTitles[FormSteps.FUNDING_INFO]}>
+        <p>Add Component</p>
+      </Panels>
+      <Panels title={FormStepTitles[FormSteps.SUPPORT_DOCUMENTATION]}>
+        <p>Add Component</p>
+      </Panels>
+      <Panels title={FormStepTitles[FormSteps.AUTHORIZATION]}>
         <p>Add Component</p>
       </Panels>
 
