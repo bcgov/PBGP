@@ -8,6 +8,7 @@ import {
   Get,
   Param,
   Patch,
+  Post,
   Query,
   UseInterceptors,
 } from '@nestjs/common';
@@ -15,6 +16,11 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
 import { PaginationRO } from '../common/ro/pagination.ro';
+import { CommentDto } from '../comments/dto/comment.dto';
+import { GetUser } from '../common/decorator';
+import { UserDto } from '../user/dto/user.dto';
+import { Comment } from '../comments/comment.entity';
+import { AppCommentRo } from './ro/app-comment.ro';
 import { AssignToUserDto } from '../common/dto/assign-to-user.dto';
 
 @ApiBearerAuth()
@@ -58,5 +64,19 @@ export class ApplicationController {
   @Patch('/:applicationId/unassign')
   async unassignUser(@Param('applicationId') applicationId: string): Promise<void> {
     return this.applicationService.unassignUser(applicationId);
+  }
+
+  @Get('/:applicationId/comments')
+  async getComments(@Param('applicationId') applicationId: string): Promise<AppCommentRo> {
+    return await this.applicationService.getComments(applicationId);
+  }
+
+  @Post('/:applicationId/comments')
+  async createComment(
+    @Param('applicationId') applicationId: string,
+    @Body() commentDto: CommentDto,
+    @GetUser() userDto: UserDto
+  ): Promise<Comment> {
+    return await this.applicationService.createComment(applicationId, commentDto, userDto);
   }
 }

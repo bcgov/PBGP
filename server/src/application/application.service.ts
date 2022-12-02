@@ -9,13 +9,20 @@ import { FormMetaData } from '../FormMetaData/formmetadata.entity';
 import { UserService } from '../user/user.service';
 import { AssignToUserDto } from '../common/dto/assign-to-user.dto';
 import { Comment } from '../comments/comment.entity';
+import { CommentDto } from '../comments/dto/comment.dto';
+import { User } from '../user/user.entity';
+import { UserDto } from '../user/dto/user.dto';
+import { AppCommentRo } from './ro/app-comment.ro';
 
 @Injectable()
 export class ApplicationService {
   constructor(
     @InjectRepository(Application)
     private applicationRepository: Repository<Application>,
-    private userService: UserService
+    @InjectRepository(Comment)
+    private commentRespository: Repository<Comment>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>
   ) {}
 
   async getApplications(query: GetApplicationsDto): Promise<PaginationRO<Application>> | null {
@@ -100,8 +107,42 @@ export class ApplicationService {
     await this.applicationRepository.save(application);
   }
 
-  async getApplicationComments(applicationId: string): Promise<Comment[]> {
-    const query = this.applicationRepository.createQueryBuilder('ap');
+  async getComments(applicationId: string): Promise<AppCommentRo> {
+    const query = this.commentRespository
+      .createQueryBuilder('cmt')
+      .select(
+        `usr.id as "userId", 
+        usr.userName as "userName", 
+        cmt.id as "commentId", 
+        cmt.comment, 
+        cmt.createdAt as "createdAt"`
+      )
+      .innerJoin(Application, 'app', 'cmt.application_id = app.id')
+      .innerJoin(User, 'usr', 'usr.id = cmt.user_id')
+      .where('app.id = :id', { id: applicationId })
+      .orderBy('cmt.createdAt', 'ASC');
+
+    const res = await query.execute();
+    if (res.length > 0) {
+      return new AppCommentRo(res);
+    }
+    return;
+  }
+
+  async createComment(
+    applicationId: string,
+    commentDto: CommentDto,
+    userDto: UserDto
+  ): Promise<Comment> {
+    const application = await this.applicationRepository.findOne(applicationId);
+    const user = await this.userRepository.findOne(userDto.userId);
+    if (application && user) {
+      const comment = this.commentRespository.create(commentDto);
+      comment.application = application;
+      comment.user = user;
+
+      return await await this.commentRespository.save(comment);
+    }
     return;
   }
 }

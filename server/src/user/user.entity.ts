@@ -29,6 +29,6 @@ export class User extends CustomBaseEntity {
   @OneToMany(() => Application, (application) => application.user)
   applications: Application[];
 
-  @ManyToOne(() => Comment, (comment) => comment.user)
+  @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment[];
 }

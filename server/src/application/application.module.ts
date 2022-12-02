@@ -3,10 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Application } from './application.entity';
 import { ApplicationController } from './application.controller';
 import { ApplicationService } from './application.service';
-import { UserModule } from '../user/user.module';
+import { Comment } from '../comments/comment.entity';
+import { User } from '../user/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Application]), UserModule],
+  imports: [TypeOrmModule.forFeature([Application, Comment, User])],
   exports: [],
   controllers: [ApplicationController],
   providers: [ApplicationService],
