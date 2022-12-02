@@ -22,7 +22,8 @@ export class ApplicationService {
     @InjectRepository(Comment)
     private commentRespository: Repository<Comment>,
     @InjectRepository(User)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
+    private userService: UserService
   ) {}
 
   async getApplications(query: GetApplicationsDto): Promise<PaginationRO<Application>> | null {
