@@ -112,7 +112,7 @@ export class ApplicationService {
       .createQueryBuilder('cmt')
       .select(
         `usr.id as "userId", 
-        usr.userName as "userName", 
+        usr.displayName as "displayName", 
         cmt.id as "commentId", 
         cmt.comment, 
         cmt.createdAt as "createdAt"`

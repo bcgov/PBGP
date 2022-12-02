@@ -1,6 +1,6 @@
 export interface AppComment {
   userId: string;
-  userName: string;
+  displayName: string;
   commentId: string;
   comment: string;
   createdAt: string;
