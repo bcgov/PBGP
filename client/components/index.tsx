@@ -9,6 +9,7 @@ export * from './PageTitle';
 export * from './CheckBoxExplain';
 export * from './Layout';
 export * from './Modal';
+export * from './Dropdown';
 
 // HOCs
 export * from './withAuth';

@@ -1,12 +1,57 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useHttp } from '../../services/useHttp';
 import { Endpoints } from '../../constants';
 import Link from 'next/link';
-import { Button, Panels } from '@components';
+import { Button, Dropdown, Panels } from '@components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faComment } from '@fortawesome/free-solid-svg-icons';
 import { FormSteps, FormStepTitles } from '../../constants';
+
+type Option = {
+  value: string;
+  title: string;
+};
+
+interface DropdownProps {
+  name?: string;
+  options: Option[];
+  variant?: string;
+  required?: boolean;
+  tabIndex?: number;
+  className?: string;
+  type?: string;
+  placeHolder?: string;
+  labelName?: string;
+ 
+}
+
+export function DropdownComponent({
+  options,
+  variant,
+  placeHolder,
+  type,
+  required,
+  className,
+  tabIndex,
+}: DropdownProps) {
+  const [selected, isSelected] = useState<String>('');
+
+  return (
+    <div className='relative w-full lg:max-w-sm'>
+      <select
+        className='w-auto inline-flex justify-center items-center rounded shadow-sm px-4 py-2 text-base font-bold focus:outline-none
+  disabled:opacity-50 focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:text-sm border-transparent bg-bcBluePrimary text-white hover:bg-blue-800 focus:ring-blue-500'
+      >
+        {options.map((option, index) => (
+          <option key={index} onClick={() => isSelected(option.title)}>
+            {option.title}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
 
 export default function ApplicationDetails() {
   const [details, setDetails] = useState<any>({});
@@ -27,7 +72,6 @@ export default function ApplicationDetails() {
     );
   };
 
-  // console.log("++++++++++++++++++++ details", details)
   useEffect(() => {
     (async () => {
       if (!id) return;
@@ -44,12 +88,20 @@ export default function ApplicationDetails() {
     { title: 'Updated by', value: 'status' },
   ];
 
+  const optionsObj = [
+    { title: 'Unassign', value: 'unassign' },
+    { title: 'Assign to me', value: 'assign_to_me' },
+    { title: 'Assign to Jean Smith', value: 'assign_to_Jean_Smith' },
+    { title: 'Assign to John Doe', value: 'assign_to_John_Doe' },
+  ];
   return (
     <div className='min-h-screen p-10 w-full bg-white'>
       <div className='w-full text-bcBluePrimary'>
         <Link href='/applications'>Applications</Link> | Confirmation ID: {details.confirmationId}
       </div>
-      <h1 className='text-5xl w-full text-bcBluePrimary text-left mb-2'>{details.projectTitle || 'Project Title'}</h1>
+      <h1 className='text-5xl w-full text-bcBluePrimary text-left mb-2'>
+        {details.projectTitle || 'Project Title'}
+      </h1>
       <div className='flex mb-4'>
         <div className='w-1/3 grid grid-cols-2 gap-2'>
           <Button variant='outline'>
@@ -62,7 +114,8 @@ export default function ApplicationDetails() {
         </div>
         <div className='w-1/3'></div>
         <div className='w-1/3 flex justify-end grid  gap-2'>
-          <Button variant='primary'>Open</Button>
+          <DropdownComponent options={optionsObj} />
+          <Dropdown variant='outline' options={optionsObj} />
         </div>
       </div>
 
@@ -82,7 +135,7 @@ export default function ApplicationDetails() {
         })}
       </div>
 
-        {}
+      {}
       <Panels title={FormStepTitles[FormSteps.CONTACT_INFO]}>
         <p>Add Component</p>
       </Panels>
