@@ -11,19 +11,16 @@ import { AssignToUserDto } from '../common/dto/assign-to-user.dto';
 import { Comment } from '../comments/comment.entity';
 import { CommentDto } from '../comments/dto/comment.dto';
 import { User } from '../user/user.entity';
-import { UserDto } from '../user/dto/user.dto';
-import { AppCommentRo } from './ro/app-comment.ro';
+import { CommentResultRo } from './ro/app-comment.ro';
+import { CommentService } from '../comments/comment.service';
 
 @Injectable()
 export class ApplicationService {
   constructor(
     @InjectRepository(Application)
     private applicationRepository: Repository<Application>,
-    @InjectRepository(Comment)
-    private commentRespository: Repository<Comment>,
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
-    private userService: UserService
+    private userService: UserService,
+    private commentService: CommentService
   ) {}
 
   async getApplications(query: GetApplicationsDto): Promise<PaginationRO<Application>> | null {
@@ -108,41 +105,18 @@ export class ApplicationService {
     await this.applicationRepository.save(application);
   }
 
-  async getComments(applicationId: string): Promise<AppCommentRo> {
-    const query = this.commentRespository
-      .createQueryBuilder('cmt')
-      .select(
-        `usr.id as "userId", 
-        usr.displayName as "displayName", 
-        cmt.id as "commentId", 
-        cmt.comment, 
-        cmt.createdAt as "createdAt"`
-      )
-      .innerJoin(Application, 'app', 'cmt.application_id = app.id')
-      .innerJoin(User, 'usr', 'usr.id = cmt.user_id')
-      .where('app.id = :id', { id: applicationId })
-      .orderBy('cmt.createdAt', 'ASC');
-
-    const res = await query.execute();
+  async getComments(applicationId: string): Promise<CommentResultRo> {
+    const res = await this.commentService.getAppUserAndComments(applicationId);
     if (res.length > 0) {
-      return new AppCommentRo(res);
+      return new CommentResultRo(res);
     }
     return;
   }
 
-  async createComment(
-    applicationId: string,
-    commentDto: CommentDto,
-    userDto: UserDto
-  ): Promise<Comment> {
-    const application = await this.applicationRepository.findOne(applicationId);
-    const user = await this.userRepository.findOne(userDto.userId);
+  async createComment(applicationId: string, commentDto: CommentDto, user: User): Promise<Comment> {
+    const application = await this.getApplication(applicationId);
     if (application && user) {
-      const comment = this.commentRespository.create(commentDto);
-      comment.application = application;
-      comment.user = user;
-
-      return await await this.commentRespository.save(comment);
+      return await this.commentService.createComment(commentDto, application, user);
     }
     return;
   }

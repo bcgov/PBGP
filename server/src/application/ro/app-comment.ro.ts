@@ -1,4 +1,4 @@
-export interface AppComment {
+export interface CommentRo {
   userId: string;
   displayName: string;
   commentId: string;
@@ -6,9 +6,9 @@ export interface AppComment {
   createdAt: string;
 }
 
-export class AppCommentRo {
-  comments: AppComment[];
-  constructor(data: AppComment[]) {
+export class CommentResultRo {
+  comments: CommentRo[];
+  constructor(data: CommentRo[]) {
     this.comments = data;
   }
 }

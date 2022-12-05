@@ -18,10 +18,10 @@ import { ApplicationService } from './application.service';
 import { PaginationRO } from '../common/ro/pagination.ro';
 import { CommentDto } from '../comments/dto/comment.dto';
 import { GetUser } from '../common/decorator';
-import { UserDto } from '../user/dto/user.dto';
 import { Comment } from '../comments/comment.entity';
-import { AppCommentRo } from './ro/app-comment.ro';
 import { AssignToUserDto } from '../common/dto/assign-to-user.dto';
+import { User } from '../user/user.entity';
+import { CommentResultRo } from './ro/app-comment.ro';
 
 @ApiBearerAuth()
 @Controller('applications')
@@ -67,7 +67,7 @@ export class ApplicationController {
   }
 
   @Get('/:applicationId/comments')
-  async getComments(@Param('applicationId') applicationId: string): Promise<AppCommentRo> {
+  async getComments(@Param('applicationId') applicationId: string): Promise<CommentResultRo> {
     return await this.applicationService.getComments(applicationId);
   }
 
@@ -75,8 +75,8 @@ export class ApplicationController {
   async createComment(
     @Param('applicationId') applicationId: string,
     @Body() commentDto: CommentDto,
-    @GetUser() userDto: UserDto
+    @GetUser() user: User
   ): Promise<Comment> {
-    return await this.applicationService.createComment(applicationId, commentDto, userDto);
+    return await this.applicationService.createComment(applicationId, commentDto, user);
   }
 }
