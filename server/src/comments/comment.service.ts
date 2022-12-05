@@ -18,7 +18,7 @@ export class CommentService {
       .createQueryBuilder('cmt')
       .select(
         `usr.id as "userId", 
-        usr.displayName as "displayName", Ç
+        usr.displayName as "displayName",
         cmt.id as "commentId", 
         cmt.comment, 
         cmt.createdAt as "createdAt"`
@@ -38,7 +38,7 @@ export class CommentService {
   ): Promise<Comment> {
     const comment = this.commentRepository.create(commentDto);
     comment.application = application;
-    comment.user = user;
+    comment.userId = user.id;
 
     return await this.commentRepository.save(comment);
   }

@@ -1,6 +1,5 @@
-import { Application } from '@/application/application.entity';
-import { User } from '@/user/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Application } from '../application/application.entity';
+import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
 @Entity({
@@ -16,6 +15,7 @@ export class Comment extends CustomBaseEntity {
   @ManyToOne(() => Application, (application) => application.comments)
   application: Application;
 
-  @ManyToOne(() => User, (user) => user.comments)
-  user: User;
+  @Index()
+  @Column({ type: 'uuid', nullable: true })
+  userId: string;
 }

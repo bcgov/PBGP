@@ -86,8 +86,7 @@ export class ApplicationService {
     if (application) {
       const user = await this.userService.getUser(assignToUserDto.userId);
       if (user) {
-        application.user = user;
-        application.assignedTo = user.externalId;
+        application.assignedTo = user;
       }
       await this.applicationRepository.save(application);
     }
@@ -99,7 +98,6 @@ export class ApplicationService {
       // simplified for now, but if there are multiple users that
       // can be assigned/unassigned - will need to include the passed
       // user ID's.
-      application.user = null;
       application.assignedTo = null;
     }
     await this.applicationRepository.save(application);
