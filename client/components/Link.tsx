@@ -21,7 +21,7 @@ export const Link: React.FC<LinkProps> = props => {
 
   return (
     <NextLink href={href} shallow={shallow} replace={replace}>
-      <a className={`${buttonColor[variant]} ${variant !== 'link' ? buttonBase : ''}`}>
+      <a className={`${buttonColor[variant]} ${variant !== 'link' ? buttonBase : 'text-blue-500'}`}>
         {children}
       </a>
     </NextLink>

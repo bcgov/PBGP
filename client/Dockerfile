@@ -10,8 +10,8 @@ USER root
 RUN mkdir -p ${HOME_CLIENT}
 
 WORKDIR ${HOME_CLIENT}
-ADD .yarn/releases/yarn-3.2.4.cjs ./.yarn/releases/yarn-3.2.4.cjs
-RUN npm install yarn -g && yarn set version ./.yarn/releases/yarn-3.2.4.cjs
+ADD .yarn/releases/yarn-3.3.0.cjs ./.yarn/releases/yarn-3.3.0.cjs
+RUN npm install yarn -g && yarn set version ./.yarn/releases/yarn-3.3.0.cjs
 COPY package.json yarn.lock .yarnrc.yml ./
 RUN yarn install --immutable
 COPY . .
