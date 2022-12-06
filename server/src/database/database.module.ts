@@ -56,7 +56,7 @@ const appOrmConfig: PostgresConnectionOptions = {
     TypeOrmModule.forFeature([Application, FormMetaData, Comment, User]),
     ApplicationModule,
   ],
-  providers: [Logger, SyncChefsDataService, ApplicationService, FormMetaDataService],
+  providers: [Logger, SyncChefsDataService, FormMetaDataService],
   exports: [TypeOrmModule],
 })
 export class DatabaseModule {}

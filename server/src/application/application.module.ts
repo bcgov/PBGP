@@ -8,7 +8,7 @@ import { CommentModule } from '../comments/comment.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Application]), UserModule, CommentModule],
-  exports: [UserModule, CommentModule],
+  exports: [ApplicationService],
   controllers: [ApplicationController],
   providers: [ApplicationService],
 })
