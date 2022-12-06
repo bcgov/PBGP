@@ -6,7 +6,6 @@ import { SyncChefsDataService } from './scripts/sync-chefs-data.service';
 
 import config from '../ormconfig';
 import { Application } from '../application/application.entity';
-import { ApplicationService } from '..//application/application.service';
 import { FormMetaDataService } from '../FormMetaData/formmetadata.service';
 import { FormMetaData } from '../FormMetaData/formmetadata.entity';
 import { Comment } from '../comments/comment.entity';
