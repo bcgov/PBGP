@@ -25,6 +25,6 @@ export class User extends CustomBaseEntity {
   @Column({ type: 'bool', default: false })
   isAdmin: boolean;
 
-  @OneToMany(() => Application, (application) => application.user)
+  @OneToMany(() => Application, (application) => application.assignedTo)
   applications: Application[];
 }

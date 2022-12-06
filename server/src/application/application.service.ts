@@ -8,13 +8,19 @@ import { PaginationRO } from '../common/ro/pagination.ro';
 import { FormMetaData } from '../FormMetaData/formmetadata.entity';
 import { UserService } from '../user/user.service';
 import { AssignToUserDto } from '../common/dto/assign-to-user.dto';
+import { Comment } from '../comments/comment.entity';
+import { CommentDto } from '../comments/dto/comment.dto';
+import { User } from '../user/user.entity';
+import { CommentResultRo } from './ro/app-comment.ro';
+import { CommentService } from '../comments/comment.service';
 
 @Injectable()
 export class ApplicationService {
   constructor(
     @InjectRepository(Application)
     private applicationRepository: Repository<Application>,
-    private userService: UserService
+    private userService: UserService,
+    private commentService: CommentService
   ) {}
 
   async getApplications(query: GetApplicationsDto): Promise<PaginationRO<Application>> | null {
@@ -80,8 +86,7 @@ export class ApplicationService {
     if (application) {
       const user = await this.userService.getUser(assignToUserDto.userId);
       if (user) {
-        application.user = user;
-        application.assignedTo = user.externalId;
+        application.assignedTo = user;
       }
       await this.applicationRepository.save(application);
     }
@@ -93,9 +98,24 @@ export class ApplicationService {
       // simplified for now, but if there are multiple users that
       // can be assigned/unassigned - will need to include the passed
       // user ID's.
-      application.user = null;
       application.assignedTo = null;
     }
     await this.applicationRepository.save(application);
+  }
+
+  async getComments(applicationId: string): Promise<CommentResultRo> {
+    const res = await this.commentService.getAllComments(applicationId);
+    if (res.length > 0) {
+      return new CommentResultRo(res);
+    }
+    return;
+  }
+
+  async createComment(applicationId: string, commentDto: CommentDto, user: User): Promise<Comment> {
+    const application = await this.getApplication(applicationId);
+    if (application && user) {
+      return await this.commentService.createComment(commentDto, application, user);
+    }
+    return;
   }
 }

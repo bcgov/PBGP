@@ -8,9 +8,17 @@ import { UserModule } from './user/user.module';
 import { ApplicationModule } from './application/application.module';
 import { AuthModule } from './auth/auth.module';
 import { FormMetaDataModule } from './FormMetaData/formmetadata.module';
+import { CommentModule } from './comments/comment.module';
 
 @Module({
-  imports: [DatabaseModule, AuthModule, FormMetaDataModule, ApplicationModule, UserModule],
+  imports: [
+    DatabaseModule,
+    AuthModule,
+    FormMetaDataModule,
+    ApplicationModule,
+    UserModule,
+    CommentModule,
+  ],
   controllers: [AppController],
   providers: [Logger, AppLogger, AppService],
 })

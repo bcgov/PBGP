@@ -4,10 +4,11 @@ import { Application } from './application.entity';
 import { ApplicationController } from './application.controller';
 import { ApplicationService } from './application.service';
 import { UserModule } from '../user/user.module';
+import { CommentModule } from '../comments/comment.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Application]), UserModule],
-  exports: [],
+  imports: [TypeOrmModule.forFeature([Application]), UserModule, CommentModule],
+  exports: [ApplicationService],
   controllers: [ApplicationController],
   providers: [ApplicationService],
 })

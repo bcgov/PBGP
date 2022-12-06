@@ -6,10 +6,11 @@ import { SyncChefsDataService } from './scripts/sync-chefs-data.service';
 
 import config from '../ormconfig';
 import { Application } from '../application/application.entity';
-import { ApplicationService } from '..//application/application.service';
 import { FormMetaDataService } from '../FormMetaData/formmetadata.service';
 import { FormMetaData } from '../FormMetaData/formmetadata.entity';
-import { UserModule } from '../user/user.module';
+import { Comment } from '../comments/comment.entity';
+import { User } from '../user/user.entity';
+import { ApplicationModule } from '../application/application.module';
 
 // const getEnvironmentSpecificConfig = (env?: string) => {
 //   switch (env) {
@@ -51,10 +52,10 @@ const appOrmConfig: PostgresConnectionOptions = {
 @Module({
   imports: [
     TypeOrmModule.forRoot(appOrmConfig),
-    TypeOrmModule.forFeature([Application, FormMetaData]),
-    UserModule,
+    TypeOrmModule.forFeature([Application, FormMetaData, Comment, User]),
+    ApplicationModule,
   ],
-  providers: [Logger, SyncChefsDataService, ApplicationService, FormMetaDataService],
+  providers: [Logger, SyncChefsDataService, FormMetaDataService],
   exports: [TypeOrmModule],
 })
 export class DatabaseModule {}
