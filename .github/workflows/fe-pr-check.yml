@@ -18,7 +18,7 @@ jobs:
 
       - name: Setup pre-reqs
         run: |
-          npm install yarn -g && yarn set version ./.yarn/releases/yarn-3.2.4.cjs
+          npm install yarn -g && yarn set version ./.yarn/releases/yarn-3.3.0.cjs
         shell: bash
 
       - uses: actions/cache@v2

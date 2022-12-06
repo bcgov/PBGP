@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         jwksRequestsPerMinute: 5,
         jwksUri: `${process.env.KC_AUTH_URL}/realms/${process.env.KC_AUTH_REALM}/protocol/openid-connect/certs`,
       }),
-
+      audience: `${process.env.KC_AUTH_CLIENT_ID}`,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       issuer: `${process.env.KC_AUTH_URL}/realms/${process.env.KC_AUTH_REALM}`,
       algorithms: ['RS256'],

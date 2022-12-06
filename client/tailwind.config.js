@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     fontFamily: {
       sans: ['BCSans'],
+      bold: ['BCSans-Bold'],
     },
     extend: {
       colors: {

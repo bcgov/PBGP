@@ -32,7 +32,9 @@ export class SyncChefsDataService {
   }
 
   private async createOrFindFormMetadate(data: FormMetaDataDto): Promise<FormMetaData> {
-    const form = await this.formMetadataRepo.findOne({ where: { chefsFormId: data.chefsFormId } });
+    const form = await this.formMetadataRepo.findOne({
+      where: { chefsFormId: data.chefsFormId, versionId: data.versionId },
+    });
     if (form) {
       Logger.log('FormMetaData exists: fetching');
       return form;

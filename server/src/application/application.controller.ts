@@ -32,8 +32,6 @@ export class ApplicationController {
 
   @Get('/:applicationId')
   getApplication(@Param('applicationId') applicationId: string) {
-    // To-do: Get the logged-in user data (id) and return only
-    // the applicatio that belong to them.
     return this.applicationService.getApplication(applicationId);
   }
 

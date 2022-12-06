@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ApplicationTableProps } from '../../constants/interfaces';
 
 type Props = { applications: ApplicationTableProps[] };
@@ -30,30 +31,27 @@ const TableHeader: React.FC = () => {
 };
 
 const TableBody: React.FC<Props> = data => {
-  const handleSelectRow = (index: number) => {
-    alert(index);
-  };
   const tdStyles =
     'table-td px-6 py-4 text-left text-sm font-strong flexitems-center justify-between';
   return (
     <tbody>
       {data.applications &&
         data.applications.map((row: any, index: number) => (
-          <tr
-            key={`row${index}`}
-            onClick={() => handleSelectRow(row.BCAAP_Form_ID)}
-            className='bg-white border-b-2 even:bg-bcGrayInput
-              border-gray-200'
-          >
-            <td className={tdStyles}>{row.confirmationId}</td>
-            <td className={tdStyles}>{row.facilityName}</td>
-            <td className={tdStyles}>{row.Assigned_To}</td>
-            <td className={tdStyles}>{row.createdAt}</td>
-            <td className={tdStyles}>{row.Status}</td>
-            <td className={tdStyles}>{row.assignedTo}</td>
-            <td className={tdStyles}>{row.updatedAt}</td>
-            <td className={tdStyles}>{row.status}</td>
-          </tr>
+          <Link href={`applications/${row.id}`} key={`row${index}`}>
+            <tr
+              className='bg-white border-b-2 even:bg-bcGrayInput
+              border-gray-200 cursor-pointer'
+            >
+              <td className={tdStyles}>{row.confirmationId}</td>
+              <td className={tdStyles}>{row.facilityName}</td>
+              <td className={tdStyles}>{row.projectTitle}</td>
+              <td className={tdStyles}>{row.totalEstimatedCost}</td>
+              <td className={tdStyles}>{row.asks}</td>
+              <td className={tdStyles}>{row.assignedTo}</td>
+              <td className={tdStyles}>{row.updatedAt}</td>
+              <td className={tdStyles}>{row.status}</td>
+            </tr>
+          </Link>
         ))}
     </tbody>
   );

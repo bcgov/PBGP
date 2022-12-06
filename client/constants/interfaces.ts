@@ -96,3 +96,7 @@ export interface ApplicationTableProps {
   Chefs_ID: string;
   BCAAP_Form_ID: string;
 }
+
+export type KeyValuePair = {
+  [key: string]: any;
+};
