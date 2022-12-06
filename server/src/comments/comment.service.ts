@@ -1,5 +1,5 @@
-import { Application } from '@/application/application.entity';
-import { User } from '@/user/user.entity';
+import { Application } from '../application/application.entity';
+import { User } from '../user/user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -13,7 +13,7 @@ export class CommentService {
     private commentRepository: Repository<Comment>
   ) {}
 
-  async getAppUserAndComments(applicationId: string) {
+  async getAllComments(applicationId: string) {
     const query = this.commentRepository
       .createQueryBuilder('cmt')
       .select(
@@ -38,7 +38,7 @@ export class CommentService {
   ): Promise<Comment> {
     const comment = this.commentRepository.create(commentDto);
     comment.application = application;
-    comment.userId = user.id;
+    comment.user = user;
 
     return await this.commentRepository.save(comment);
   }

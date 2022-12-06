@@ -104,7 +104,7 @@ export class ApplicationService {
   }
 
   async getComments(applicationId: string): Promise<CommentResultRo> {
-    const res = await this.commentService.getAppUserAndComments(applicationId);
+    const res = await this.commentService.getAllComments(applicationId);
     if (res.length > 0) {
       return new CommentResultRo(res);
     }
