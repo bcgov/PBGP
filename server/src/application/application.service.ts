@@ -56,7 +56,7 @@ export class ApplicationService {
 
   async getApplication(applicationId: string): Promise<Application | undefined> {
     const application = await this.applicationRepository.findOne(applicationId, {
-      relations: ['user', 'form'],
+      relations: ['assignedTo', 'form'],
     });
 
     if (application) {

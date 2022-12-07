@@ -33,7 +33,7 @@ objects:
         haproxy.router.openshift.io/timeout: 90s
         haproxy.router.openshift.io/disable_cookies: true
     spec:
-      host: pgbp-dev.apps.silver.devops.gov.bc.ca
+      host: ${APP_NAME}-${IMAGE_TAG}.apps.silver.devops.gov.bc.ca
       port:
         targetPort: 3000-tcp
       tls:
