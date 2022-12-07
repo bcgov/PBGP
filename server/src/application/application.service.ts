@@ -13,6 +13,8 @@ import { CommentDto } from '../comments/dto/comment.dto';
 import { User } from '../user/user.entity';
 import { CommentResultRo } from './ro/app-comment.ro';
 import { CommentService } from '../comments/comment.service';
+import { GenericException } from '../common/generic-exception';
+import { ApplicationError } from './application.errors';
 
 @Injectable()
 export class ApplicationService {
@@ -51,6 +53,7 @@ export class ApplicationService {
     query.filter(queryBuilder);
 
     const applications = await queryBuilder.getManyAndCount();
+
     return new PaginationRO<Application>(applications);
   }
 
@@ -58,12 +61,10 @@ export class ApplicationService {
     const application = await this.applicationRepository.findOne(applicationId, {
       relations: ['user', 'form'],
     });
-
-    if (application) {
-      return application;
+    if (!application) {
+      throw new GenericException(ApplicationError.APPLICATION_NOT_FOUND);
     }
-
-    return;
+    return application;
   }
 
   async createApplication(
@@ -87,21 +88,17 @@ export class ApplicationService {
     const application = await this.getApplication(applicationId);
     if (application) {
       const user = await this.userService.getUser(assignToUserDto.userId);
-      if (user) {
-        application.assignedTo = user;
-      }
+      application.assignedTo = user;
       await this.applicationRepository.save(application);
     }
   }
 
   async unassignUser(applicationId: string): Promise<void> {
     const application = await this.getApplication(applicationId);
-    if (application) {
-      // simplified for now, but if there are multiple users that
-      // can be assigned/unassigned - will need to include the passed
-      // user ID's.
-      application.assignedTo = null;
-    }
+    // simplified for now, but if there are multiple users that
+    // can be assigned/unassigned - will need to include the passed
+    // user ID's.
+    application.assignedTo = null;
     await this.applicationRepository.save(application);
   }
 
@@ -115,9 +112,9 @@ export class ApplicationService {
 
   async createComment(applicationId: string, commentDto: CommentDto, user: User): Promise<Comment> {
     const application = await this.getApplication(applicationId);
-    if (application && user) {
-      return await this.commentService.createComment(commentDto, application, user);
+    if (!user) {
+      throw new GenericException(ApplicationError.USER_EMPTY);
     }
-    return;
+    return await this.commentService.createComment(commentDto, application, user);
   }
 }
