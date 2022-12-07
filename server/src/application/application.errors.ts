@@ -7,10 +7,4 @@ export const ApplicationError = {
     errorMessage: 'Cannot find application',
     httpStatus: HttpStatus.NOT_FOUND,
   } as GenericError,
-
-  USER_EMPTY: {
-    errorType: 'USER_EMPTY',
-    errorMessage: 'Empty User is not allowed',
-    httpStatus: HttpStatus.BAD_REQUEST,
-  } as GenericError,
 };

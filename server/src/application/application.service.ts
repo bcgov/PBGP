@@ -57,7 +57,7 @@ export class ApplicationService {
     return new PaginationRO<Application>(applications);
   }
 
-  async getApplication(applicationId: string): Promise<Application | undefined> {
+  async getApplication(applicationId: string): Promise<Application> {
     const application = await this.applicationRepository.findOne(applicationId, {
       relations: ['user', 'form'],
     });
@@ -86,11 +86,9 @@ export class ApplicationService {
 
   async assignToUser(applicationId: string, assignToUserDto: AssignToUserDto): Promise<void> {
     const application = await this.getApplication(applicationId);
-    if (application) {
-      const user = await this.userService.getUser(assignToUserDto.userId);
-      application.assignedTo = user;
-      await this.applicationRepository.save(application);
-    }
+    const user = await this.userService.getUser(assignToUserDto.userId);
+    application.assignedTo = user;
+    await this.applicationRepository.save(application);
   }
 
   async unassignUser(applicationId: string): Promise<void> {
@@ -112,9 +110,6 @@ export class ApplicationService {
 
   async createComment(applicationId: string, commentDto: CommentDto, user: User): Promise<Comment> {
     const application = await this.getApplication(applicationId);
-    if (!user) {
-      throw new GenericException(ApplicationError.USER_EMPTY);
-    }
     return await this.commentService.createComment(commentDto, application, user);
   }
 }
