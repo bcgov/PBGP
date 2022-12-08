@@ -9,4 +9,4 @@ import { AttachmentService } from './attachment.service';
   controllers: [],
   providers: [AttachmentService],
 })
-export class CommentModule {}
+export class AttachmentModule {}

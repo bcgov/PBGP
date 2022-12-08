@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Attachment } from './attachment.entity';
-import { AttachmentDto } from './dto/attachment.dto';
 
 @Injectable()
 export class AttachmentService {
@@ -15,24 +14,24 @@ export class AttachmentService {
     return this.attachmentRepository.findOne(id);
   }
 
-  async updateAttachment(attachmentDto: AttachmentDto): Promise<Attachment> {
-    return await this.attachmentRepository.save({ ...attachmentDto });
+  async updateAttachment(attachment: Attachment): Promise<Attachment> {
+    return await this.attachmentRepository.save({ ...attachment });
   }
 
-  async createOrUpdateAttachment(attachmentDto: AttachmentDto): Promise<Attachment> {
-    const attachment = await this.getAttachment(attachmentDto.id);
-    if (!attachment) {
+  async createOrUpdateAttachment(attachment: Attachment): Promise<Attachment> {
+    const foundAttachment = await this.getAttachment(attachment.id);
+    if (!foundAttachment) {
       Logger.log('-- Attachment not found, creating');
 
-      return this.createAttachment(attachmentDto);
+      return this.createAttachment(attachment);
     }
     Logger.log('-- Attachment exists, updating');
-    return this.updateAttachment(attachmentDto);
+    return this.updateAttachment(attachment);
   }
 
-  async createAttachment(attachmentDto: AttachmentDto): Promise<Attachment> {
-    const attachment = this.attachmentRepository.create(attachmentDto);
+  async createAttachment(attachment: Attachment): Promise<Attachment> {
+    const newAttachment = this.attachmentRepository.create(attachment);
 
-    return await this.attachmentRepository.save(attachment);
+    return await this.attachmentRepository.save(newAttachment);
   }
 }

@@ -10,8 +10,8 @@ import { AxiosOptions } from '../../common/interfaces';
 import { FormMetaData } from '../../FormMetaData/formmetadata.entity';
 import { FormMetaDataDto } from '../../common/dto/form-metadata.dto';
 import { extractObjects } from '../../common/utils';
-import { AttachmentDto } from '../../attachments/dto/attachment.dto';
 import { AttachmentService } from '../../attachments/attachment.service';
+import { Attachment } from '../../attachments/attachment.entity';
 
 // CHEFS Constants
 const CHEFS_FORM_IDS = ['4b19eee6-f42d-481f-8279-cbc28ab68cf0'];
@@ -52,16 +52,17 @@ export class SyncChefsDataService {
       (value) => Array.isArray(value) && value.length > 0
     );
     const objects = extractObjects(responseDataFileArrays, 5);
+    // TODO:
     // Maybe there's a better way to check it
     const files = objects.filter((obj) => 'url' in obj && 'data' in obj);
 
     for (const file of files) {
-      const newAttachmentData: AttachmentDto = {
+      const newAttachmentData = {
         id: file.data.id,
         url: file.url,
         // Data's empty for now
         data: '',
-      };
+      } as Attachment;
 
       await this.attachmentService.createOrUpdateAttachment(newAttachmentData);
     }
@@ -79,7 +80,6 @@ export class SyncChefsDataService {
 
     // Process attachments
     this.createOrUpdateAttachments(responseData.submission.data);
-    // ------------------------------------------
 
     const newSubmissionData: SaveApplicationDto = {
       submissionId: responseData.id,
