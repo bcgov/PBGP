@@ -9,7 +9,9 @@ import { SaveApplicationDto } from '../../common/dto/save-application.dto';
 import { AxiosOptions } from '../../common/interfaces';
 import { FormMetaData } from '../../FormMetaData/formmetadata.entity';
 import { FormMetaDataDto } from '../../common/dto/form-metadata.dto';
-import { extractObjects } from '@/common/utils';
+import { extractObjects } from '../../common/utils';
+import { AttachmentDto } from '../../attachments/dto/attachment.dto';
+import { AttachmentService } from '../../attachments/attachment.service';
 
 // CHEFS Constants
 const CHEFS_FORM_IDS = ['4b19eee6-f42d-481f-8279-cbc28ab68cf0'];
@@ -22,7 +24,8 @@ export class SyncChefsDataService {
     private readonly applicationRepo: Repository<Application>,
     @InjectRepository(FormMetaData)
     private readonly formMetadataRepo: Repository<FormMetaData>,
-    private readonly appService: ApplicationService
+    private readonly appService: ApplicationService,
+    private readonly attachmentService: AttachmentService
   ) {}
 
   private getFormUrl(formId: string): string {
@@ -44,6 +47,26 @@ export class SyncChefsDataService {
     return await this.formMetadataRepo.save(this.formMetadataRepo.create(data));
   }
 
+  private async createOrUpdateAttachments(data) {
+    const responseDataFileArrays = Object.values(data).filter(
+      (value) => Array.isArray(value) && value.length > 0
+    );
+    const objects = extractObjects(responseDataFileArrays, 5);
+    // Maybe there's a better way to check it
+    const files = objects.filter((obj) => 'url' in obj && 'data' in obj);
+
+    for (const file of files) {
+      const newAttachmentData: AttachmentDto = {
+        id: file.data.id,
+        url: file.url,
+        // Data's empty for now
+        data: '',
+      };
+
+      await this.attachmentService.createOrUpdateAttachment(newAttachmentData);
+    }
+  }
+
   private async createOrUpdateSubmission(
     submissionId: string,
     axiosOptions: AxiosOptions
@@ -54,15 +77,8 @@ export class SyncChefsDataService {
       where: { submissionId: submissionId },
     });
 
-    // Iterate through responseData.submission.data
-    // If "url" key present -> it's a PDF object
-    // Get data.id, and url of it
-    // ------------------------------------------
-    const responseDataFileArrays = Object.values(responseData.submission.data).filter(
-      (value) => Array.isArray(value) && value.length > 0
-    );
-    const files = extractObjects(responseDataFileArrays, 5);
-    console.log(files);
+    // Process attachments
+    this.createOrUpdateAttachments(responseData.submission.data);
     // ------------------------------------------
 
     const newSubmissionData: SaveApplicationDto = {
