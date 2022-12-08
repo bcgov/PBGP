@@ -9,6 +9,7 @@ import { SaveApplicationDto } from '../../common/dto/save-application.dto';
 import { AxiosOptions } from '../../common/interfaces';
 import { FormMetaData } from '../../FormMetaData/formmetadata.entity';
 import { FormMetaDataDto } from '../../common/dto/form-metadata.dto';
+import { extractObjects } from '@/common/utils';
 
 // CHEFS Constants
 const CHEFS_FORM_IDS = ['4b19eee6-f42d-481f-8279-cbc28ab68cf0'];
@@ -52,6 +53,17 @@ export class SyncChefsDataService {
     const dbSubmission = await this.applicationRepo.findOne({
       where: { submissionId: submissionId },
     });
+
+    // Iterate through responseData.submission.data
+    // If "url" key present -> it's a PDF object
+    // Get data.id, and url of it
+    // ------------------------------------------
+    const responseDataFileArrays = Object.values(responseData.submission.data).filter(
+      (value) => Array.isArray(value) && value.length > 0
+    );
+    const files = extractObjects(responseDataFileArrays, 5);
+    console.log(files);
+    // ------------------------------------------
 
     const newSubmissionData: SaveApplicationDto = {
       submissionId: responseData.id,
