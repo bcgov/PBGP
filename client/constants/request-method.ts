@@ -10,4 +10,5 @@ export const API_ENDPOINT = {
   VALIDATE_USER: '/validate',
   FETCH_USERS: '/users',
   updateUserAccess: (id: string) => `/users/${id}/access`,
+  getApplicationComments: (applicationId: string) => `/applications/${applicationId}/comments`,
 };
