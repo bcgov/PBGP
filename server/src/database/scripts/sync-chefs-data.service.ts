@@ -12,10 +12,20 @@ import { FormMetaDataDto } from '../../common/dto/form-metadata.dto';
 import { extractObjects } from '../../common/utils';
 import { AttachmentService } from '../../attachments/attachment.service';
 import { Attachment } from '../../attachments/attachment.entity';
+const fs = require('file-system');
+var iconv = require('iconv-lite');
 
 // CHEFS Constants
 const CHEFS_FORM_IDS = ['4b19eee6-f42d-481f-8279-cbc28ab68cf0'];
 const CHEFS_BASE_URL = 'https://submit.digital.gov.bc.ca/app/api/v1';
+const FILE_URL = 'https://submit.digital.gov.bc.ca';
+const FILE_PATH = './src/attachments/files/';
+
+enum RESPONSE_TYPES {
+  BLOB = 'blob',
+  ARRAY_BUFFER = 'arraybuffer',
+  STREAM = 'stream',
+}
 
 @Injectable()
 export class SyncChefsDataService {
@@ -56,12 +66,41 @@ export class SyncChefsDataService {
     // Maybe there's a better way to check it
     const files = objects.filter((obj) => 'url' in obj && 'data' in obj);
 
+    // Axios stuff
+    const method = REQUEST_METHODS.GET;
+    const token = process.env.AUTH_BEARER_TOKEN;
+    const headers = {
+      'Content-Type': 'application/x-www-formid-urlencoded',
+      Authorization: `Bearer ${token}`,
+    };
+    const responseType = RESPONSE_TYPES.ARRAY_BUFFER;
+    const options = {
+      method,
+      headers,
+      responseType,
+    };
+
     for (const file of files) {
+      // Make API calls here and add to DATA
+      const url = FILE_URL + file.url;
+      const fileRes = await axios({ ...options, url });
+      // const fileData = Buffer.from(fileRes.data, 'utf-8');
+      const fileData = fileRes.data;
+      console.log(fileData);
+      // const decodedFileData = iconv.decode(fileRes.data, 'utf-8');
+
+      // Get the file extension
+      // const fileExtensionRe = /.*(\.[a-zA-Z0-9]+)$/gm;
+      // const fileExtensionRes = fileExtensionRe.exec(file.originalName);
+      // const fileExtension = fileExtensionRes[1] ? fileExtensionRes[1] : '.txt';
+
+      // const filename = file.data.id + fileExtension;
+      // fs.writeFile(FILE_PATH + filename, decodedFileData, function (err) {});
+
       const newAttachmentData = {
         id: file.data.id,
         url: file.url,
-        // Data's empty for now
-        data: '',
+        data: fileData,
       } as Attachment;
 
       await this.attachmentService.createOrUpdateAttachment(newAttachmentData);
