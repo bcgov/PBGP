@@ -26,7 +26,7 @@ export class CommentService {
       .innerJoin(Application, 'app', 'cmt.application_id = app.id')
       .innerJoin(User, 'usr', 'usr.id = cmt.user_id')
       .where('app.id = :id', { id: applicationId })
-      .orderBy('cmt.createdAt', 'ASC');
+      .orderBy('cmt.createdAt', 'DESC');
 
     return await query.execute();
   }

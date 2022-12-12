@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { Button, Link, Panel, renderCHFSElements, withAuth } from '../../components';
+import { Button, Comments, Link, Panel, renderCHFSElements, withAuth } from '../../components';
 import useSWR from 'swr';
 import { useHttp } from '../../services/useHttp';
 import { useEffect, useState } from 'react';
@@ -58,6 +58,7 @@ const ApplicationDetails: NextPage = () => {
   const [schema, setSchema] = useState<any[]>([]);
   const [formData, setFormData] = useState<KeyValuePair | undefined>();
   const [details, setDetails] = useState<ApplicationDetailsType | undefined>();
+  const [showComments, setShowComments] = useState<boolean>(false);
 
   useEffect(() => {
     if (data) {
@@ -87,7 +88,7 @@ const ApplicationDetails: NextPage = () => {
                 <FontAwesomeIcon icon={faUser} className='h-4 mr-2 text-bcBluePrimary' /> Assign
                 Evaluator
               </Button>
-              <Button variant='outline'>
+              <Button variant='outline' onClick={() => setShowComments(true)}>
                 <FontAwesomeIcon icon={faComment} className='h-4 mr-2 text-bcBluePrimary' />{' '}
                 Comments
               </Button>
@@ -114,8 +115,8 @@ const ApplicationDetails: NextPage = () => {
             })}
           </div>
 
-          <div className='flex'>
-            <div className='w-full'>
+          <div className='grid grid-cols-3 gap-4'>
+            <div className={`${showComments ? 'col-span-2' : 'col-span-full'} `}>
               {schema?.length > 0 &&
                 formData &&
                 schema
@@ -135,6 +136,11 @@ const ApplicationDetails: NextPage = () => {
                     </Panel>
                   ))}
             </div>
+            {showComments && id && typeof id === 'string' && (
+              <div className='col-span-1 pb-4'>
+                <Comments applicationId={id} onClose={() => setShowComments(false)} />
+              </div>
+            )}
           </div>
         </div>
       )}
