@@ -78,6 +78,7 @@ export class SyncChefsDataService {
       method,
       headers,
       responseType,
+      responseEncoding: 'binary',
     };
 
     for (const file of files) {
@@ -86,8 +87,9 @@ export class SyncChefsDataService {
       const fileRes = await axios({ ...options, url });
       // const fileData = Buffer.from(fileRes.data, 'utf-8');
       const fileData = fileRes.data;
-      console.log(fileData);
-      // const decodedFileData = iconv.decode(fileRes.data, 'utf-8');
+      const decodedFileData = iconv.decode(fileData, 'UTF-8');
+      // const buff = Buffer.from(fileData).toString();
+      // console.log(decodedFileData);
 
       // Get the file extension
       // const fileExtensionRe = /.*(\.[a-zA-Z0-9]+)$/gm;
@@ -100,7 +102,7 @@ export class SyncChefsDataService {
       const newAttachmentData = {
         id: file.data.id,
         url: file.url,
-        data: fileData,
+        data: '',
       } as Attachment;
 
       await this.attachmentService.createOrUpdateAttachment(newAttachmentData);
