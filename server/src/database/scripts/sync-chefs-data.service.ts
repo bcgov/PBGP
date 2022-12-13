@@ -80,7 +80,7 @@ export class SyncChefsDataService {
       'Content-Type': 'application/x-www-formid-urlencoded',
       Authorization: `Bearer ${token}`,
     };
-    const responseType = AxiosResponseTypes.BLOB;
+    const responseType = AxiosResponseTypes.ARRAY_BUFFER;
     const options = {
       method,
       headers,
@@ -97,6 +97,7 @@ export class SyncChefsDataService {
         id: file.data.id,
         url: file.url,
         data: fileData,
+        originalName: file.originalName,
       } as Attachment;
 
       await this.attachmentService.createOrUpdateAttachment(newAttachmentData);
