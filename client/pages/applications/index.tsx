@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { Layout, withAuth } from '../../components';
-import { ApplicationDashboard } from '../../components/form-sections';
+import { ApplicationDashboard } from '../../components/bcaap-form-sections';
 
 const Applications: NextPage = () => {
   return (

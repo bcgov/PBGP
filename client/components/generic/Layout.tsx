@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Routes } from '../constants';
-import { useAuthContext } from '../contexts';
+import { Routes } from '../../constants';
+import { useAuthContext } from '../../contexts';
 
 type LayoutProps = { children: any; pageName: string };
 

@@ -7,3 +7,4 @@ export * from './funding-project-info';
 export * from './general-project-info';
 export * from './support-docs-checklist';
 export * from './application-dashboard';
+export * from './FormContent';

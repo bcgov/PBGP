@@ -1,7 +1,7 @@
 import { Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useHttp } from '../../services/useHttp';
-import { Button } from '../Button';
+import { Button } from '../generic/Button';
 import { Textarea } from '../form';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

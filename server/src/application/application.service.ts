@@ -15,6 +15,7 @@ import { CommentResultRo } from './ro/app-comment.ro';
 import { CommentService } from '../comments/comment.service';
 import { GenericException } from '../common/generic-exception';
 import { ApplicationError } from './application.errors';
+import { UpdateStatusDto } from './dto/update-status.dto';
 
 @Injectable()
 export class ApplicationService {
@@ -59,7 +60,7 @@ export class ApplicationService {
 
   async getApplication(applicationId: string): Promise<Application> {
     const application = await this.applicationRepository.findOne(applicationId, {
-      relations: ['assignedTo', 'form'],
+      relations: ['assignedTo', 'form', 'lastUpdatedBy'],
     });
     if (!application) {
       throw new GenericException(ApplicationError.APPLICATION_NOT_FOUND);
@@ -84,19 +85,25 @@ export class ApplicationService {
     await this.applicationRepository.update(applicationId, applicationDto);
   }
 
-  async assignToUser(applicationId: string, assignToUserDto: AssignToUserDto): Promise<void> {
+  async assignToUser(
+    applicationId: string,
+    assignToUserDto: AssignToUserDto,
+    loggedInUser: User
+  ): Promise<void> {
     const application = await this.getApplication(applicationId);
     const user = await this.userService.getUser(assignToUserDto.userId);
     application.assignedTo = user;
+    application.lastUpdatedBy = loggedInUser;
     await this.applicationRepository.save(application);
   }
 
-  async unassignUser(applicationId: string): Promise<void> {
+  async unassignUser(applicationId: string, loggedInUser: User): Promise<void> {
     const application = await this.getApplication(applicationId);
     // simplified for now, but if there are multiple users that
     // can be assigned/unassigned - will need to include the passed
     // user ID's.
     application.assignedTo = null;
+    application.lastUpdatedBy = loggedInUser;
     await this.applicationRepository.save(application);
   }
 
@@ -111,5 +118,18 @@ export class ApplicationService {
   async createComment(applicationId: string, commentDto: CommentDto, user: User): Promise<Comment> {
     const application = await this.getApplication(applicationId);
     return await this.commentService.createComment(commentDto, application, user);
+  }
+
+  async updateStatus(applicationId: string, statusDto: UpdateStatusDto, user: User): Promise<void> {
+    const application = await this.getApplication(applicationId);
+    const { status } = statusDto;
+    //
+    if (application.status === status) {
+      return;
+    }
+
+    // TODO: Should audit the changes on who updated the status
+    await this.applicationRepository.update(applicationId, { status, lastUpdatedBy: user });
+    await this.unassignUser(applicationId, user);
   }
 }

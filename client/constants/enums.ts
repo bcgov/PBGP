@@ -9,6 +9,10 @@ export enum FormSteps {
   AUTHORIZATION = 'AUTHORIZATION',
 }
 
-export enum Endpoints {
-  APPLICATIONS = '/applications',
+export enum ApplicationStatus {
+  INITIAL_REVIEW = 'INITIAL_REVIEW',
+  DISCARD = 'DISCARD',
+  FUNDING_REVIEW = 'FUNDING_REVIEW',
+  BROADER_REVIEW = 'BROADER_REVIEW',
+  WORKSHOP = 'WORKSHOP',
 }
