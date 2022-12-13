@@ -12,20 +12,14 @@ import { FormMetaDataDto } from '../../common/dto/form-metadata.dto';
 import { extractObjects } from '../../common/utils';
 import { AttachmentService } from '../../attachments/attachment.service';
 import { Attachment } from '../../attachments/attachment.entity';
-const fs = require('file-system');
-var iconv = require('iconv-lite');
+import { AxiosResponseTypes } from '../../common/enums';
+import { GenericException } from '@/common/generic-exception';
+import { DatabaseError } from '../database.error';
 
 // CHEFS Constants
 const CHEFS_FORM_IDS = ['4b19eee6-f42d-481f-8279-cbc28ab68cf0'];
 const CHEFS_BASE_URL = 'https://submit.digital.gov.bc.ca/app/api/v1';
 const FILE_URL = 'https://submit.digital.gov.bc.ca';
-const FILE_PATH = './src/attachments/files/';
-
-enum RESPONSE_TYPES {
-  BLOB = 'blob',
-  ARRAY_BUFFER = 'arraybuffer',
-  STREAM = 'stream',
-}
 
 @Injectable()
 export class SyncChefsDataService {
@@ -57,6 +51,18 @@ export class SyncChefsDataService {
     return await this.formMetadataRepo.save(this.formMetadataRepo.create(data));
   }
 
+  private getTokenFromArgs(args: string[]) {
+    if (args[3] && args[3].includes('token=')) {
+      const parts = args[3].split('=');
+      if (parts[0]) {
+        if (parts[1]) {
+          return parts[1];
+        }
+      }
+    }
+    throw new GenericException(DatabaseError.TOKEN_NOT_FOUND);
+  }
+
   private async createOrUpdateAttachments(data) {
     const responseDataFileArrays = Object.values(data).filter(
       (value) => Array.isArray(value) && value.length > 0
@@ -68,41 +74,29 @@ export class SyncChefsDataService {
 
     // Axios stuff
     const method = REQUEST_METHODS.GET;
-    const token = process.env.AUTH_BEARER_TOKEN;
+    // Make sure you include the -- token=<token> into the script args
+    const token = this.getTokenFromArgs(process.argv);
     const headers = {
       'Content-Type': 'application/x-www-formid-urlencoded',
       Authorization: `Bearer ${token}`,
     };
-    const responseType = RESPONSE_TYPES.ARRAY_BUFFER;
+    const responseType = AxiosResponseTypes.BLOB;
     const options = {
       method,
       headers,
       responseType,
-      responseEncoding: 'binary',
     };
 
     for (const file of files) {
-      // Make API calls here and add to DATA
+      // Get file data form server
       const url = FILE_URL + file.url;
       const fileRes = await axios({ ...options, url });
-      // const fileData = Buffer.from(fileRes.data, 'utf-8');
-      const fileData = fileRes.data;
-      const decodedFileData = iconv.decode(fileData, 'UTF-8');
-      // const buff = Buffer.from(fileData).toString();
-      // console.log(decodedFileData);
-
-      // Get the file extension
-      // const fileExtensionRe = /.*(\.[a-zA-Z0-9]+)$/gm;
-      // const fileExtensionRes = fileExtensionRe.exec(file.originalName);
-      // const fileExtension = fileExtensionRes[1] ? fileExtensionRes[1] : '.txt';
-
-      // const filename = file.data.id + fileExtension;
-      // fs.writeFile(FILE_PATH + filename, decodedFileData, function (err) {});
+      const fileData = Buffer.from(fileRes.data);
 
       const newAttachmentData = {
         id: file.data.id,
         url: file.url,
-        data: '',
+        data: fileData,
       } as Attachment;
 
       await this.attachmentService.createOrUpdateAttachment(newAttachmentData);
