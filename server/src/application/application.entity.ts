@@ -1,9 +1,9 @@
 import { FormMetaData } from '../FormMetaData/formmetadata.entity';
-import { ReviewStatuses } from '../common/enums';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 import { User } from '../user/user.entity';
 import { Comment } from '../comments/comment.entity';
+import { ApplicationStatus } from './constants';
 
 @Entity({
   name: 'pbgp_application',
@@ -38,9 +38,9 @@ export class Application extends CustomBaseEntity {
     type: 'varchar',
     length: '100',
     nullable: false,
-    default: ReviewStatuses.INITIAL_REVIEW,
+    default: ApplicationStatus.INITIAL_REVIEW,
   })
-  status: ReviewStatuses;
+  status: ApplicationStatus;
 
   @ManyToOne(() => FormMetaData, (form) => form.applications)
   form: FormMetaData;
@@ -49,6 +49,9 @@ export class Application extends CustomBaseEntity {
   // change to ManyToMany accordingly if needed.
   @ManyToOne(() => User, (user) => user.applications)
   assignedTo: User;
+
+  @ManyToOne(() => User, (user) => user.id)
+  lastUpdatedBy: User;
 
   @OneToMany(() => Comment, (comment) => comment.application)
   comments: Comment[];

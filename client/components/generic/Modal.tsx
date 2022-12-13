@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
-import { useModal } from '../services';
+import { useModal } from '../../services';
 import { Button } from './Button';
 
 export const Modal: React.FC = () => {

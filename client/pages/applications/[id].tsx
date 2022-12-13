@@ -1,77 +1,36 @@
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { Button, Comments, Link, Panel, renderCHFSElements, withAuth } from '../../components';
-import useSWR from 'swr';
-import { useHttp } from '../../services/useHttp';
-import { useEffect, useState } from 'react';
+import {
+  Button,
+  Comments,
+  Link,
+  MenuButton,
+  Panel,
+  renderCHFSElements,
+  withAuth,
+} from '../../components';
 import { faUser, faComment } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { KeyValuePair } from '../../constants/interfaces';
-
-type ApplicationFormResponseType = {
-  versionSchema: { components: KeyValuePair[] };
-};
-
-type ApplicationDetailsType = KeyValuePair & {
-  projectTitle: string;
-  confirmationId: string;
-};
-
-export type ApplicationDetailsResponseType = ApplicationDetailsType & {
-  form: ApplicationFormResponseType;
-  submission: KeyValuePair;
-};
+import { useApplicationDetails } from '../../services';
 
 const ApplicationDetails: NextPage = () => {
   const { query } = useRouter();
   const { id } = query;
 
-  const { fetchData } = useHttp();
-
-  const topStatusObj = [
-    { title: 'Status', value: 'status' },
-    { title: 'Facility', value: 'facilityName' },
-    { title: 'Estimated cost', value: 'totalEstimatedCost' },
-    { title: 'Asks', value: 'asks' },
-    { title: 'Last updated', value: 'updatedAt' },
-    { title: 'Updated by', value: 'status' },
-  ];
-
-  const getApplicationById = (id: string): Promise<ApplicationDetailsResponseType> => {
-    return new Promise<ApplicationDetailsResponseType>(resolve => {
-      fetchData(
-        {
-          endpoint: `/applications/${id}`,
-        },
-        (data: ApplicationDetailsResponseType) => {
-          resolve(data);
-        },
-      );
-    }).then(data => {
-      return data;
-    });
-  };
-
-  const { data } = useSWR(id, (id: string) => getApplicationById(id));
-
-  const [schema, setSchema] = useState<any[]>([]);
-  const [formData, setFormData] = useState<KeyValuePair | undefined>();
-  const [details, setDetails] = useState<ApplicationDetailsType | undefined>();
-  const [showComments, setShowComments] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (data) {
-      const { form, submission, ...submissionDetails } = data;
-      setSchema(form.versionSchema.components);
-      setFormData(submission);
-      setDetails(submissionDetails);
-    }
-  }, [data]);
+  const {
+    topStatusObj,
+    schema,
+    formData,
+    details,
+    showComments,
+    setShowComments,
+    getNextStatusUpdates,
+  } = useApplicationDetails(id);
 
   return (
     <>
-      {details && (
+      {details && id && typeof id === 'string' && (
         <div className='min-h-screen p-5 w-full bg-white'>
           <div className='w-full mt-2'>
             <Link href='/applications' variant='link'>
@@ -95,7 +54,7 @@ const ApplicationDetails: NextPage = () => {
             </div>
             <div className='w-3/5'></div>
             <div className='w-1/5 grid justify-items-end gap-2'>
-              <Button variant='primary'>Open</Button>
+              <MenuButton title='Open' items={getNextStatusUpdates(id, details.status)} />
             </div>
           </div>
 
@@ -109,7 +68,11 @@ const ApplicationDetails: NextPage = () => {
                   }  items-center text-center justify-center`}
                 >
                   <p className='text-sm text-slate-400'>{item.title}</p>
-                  <p className='text-lg'>{details[item.value]}</p>
+                  <p className='text-lg'>
+                    {item.value === 'lastUpdatedBy'
+                      ? details[item.value]?.displayName
+                      : details[item.value]}
+                  </p>
                 </div>
               );
             })}

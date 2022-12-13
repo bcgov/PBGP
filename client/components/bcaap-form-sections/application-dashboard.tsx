@@ -6,7 +6,7 @@ import { faTimes, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { useHttp } from '../../services/useHttp';
 import { SetQueryParams } from '../../services/useQueryParams';
 import { useRouter } from 'next/router';
-import { Endpoints } from '../../constants';
+import { API_ENDPOINT } from '../../constants';
 
 export const ApplicationDashboard: React.FC<any> = () => {
   const [state, setState] = useState({
@@ -24,7 +24,7 @@ export const ApplicationDashboard: React.FC<any> = () => {
   const setApplicationData = async (params: any) => {
     fetchData(
       {
-        endpoint: Endpoints.APPLICATIONS,
+        endpoint: API_ENDPOINT.APPLICATIONS,
         params,
       },
       ({ result, total }: any) => {

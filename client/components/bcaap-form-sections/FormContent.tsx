@@ -8,7 +8,7 @@ import {
   FundingProjectCostInfo,
   SupportDocsChecklist,
   AuthorizationPage,
-} from '../form-sections';
+} from '.';
 
 interface FormContentProps {
   step: number;

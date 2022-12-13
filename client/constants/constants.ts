@@ -35,3 +35,7 @@ export const FacilityUsage = [
   { label: 'Flight training', value: 'Flight training' },
   { label: 'Other (please explain)', value: 'Other (please explain)' },
 ];
+
+export const classNames = (...classes: any[]) => {
+  return classes.filter(Boolean).join(' ');
+};

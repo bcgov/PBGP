@@ -22,6 +22,7 @@ import { Comment } from '../comments/comment.entity';
 import { AssignToUserDto } from '../common/dto/assign-to-user.dto';
 import { User } from '../user/user.entity';
 import { CommentResultRo } from './ro/app-comment.ro';
+import { UpdateStatusDto } from './dto/update-status.dto';
 
 @ApiBearerAuth()
 @Controller('applications')
@@ -54,14 +55,20 @@ export class ApplicationController {
   @Patch('/:applicationId/assign')
   async assignToUser(
     @Param('applicationId') applicationId: string,
-    @Body() assignToUserDto: AssignToUserDto
-  ): Promise<void> {
-    return this.applicationService.assignToUser(applicationId, assignToUserDto);
+    @Body() assignToUserDto: AssignToUserDto,
+    @GetUser() user: User
+  ): Promise<any> {
+    await this.applicationService.assignToUser(applicationId, assignToUserDto, user);
+    return SUCCESS_RESPONSE;
   }
 
   @Patch('/:applicationId/unassign')
-  async unassignUser(@Param('applicationId') applicationId: string): Promise<void> {
-    return this.applicationService.unassignUser(applicationId);
+  async unassignUser(
+    @Param('applicationId') applicationId: string,
+    @GetUser() user: User
+  ): Promise<any> {
+    await this.applicationService.unassignUser(applicationId, user);
+    return SUCCESS_RESPONSE;
   }
 
   @Get('/:applicationId/comments')
@@ -76,5 +83,15 @@ export class ApplicationController {
     @GetUser() user: User
   ): Promise<Comment> {
     return await this.applicationService.createComment(applicationId, commentDto, user);
+  }
+
+  @Patch('/:applicationId/status')
+  async updateStatus(
+    @Param('applicationId') applicationId: string,
+    @Body() statusDto: UpdateStatusDto,
+    @GetUser() user: User
+  ): Promise<any> {
+    await this.applicationService.updateStatus(applicationId, statusDto, user);
+    return SUCCESS_RESPONSE;
   }
 }

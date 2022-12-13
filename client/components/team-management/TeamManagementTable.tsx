@@ -1,5 +1,5 @@
 import { useAuthContext, UserInterface } from '../../contexts';
-import { Button } from '../Button';
+import { Button } from '../generic/Button';
 
 export interface TableProps {
   data: any[];
