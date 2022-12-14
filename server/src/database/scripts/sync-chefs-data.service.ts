@@ -12,10 +12,14 @@ import { FormMetaDataDto } from '../../common/dto/form-metadata.dto';
 import { extractObjects } from '../../common/utils';
 import { AttachmentService } from '../../attachments/attachment.service';
 import { Attachment } from '../../attachments/attachment.entity';
+import { AxiosResponseTypes } from '../../common/enums';
+import { GenericException } from '@/common/generic-exception';
+import { DatabaseError } from '../database.error';
 
 // CHEFS Constants
 const CHEFS_FORM_IDS = ['4b19eee6-f42d-481f-8279-cbc28ab68cf0'];
 const CHEFS_BASE_URL = 'https://submit.digital.gov.bc.ca/app/api/v1';
+const FILE_URL = 'https://submit.digital.gov.bc.ca';
 
 @Injectable()
 export class SyncChefsDataService {
@@ -47,6 +51,18 @@ export class SyncChefsDataService {
     return await this.formMetadataRepo.save(this.formMetadataRepo.create(data));
   }
 
+  private getTokenFromArgs(args: string[]) {
+    if (args[3] && args[3].includes('token=')) {
+      const parts = args[3].split('=');
+      if (parts[0]) {
+        if (parts[1]) {
+          return parts[1];
+        }
+      }
+    }
+    throw new GenericException(DatabaseError.TOKEN_NOT_FOUND);
+  }
+
   private async createOrUpdateAttachments(data) {
     const responseDataFileArrays = Object.values(data).filter(
       (value) => Array.isArray(value) && value.length > 0
@@ -56,12 +72,32 @@ export class SyncChefsDataService {
     // Maybe there's a better way to check it
     const files = objects.filter((obj) => 'url' in obj && 'data' in obj);
 
+    // Axios stuff
+    const method = REQUEST_METHODS.GET;
+    // Make sure you include the -- token=<token> into the script args
+    const token = this.getTokenFromArgs(process.argv);
+    const headers = {
+      'Content-Type': 'application/x-www-formid-urlencoded',
+      Authorization: `Bearer ${token}`,
+    };
+    const responseType = AxiosResponseTypes.ARRAY_BUFFER;
+    const options = {
+      method,
+      headers,
+      responseType,
+    };
+
     for (const file of files) {
+      // Get file data form server
+      const url = FILE_URL + file.url;
+      const fileRes = await axios({ ...options, url });
+      const fileData = Buffer.from(fileRes.data);
+
       const newAttachmentData = {
         id: file.data.id,
         url: file.url,
-        // Data's empty for now
-        data: '',
+        data: fileData,
+        originalName: file.originalName,
       } as Attachment;
 
       await this.attachmentService.createOrUpdateAttachment(newAttachmentData);

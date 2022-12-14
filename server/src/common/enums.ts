@@ -18,3 +18,9 @@ export enum ApplicationSortOptions {
   SUBMISSION_ID = 'submissionId',
   UPDATED_AT = 'updatedAt',
 }
+
+export enum AxiosResponseTypes {
+  BLOB = 'blob',
+  ARRAY_BUFFER = 'arraybuffer',
+  STREAM = 'stream',
+}

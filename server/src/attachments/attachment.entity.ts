@@ -12,6 +12,10 @@ export class Attachment extends CustomBaseEntity {
   url: string;
 
   // nullable for now
+  // String doesn't work for AxiosResponse type
   @Column({ type: 'bytea', nullable: true })
-  data: string;
+  data: Buffer;
+
+  @Column({ type: 'varchar', length: '200', nullable: false })
+  originalName: string;
 }
