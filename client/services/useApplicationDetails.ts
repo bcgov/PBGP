@@ -6,6 +6,7 @@ import { ApplicationStatus, API_ENDPOINT, REQUEST_METHOD, Routes } from '../cons
 import { KeyValuePair } from '../constants/interfaces';
 import { UserInterface } from '../contexts';
 import { useHttp } from './useHttp';
+import { useTeamManagement } from './useTeamManagement';
 
 type ApplicationFormResponseType = {
   versionSchema: { components: KeyValuePair[] };
@@ -32,6 +33,7 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
   const { replace } = useRouter();
 
   const { fetchData, sendApiRequest } = useHttp();
+  const { userData } = useTeamManagement();
 
   const topStatusObj = [
     { title: 'Status', value: 'status' },
@@ -63,6 +65,7 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
   const [formData, setFormData] = useState<KeyValuePair | undefined>();
   const [details, setDetails] = useState<ApplicationDetailsType | undefined>();
   const [showComments, setShowComments] = useState<boolean>(false);
+  const [userList, setUserList] = useState<UserInterface[]>([]);
 
   const updateStatus = (id: string, status: ApplicationStatus) => {
     sendApiRequest(
@@ -114,6 +117,21 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
     return statusUpdates;
   };
 
+  const updateEvaluator = (data: UserInterface) => {
+    if (id && typeof id === 'string') {
+      sendApiRequest(
+        {
+          endpoint: API_ENDPOINT.getApplicationEvaluator(id),
+          data: { userId: data.id },
+          method: REQUEST_METHOD.PATCH,
+        },
+        () => {
+          toast.success('Evaluator updated successfully!!!');
+        },
+      );
+    }
+  };
+
   useEffect(() => {
     if (data) {
       const { form, submission, ...submissionDetails } = data;
@@ -123,6 +141,10 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    setUserList(userData?.filter(each => each.isAuthorized));
+  }, [userData]);
+
   return {
     topStatusObj,
     schema,
@@ -131,5 +153,7 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
     showComments,
     setShowComments,
     getNextStatusUpdates,
+    updateEvaluator,
+    userList,
   };
 };

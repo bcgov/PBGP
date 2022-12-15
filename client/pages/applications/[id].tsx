@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import {
+  AssignEvaluator,
   Button,
   Comments,
   Link,
@@ -10,7 +11,7 @@ import {
   renderCHFSElements,
   withAuth,
 } from '../../components';
-import { faUser, faComment } from '@fortawesome/free-solid-svg-icons';
+import { faComment } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useApplicationDetails } from '../../services';
 
@@ -26,6 +27,8 @@ const ApplicationDetails: NextPage = () => {
     showComments,
     setShowComments,
     getNextStatusUpdates,
+    updateEvaluator,
+    userList,
   } = useApplicationDetails(id);
 
   return (
@@ -41,18 +44,22 @@ const ApplicationDetails: NextPage = () => {
           <h1 className='text-3xl w-full text-bcBluePrimary text-left mb-2 mt-2'>
             {details.projectTitle}
           </h1>
-          <div className='flex mb-4 mt-4'>
-            <div className='w-1/5 grid grid-cols-2 gap-2'>
-              <Button variant='outline'>
-                <FontAwesomeIcon icon={faUser} className='h-4 mr-2 text-bcBluePrimary' /> Assign
-                Evaluator
-              </Button>
-              <Button variant='outline' onClick={() => setShowComments(true)}>
-                <FontAwesomeIcon icon={faComment} className='h-4 mr-2 text-bcBluePrimary' />{' '}
-                Comments
-              </Button>
+          <div className='flex flex-row mb-4 mt-4'>
+            <div className='flex flex-none flex-row  w-4/5 gap-2'>
+              <div className='w-fit'>
+                <AssignEvaluator
+                  users={userList}
+                  onChange={updateEvaluator}
+                  defaultEvaluator={details.assignedTo}
+                />
+              </div>
+              <div className='w-fit'>
+                <Button variant='outline' onClick={() => setShowComments(true)}>
+                  <FontAwesomeIcon icon={faComment} className='h-4 mr-2 text-bcBluePrimary' />{' '}
+                  Comments
+                </Button>
+              </div>
             </div>
-            <div className='w-3/5'></div>
             <div className='w-1/5 grid justify-items-end gap-2'>
               <MenuButton title='Open' items={getNextStatusUpdates(id, details.status)} />
             </div>

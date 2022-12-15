@@ -27,7 +27,9 @@ export class ApplicationService {
   ) {}
 
   async getApplications(query: GetApplicationsDto): Promise<PaginationRO<Application>> | null {
-    const queryBuilder = this.applicationRepository.createQueryBuilder('app');
+    const queryBuilder = this.applicationRepository
+      .createQueryBuilder('app')
+      .leftJoinAndSelect('app.assignedTo', 'assignedTo');
 
     if (query.facilityName) {
       queryBuilder.andWhere('app.facilityName ILIKE :facilityName', {
