@@ -1,4 +1,3 @@
-import { PublicRoute } from '@/common/decorator';
 import { Controller, Get, Param, Res, StreamableFile } from '@nestjs/common';
 import { Response } from 'express';
 import { Readable } from 'stream';
