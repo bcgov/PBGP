@@ -20,3 +20,33 @@ export const cleanText = (text: string): string => {
   const regex = /\W/gm;
   return text.toLowerCase().replace(regex, '');
 };
+
+export const flattenArray = (input: any[], depth = 1, stack = []) => {
+  for (const item of input) {
+    if (item instanceof Array && depth > 0) {
+      flattenArray(item, depth - 1, stack);
+    } else {
+      stack.push(item);
+    }
+  }
+
+  return stack;
+};
+
+// Extracts {} objects from nested arrays and object values
+export const extractObjects = (input: any[], depth = 1, stack = []) => {
+  for (const item of input) {
+    if (item instanceof Array && depth > 0) {
+      extractObjects(item, depth - 1, stack);
+    } else if (item instanceof Object) {
+      const arrs = Object.values(item).filter((element) => Array.isArray(element));
+      if (arrs.length > 0) {
+        extractObjects(arrs, depth - 1, stack);
+      } else {
+        stack.push(item);
+      }
+    }
+  }
+
+  return stack;
+};
