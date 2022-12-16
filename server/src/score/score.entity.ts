@@ -91,5 +91,5 @@ export class Score extends CustomBaseEntity {
 
   @OneToOne(() => Application)
   @JoinColumn()
-  application: User;
+  application: Application;
 }
