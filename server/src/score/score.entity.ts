@@ -1,4 +1,13 @@
-import { Entity, Column, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Application } from '@/application/application.entity';
+import { User } from '@/user/user.entity';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
 @Entity({
@@ -82,4 +91,12 @@ export class Score extends CustomBaseEntity {
 
   @Column({ type: 'varchar', length: '2000', nullable: true })
   overallComments: string;
+
+  @OneToOne(() => User)
+  @JoinColumn()
+  user: User;
+
+  @OneToOne(() => Application)
+  @JoinColumn()
+  application: User;
 }
