@@ -9,6 +9,7 @@ import { ApplicationModule } from './application/application.module';
 import { AuthModule } from './auth/auth.module';
 import { FormMetaDataModule } from './FormMetaData/formmetadata.module';
 import { CommentModule } from './comments/comment.module';
+import { ScoreModule } from './score/score.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CommentModule } from './comments/comment.module';
     ApplicationModule,
     UserModule,
     CommentModule,
+    ScoreModule,
   ],
   controllers: [AppController],
   providers: [Logger, AppLogger, AppService],
