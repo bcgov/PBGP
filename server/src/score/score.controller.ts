@@ -11,10 +11,14 @@ export class ScoreController {
   constructor(private scoreService: ScoreService) {}
 
   @Get()
-  async getScores() {}
+  async getScores() {
+    return;
+  }
 
   @Get('/:id')
-  async getScore() {}
+  async getScore() {
+    return;
+  }
 
   @Post()
   async createScore(@Body() scoreDto: ScoreDto, @GetUser() user: User) {
@@ -22,5 +26,11 @@ export class ScoreController {
   }
 
   @Patch('/:id')
-  async updateScore(@Param('id') scoreId: string, @Body() ScoreDto: ScoreDto) {}
+  async updateScore(
+    @Param('id') scoreId: string,
+    @Body() scoreDto: ScoreDto,
+    @GetUser() user: User
+  ) {
+    return this.scoreService.updateScore(scoreId, scoreDto, user);
+  }
 }
