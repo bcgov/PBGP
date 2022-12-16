@@ -89,7 +89,13 @@ export class Score extends CustomBaseEntity {
   @JoinColumn()
   user: User;
 
-  @OneToOne(() => Application)
+  @Column({ type: 'uuid' })
+  userId: string;
+
+  @OneToOne(() => Application, (application) => application.id)
   @JoinColumn()
   application: Application;
+
+  @Column({ type: 'uuid' })
+  applicationId: string;
 }
