@@ -1,13 +1,6 @@
 import { Application } from '@/application/application.entity';
 import { User } from '@/user/user.entity';
-import {
-  Entity,
-  Column,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
 @Entity({
