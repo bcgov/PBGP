@@ -3,7 +3,6 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  IsUUID,
   Max,
   MaxLength,
   Min,
@@ -158,7 +157,4 @@ export class ScoreDto {
   @MinLength(0)
   @IsOptional()
   overallComments: string;
-
-  @IsUUID()
-  applicationId: string;
 }

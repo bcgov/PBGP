@@ -1,4 +1,4 @@
-import { ApplicationService } from '@/application/application.service';
+import { Application } from '@/application/application.entity';
 import { GenericException } from '@/common/generic-exception';
 import { User } from '@/user/user.entity';
 import { Injectable } from '@nestjs/common';
@@ -12,9 +12,12 @@ import { ScoreError } from './score.errors';
 export class ScoreService {
   constructor(
     @InjectRepository(Score)
-    private scoreRepository: Repository<Score>,
-    private applicationService: ApplicationService
+    private scoreRepository: Repository<Score>
   ) {}
+
+  async getScores(applicationId: string) {
+    return await this.scoreRepository.find({ id: applicationId });
+  }
 
   async getScore(id: string) {
     const score = await this.scoreRepository.findOne(id);
@@ -24,18 +27,21 @@ export class ScoreService {
     return score;
   }
 
-  async createScore(user: User, scoreDto: ScoreDto): Promise<Score> {
+  async createScore(user: User, application: Application, scoreDto: ScoreDto): Promise<Score> {
     const score = await this.scoreRepository.create(scoreDto);
-    const application = await this.applicationService.getApplication(scoreDto.applicationId);
     score.user = user;
     score.application = application;
 
     return this.scoreRepository.save(score);
   }
 
-  async updateScore(scoreId: string, scoreDto: ScoreDto, user: User): Promise<Score> {
+  async updateScore(
+    user: User,
+    application: Application,
+    scoreId: string,
+    scoreDto: ScoreDto
+  ): Promise<Score> {
     const score = await this.getScore(scoreId);
-    const application = await this.applicationService.getApplication(scoreDto.applicationId);
     if (score.userId !== user.id) {
       throw new GenericException(ScoreError.USER_MISMATCH);
     }

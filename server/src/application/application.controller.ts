@@ -23,6 +23,7 @@ import { AssignToUserDto } from '../common/dto/assign-to-user.dto';
 import { User } from '../user/user.entity';
 import { CommentResultRo } from './ro/app-comment.ro';
 import { UpdateStatusDto } from './dto/update-status.dto';
+import { ScoreDto } from '../score/dto/score.dto';
 
 @ApiBearerAuth()
 @Controller('applications')
@@ -93,5 +94,30 @@ export class ApplicationController {
   ): Promise<any> {
     await this.applicationService.updateStatus(applicationId, statusDto, user);
     return SUCCESS_RESPONSE;
+  }
+
+  // Score Section
+  @Get('/:applicationId/scores')
+  async getScores(@Param('applicationId') applicationId: string) {
+    return this.applicationService.getScores(applicationId);
+  }
+
+  @Post('/:applicationId/scores/')
+  async createScore(
+    @Body() scoreDto: ScoreDto,
+    @GetUser() user: User,
+    @Param('applicationId') applicationId: string
+  ) {
+    return this.applicationService.createScore(user, applicationId, scoreDto);
+  }
+
+  @Patch('/:applicationId/scores/:scoreId')
+  async updateScore(
+    @Param('applicationId') applicationId: string,
+    @Param('scoreId') scoreId: string,
+    @Body() scoreDto: ScoreDto,
+    @GetUser() user: User
+  ) {
+    return this.applicationService.updateScore(user, applicationId, scoreId, scoreDto);
   }
 }
