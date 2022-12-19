@@ -1,7 +1,9 @@
+import { GenericException } from '@/common/generic-exception';
 import { Controller, Get, Param, Res, StreamableFile } from '@nestjs/common';
 import { Response } from 'express';
 import { Readable } from 'stream';
 import { Attachment } from './attachment.entity';
+import { AttachmentError } from './attachment.errors';
 import { AttachmentService } from './attachment.service';
 
 @Controller('attachments')
@@ -23,6 +25,6 @@ export class AttachmentController {
 
       return new StreamableFile(file);
     }
-    return;
+    throw new GenericException(AttachmentError.ATTACHMENT_NOT_FOUND);
   }
 }
