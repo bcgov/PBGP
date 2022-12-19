@@ -16,6 +16,8 @@ import { CommentService } from '../comments/comment.service';
 import { GenericException } from '../common/generic-exception';
 import { ApplicationError } from './application.errors';
 import { UpdateStatusDto } from './dto/update-status.dto';
+import { ScoreService } from '../score/score.service';
+import { ScoreDto } from '../score/dto/score.dto';
 
 @Injectable()
 export class ApplicationService {
@@ -23,7 +25,8 @@ export class ApplicationService {
     @InjectRepository(Application)
     private applicationRepository: Repository<Application>,
     private userService: UserService,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private scoreService: ScoreService
   ) {}
 
   async getApplications(query: GetApplicationsDto): Promise<PaginationRO<Application>> | null {
@@ -133,5 +136,21 @@ export class ApplicationService {
     // TODO: Should audit the changes on who updated the status
     await this.applicationRepository.update(applicationId, { status, lastUpdatedBy: user });
     await this.unassignUser(applicationId, user);
+  }
+
+  // Score Section
+  async getScores(applicationId: string) {
+    return this.scoreService.getScores(applicationId);
+  }
+
+  async createScore(user: User, applicationId: string, scoreDto: ScoreDto) {
+    const application = await this.getApplication(applicationId);
+
+    return this.scoreService.createScore(user, application, scoreDto);
+  }
+  async updateScore(user: User, applicationId: string, scoreId: string, scoreDto: ScoreDto) {
+    const application = await this.getApplication(applicationId);
+
+    return this.scoreService.updateScore(user, application, scoreId, scoreDto);
   }
 }
