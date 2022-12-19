@@ -5,6 +5,7 @@ import {
   AssignEvaluator,
   Button,
   Comments,
+  BroaderReview,
   Link,
   MenuButton,
   Panel,
@@ -32,6 +33,7 @@ const ApplicationDetails: NextPage = () => {
     isPanelDefaultOpen,
   } = useApplicationDetails(id);
 
+  console.log("++++++++++++++++++++ Status", details)
   return (
     <>
       {details && id && typeof id === 'string' && (
@@ -87,7 +89,7 @@ const ApplicationDetails: NextPage = () => {
           </div>
 
           <div className='grid grid-cols-3 gap-4'>
-            <div className={`${showComments ? 'col-span-2' : 'col-span-full'} `}>
+            <div className={`${showComments || details.status == 'BROADER_REVIEW' ? 'col-span-2' : 'col-span-full'} `}>
               {schema?.length > 0 &&
                 formData &&
                 schema
@@ -118,6 +120,11 @@ const ApplicationDetails: NextPage = () => {
             {showComments && id && typeof id === 'string' && (
               <div className='col-span-1 pb-4'>
                 <Comments applicationId={id} onClose={() => setShowComments(false)} />
+              </div>
+            )}
+            {details && details.status == 'BROADER_REVIEW' && (
+              <div className='col-span-1 pb-4'>
+                <BroaderReview applicationId={id} onClose={() => setShowComments(false)} />
               </div>
             )}
           </div>
