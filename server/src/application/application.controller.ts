@@ -102,7 +102,7 @@ export class ApplicationController {
     return this.applicationService.getScores(applicationId);
   }
 
-  @Post('/:applicationId/scores/')
+  @Post('/:applicationId/scores')
   async createScore(
     @Body() scoreDto: ScoreDto,
     @GetUser() user: User,
