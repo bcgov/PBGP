@@ -54,7 +54,7 @@ export const AssignEvaluator: React.FC<AssignEvaluatorProps> = ({
             leaveTo='opacity-0'
           >
             <Listbox.Options className='absolute z-10 mt-1 max-h-56 w-auto overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
-              {users.map(each => (
+              {users?.map(each => (
                 <Listbox.Option
                   key={each.id}
                   className={({ active }) =>
