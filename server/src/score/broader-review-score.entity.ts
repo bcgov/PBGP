@@ -6,7 +6,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'ty
 @Entity({
   name: 'pbgp_score',
 })
-export class Score extends ScoreBaseEntity {
+export class BroaderReviewScore extends ScoreBaseEntity {
   @PrimaryGeneratedColumn('uuid', { name: 'score_id' })
   id: string;
 

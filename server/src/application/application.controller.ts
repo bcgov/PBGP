@@ -99,7 +99,7 @@ export class ApplicationController {
   // Score Section
   @Get('/:applicationId/scores')
   async getScores(@Param('applicationId') applicationId: string) {
-    return this.applicationService.getScores(applicationId);
+    return this.applicationService.getBroaderReviewScores(applicationId);
   }
 
   @Post('/:applicationId/scores')
@@ -108,7 +108,7 @@ export class ApplicationController {
     @GetUser() user: User,
     @Param('applicationId') applicationId: string
   ) {
-    return this.applicationService.createScore(user, applicationId, scoreDto);
+    return this.applicationService.createBroaderReviewScore(user, applicationId, scoreDto);
   }
 
   @Patch('/:applicationId/scores/:scoreId')
@@ -118,6 +118,6 @@ export class ApplicationController {
     @Body() scoreDto: ScoreDto,
     @GetUser() user: User
   ) {
-    return this.applicationService.updateScore(user, applicationId, scoreId, scoreDto);
+    return this.applicationService.updateBroaderReviewScore(user, applicationId, scoreId, scoreDto);
   }
 }

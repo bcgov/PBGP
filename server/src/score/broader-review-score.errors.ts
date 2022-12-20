@@ -1,7 +1,7 @@
 import { HttpStatus } from '@nestjs/common';
 import { GenericError } from '../common/generic-exception';
 
-export const ScoreError = {
+export const BroaderReviewScoreError = {
   SCORE_NOT_FOUND: {
     errorType: 'SCORE_NOT_FOUND',
     errorMessage: 'Cannot find score',

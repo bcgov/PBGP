@@ -9,7 +9,7 @@ import { ApplicationModule } from './application/application.module';
 import { AuthModule } from './auth/auth.module';
 import { FormMetaDataModule } from './FormMetaData/formmetadata.module';
 import { CommentModule } from './comments/comment.module';
-import { ScoreModule } from './score/score.module';
+import { BroaderReviewScoreModule } from './score/broader-review-score.module';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { ScoreModule } from './score/score.module';
     ApplicationModule,
     UserModule,
     CommentModule,
-    ScoreModule,
+    BroaderReviewScoreModule,
   ],
   controllers: [AppController],
   providers: [Logger, AppLogger, AppService],
