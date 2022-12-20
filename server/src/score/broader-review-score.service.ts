@@ -5,29 +5,33 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ScoreDto } from './dto/score.dto';
-import { Score } from './score.entity';
-import { ScoreError } from './score.errors';
+import { BroaderReviewScore } from './broader-review-score.entity';
+import { BroaderReviewScoreError } from './broader-review-score.errors';
 
 @Injectable()
-export class ScoreService {
+export class BroaderReviewScoreService {
   constructor(
-    @InjectRepository(Score)
-    private scoreRepository: Repository<Score>
+    @InjectRepository(BroaderReviewScore)
+    private scoreRepository: Repository<BroaderReviewScore>
   ) {}
 
-  async getScores(applicationId: string) {
+  async getBroaderReviewScores(applicationId: string) {
     return await this.scoreRepository.find({ id: applicationId });
   }
 
-  async getScore(id: string) {
+  async getBroaderReviewScore(id: string) {
     const score = await this.scoreRepository.findOne(id);
     if (!score) {
-      throw new GenericException(ScoreError.SCORE_NOT_FOUND);
+      throw new GenericException(BroaderReviewScoreError.SCORE_NOT_FOUND);
     }
     return score;
   }
 
-  async createScore(user: User, application: Application, scoreDto: ScoreDto): Promise<Score> {
+  async createBroaderReviewScore(
+    user: User,
+    application: Application,
+    scoreDto: ScoreDto
+  ): Promise<BroaderReviewScore> {
     const score = await this.scoreRepository.create(scoreDto);
     score.user = user;
     score.application = application;
@@ -35,18 +39,18 @@ export class ScoreService {
     return this.scoreRepository.save(score);
   }
 
-  async updateScore(
+  async updateBroaderReviewScore(
     user: User,
     application: Application,
     scoreId: string,
     scoreDto: ScoreDto
-  ): Promise<Score> {
-    const score = await this.getScore(scoreId);
+  ): Promise<BroaderReviewScore> {
+    const score = await this.getBroaderReviewScore(scoreId);
     if (score.userId !== user.id) {
-      throw new GenericException(ScoreError.USER_MISMATCH);
+      throw new GenericException(BroaderReviewScoreError.USER_MISMATCH);
     }
     if (score.applicationId !== application.id) {
-      throw new GenericException(ScoreError.APPLICATION_MISMATCH);
+      throw new GenericException(BroaderReviewScoreError.APPLICATION_MISMATCH);
     }
     return this.scoreRepository.save({ ...score, ...scoreDto });
   }

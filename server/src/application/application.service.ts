@@ -16,7 +16,7 @@ import { CommentService } from '../comments/comment.service';
 import { GenericException } from '../common/generic-exception';
 import { ApplicationError } from './application.errors';
 import { UpdateStatusDto } from './dto/update-status.dto';
-import { ScoreService } from '../score/score.service';
+import { BroaderReviewScoreService } from '../score/broader-review-score.service';
 import { ScoreDto } from '../score/dto/score.dto';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class ApplicationService {
     private applicationRepository: Repository<Application>,
     private userService: UserService,
     private commentService: CommentService,
-    private scoreService: ScoreService
+    private scoreService: BroaderReviewScoreService
   ) {}
 
   async getApplications(query: GetApplicationsDto): Promise<PaginationRO<Application>> | null {
@@ -139,18 +139,23 @@ export class ApplicationService {
   }
 
   // Score Section
-  async getScores(applicationId: string) {
-    return this.scoreService.getScores(applicationId);
+  async getBroaderReviewScores(applicationId: string) {
+    return this.scoreService.getBroaderReviewScores(applicationId);
   }
 
-  async createScore(user: User, applicationId: string, scoreDto: ScoreDto) {
+  async createBroaderReviewScore(user: User, applicationId: string, scoreDto: ScoreDto) {
     const application = await this.getApplication(applicationId);
 
-    return this.scoreService.createScore(user, application, scoreDto);
+    return this.scoreService.createBroaderReviewScore(user, application, scoreDto);
   }
-  async updateScore(user: User, applicationId: string, scoreId: string, scoreDto: ScoreDto) {
+  async updateBroaderReviewScore(
+    user: User,
+    applicationId: string,
+    scoreId: string,
+    scoreDto: ScoreDto
+  ) {
     const application = await this.getApplication(applicationId);
 
-    return this.scoreService.updateScore(user, application, scoreId, scoreDto);
+    return this.scoreService.updateBroaderReviewScore(user, application, scoreId, scoreDto);
   }
 }
