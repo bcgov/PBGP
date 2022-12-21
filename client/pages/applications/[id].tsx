@@ -32,8 +32,6 @@ const ApplicationDetails: NextPage = () => {
     userList,
   } = useApplicationDetails(id);
 
-  console.log("++++++++++++++++++++ Status", details)
-  console.log("++++++++++++++++++++ userList", userList)
   return (
     <>
       {details && id && typeof id === 'string' && (
