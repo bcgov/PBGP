@@ -9,7 +9,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class ScoreDto {
+export class ScoreDataDto {
   @IsNumber()
   @Max(10)
   @Min(0)
@@ -151,10 +151,21 @@ export class ScoreDto {
   @Min(0)
   @IsOptional()
   thirdPartyContributionScore: number;
+}
+
+export class ScoreDto {
+  @IsOptional()
+  data: ScoreDataDto;
 
   @IsString()
   @MaxLength(2000)
   @MinLength(0)
   @IsOptional()
   overallComments: string;
+
+  @IsNumber()
+  @IsOptional()
+  @Max(112)
+  @Min(0)
+  finalScore: number;
 }
