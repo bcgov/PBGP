@@ -65,13 +65,30 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
     });
   };
 
+  const getApplicationScoresById = (id: string): Promise<any> => {
+    return new Promise<any>(resolve => {
+      fetchData(
+        {
+          endpoint: API_ENDPOINT.getApplicationScores(id),
+        },
+        (data: any) => {
+          resolve(data);
+        },
+      );
+    }).then(data => {
+      return data;
+    });
+  };
+
   const { data } = useSWR(id, (id: string) => getApplicationById(id));
+  //const { scores } = useSWR(id, (id: string) => getApplicationScoresById(id));
 
   const [schema, setSchema] = useState<any[]>([]);
   const [formData, setFormData] = useState<KeyValuePair | undefined>();
   const [details, setDetails] = useState<ApplicationDetailsType | undefined>();
   const [showComments, setShowComments] = useState<boolean>(false);
   const [userList, setUserList] = useState<UserInterface[]>([]);
+  const [applicationScores, setApplicationScores] = useState<any[]>([]);
 
   const updateStatus = (id: string, status: ApplicationStatus) => {
     sendApiRequest(

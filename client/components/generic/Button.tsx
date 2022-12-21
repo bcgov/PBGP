@@ -15,6 +15,7 @@ export const buttonColor: Record<string, string> = {
   secondary: `border-2 border-bcBluePrimary bg-white text-bcBluePrimary hover:bg-gray-100 focus:ring-blue-500`,
   outline: `border border-gray-400 bg-white hover:bg-gray-100 focus:ring-blue-500`,
   link: `text-bcBlueLink`,
+  default: `border border-gray-400 bg-gray-300 hover:bg-gray-100 focus:ring-gray-500`,
 };
 
 export const buttonBase = `w-auto inline-flex justify-center items-center rounded 
