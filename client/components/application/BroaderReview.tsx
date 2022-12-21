@@ -1,11 +1,12 @@
 import { Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useHttp } from '../../services/useHttp';
-import { Button } from '../generic/Button';
+import { Button, TooltipIcon } from '../generic';
+import { EvaluationBoardData } from '../../constants';
 import { Textarea, Field, Label, Select, Option } from '../form';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWindowClose, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationCircle, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { API_ENDPOINT, CommentResponseType, CommentType } from '../../constants';
 import { UserInterface } from '../../contexts';
 
@@ -23,8 +24,9 @@ export type ObjReviewProps = {
 export type LabelReviewProps = {
   label?: string;
   name: string;
+  tooltiptext?: string;
   description?: string;
-  obj?: ObjReviewProps[];
+  obj?: ObjReviewProps[] | null | undefined;
 };
 
 const projectScopeObj = [
@@ -41,15 +43,18 @@ export const BroderReviewInput: React.FC<LabelReviewProps> = ({
   name,
   obj,
   description,
+  tooltiptext,
 }) => {
   return (
     <div className='md:flex md:items-center mb-2'>
       <div className='md:w-3/4'>
         {label && (
           <div className='mb-4'>
-            <p className='text-bcBluePrimary font-bold'>{label}</p>
-
-            <p className='text-bcBluePrimary'>{description}</p>
+            <div className='text-bcBluePrimary font-bold'>{label}</div>
+            <div className='text-bcBluePrimary'>
+              {description}{' '}
+              <TooltipIcon icon={faExclamationCircle} text={tooltiptext} style='h-4 w-4' />
+            </div>
           </div>
         )}
       </div>
@@ -90,25 +95,25 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, use
     );
   };
 
-    const postComment = (data: any, { setStatus, resetForm }: any) => {
-        console.log("++++++++++ SAVE ", data)
-      return;
-      sendApiRequest(
-        {
-          endpoint: API_ENDPOINT.getApplicationComments(applicationId),
-          method: 'POST',
-          data,
-        },
-        () => {
-          toast.success('Comment added successfully!!');
-          resetForm({
-            comment: '',
-          });
-          setStatus({ success: true });
-          //setApplicationScores();
-        },
-      );
-    };
+  const postComment = (data: any, { setStatus, resetForm }: any) => {
+    console.log('++++++++++ SAVE ', data);
+    return;
+    sendApiRequest(
+      {
+        endpoint: API_ENDPOINT.getApplicationComments(applicationId),
+        method: 'POST',
+        data,
+      },
+      () => {
+        toast.success('Comment added successfully!!');
+        resetForm({
+          comment: '',
+        });
+        setStatus({ success: true });
+        //setApplicationScores();
+      },
+    );
+  };
 
   useEffect(() => {
     if (applicationId) {
@@ -116,31 +121,26 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, use
     }
   }, []);
 
+  const handleSubmit = (values: any) => {
+    // console.log("+++++++++++++ handleSubmit values:", values)
+  };
+
   return (
-    <Formik
-      initialValues={{
-        comment: '',
-      }}
-      onSubmit={postComment}
-      enableReinitialize={true}
-    >
+    <Formik initialValues={{}} onSubmit={handleSubmit} enableReinitialize={true}>
       {() => (
-        <div
-          className='open:bg-white border border-2 m-2 open:shadow-lg rounded-sm overflow-y-auto'
-          style={{ height: '90%' }}
-        >
+        <div className='open:bg-white border border-2 m-2 open:shadow-lg rounded-sm'>
           <div className='leading-6 bg-gray-100 p-4 text-bcBluePrimary dark:text-white font-semibold select-none cursor-pointer'>
             <div className='flex'>
               <div className='w-1/2'>Evaluation Board</div>
               <div className='w-1/2 flex justify-end'>
-                <Button type='submit' variant='primary'>
+                <button type='submit' onClick={handleSubmit}>
                   Save
-                </Button>
+                </button>
               </div>
             </div>
           </div>
           <div>
-            <div className='p-6 grid grid-flow-row gap-4'>
+            <div className='p-4 grid grid-flow-row gap-4'>
               <div>
                 <Button variant='default'>My review</Button>
                 <Button variant='outline'>
@@ -150,6 +150,7 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, use
                   John (completed)
                 </Button>
                 <Button variant='outline'>Jenna (In progress)</Button>
+
                 {/* <Formik
               initialValues={{
                 comment: '',
@@ -158,62 +159,24 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, use
               enableReinitialize={true}
             >
               {() => ( */}
-                <Form className='mb-4 bg-white rounded-lg rounded-t-lg  '>
-                  <hr className='mt-4 mb-4' />
+                <Form className=''>
+                  <div className='mt-4 bg-white overflow-y-auto h-96 pt-4 pb-4'>
+                    {EvaluationBoardData.map((item, index) => (
+                      <BroderReviewInput
+                        key={index}
+                        obj={item.obj}
+                        label={item.label}
+                        description={item.description}
+                        name={item.name}
+                        tooltiptext={item.tooltiptext}
+                      />
+                    ))}
 
-                  <BroderReviewInput
-                    obj={projectScopeObj}
-                    label='What type of project is being applied for?'
-                    description='Project scope?'
-                    name='projectScope'
-                  />
-                  <BroderReviewInput
-                    name='needForProject'
-                    label='Need for project?'
-                    description='Drawn from Project Rationale'
-                  />
-                  <BroderReviewInput
-                    name='needForFunding'
-                    label='Need for funding?'
-                    description='Drawn from Project Rationale'
-                  />
-                  <BroderReviewInput
-                    name='pastBcaapFunding'
-                    label='Past BCAAP funding?'
-                    description='BCAAP staff to evaluate this line'
-                  />
-                  <BroderReviewInput
-                    obj={[
-                      { value: 'yes', text: 'Yes' },
-                      { value: 'no', text: 'No' },
-                      { value: 'N/A', text: 'N/A' },
-                    ]}
-                    name='facilityMasterPlan'
-                    label='Is this project identified in your facility master plan?'
-                    description='BCAAP staff to evaluate this line'
-                  />
-
-                  <Textarea name='comment' label='Your comments...' />
-                  <Button variant='primary' type='submit'>
-                    Post comment
-                  </Button>
-
-                  <hr className='mt-4 mb-4' />
-
-                  <div className='mb-4'>
-                    <p className='text-bcBluePrimary font-bold'>Need for project (Weight 5)</p>
-                    <p className='text-bcBluePrimary'>Drawn from Project Rationale</p>
+                    <Textarea name='comment' label='Your comments...' />
+                    <Button variant='primary' type='submit'>
+                      Post comment
+                    </Button>
                   </div>
-
-                  <BroderReviewInput obj={projectScopeObj} name='infrastructure' label='' />
-
-                  <hr className='mt-4 mb-4' />
-
-                  <div className='mb-4'>
-                    <p className='text-bcBluePrimary font-bold'>Need for project(Weight 5)</p>
-                    <p className='text-bcBluePrimary'>From project rationale</p>
-                  </div>
-                  <BroderReviewInput obj={projectScopeObj} name='infrastructure' label='' />
                 </Form>
                 {/* )}
             </Formik> */}

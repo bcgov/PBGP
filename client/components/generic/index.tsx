@@ -10,6 +10,7 @@ export * from './Modal';
 export * from './Panel';
 export * from './Button';
 export * from './MenuButton';
+export * from './Tooltip';
 
 // HOCs
 export * from './withAuth';
