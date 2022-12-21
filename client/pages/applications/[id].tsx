@@ -86,7 +86,7 @@ const ApplicationDetails: NextPage = () => {
             })}
           </div>
 
-          <div className='grid grid-cols-3 gap-4'>
+          <div className='grid grid-cols-4 gap-4'>
             <div className={`${showComments || details.status == 'BROADER_REVIEW' ? 'col-span-2' : 'col-span-full'} `}>
               {schema?.length > 0 &&
                 formData &&
