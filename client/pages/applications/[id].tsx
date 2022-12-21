@@ -33,6 +33,7 @@ const ApplicationDetails: NextPage = () => {
   } = useApplicationDetails(id);
 
   console.log("++++++++++++++++++++ Status", details)
+  console.log("++++++++++++++++++++ userList", userList)
   return (
     <>
       {details && id && typeof id === 'string' && (
@@ -87,7 +88,7 @@ const ApplicationDetails: NextPage = () => {
             })}
           </div>
 
-          <div className='grid grid-cols-3 gap-4'>
+          <div className='grid grid-cols-4 gap-4'>
             <div className={`${showComments || details.status == 'BROADER_REVIEW' ? 'col-span-2' : 'col-span-full'} `}>
               {schema?.length > 0 &&
                 formData &&
@@ -114,8 +115,8 @@ const ApplicationDetails: NextPage = () => {
               </div>
             )}
             {details && details.status == 'BROADER_REVIEW' && (
-              <div className='col-span-1 pb-4'>
-                <BroaderReview applicationId={id} onClose={() => setShowComments(false)} />
+              <div className='col-span-2 pb-4'>
+                <BroaderReview applicationId={id} users={userList} onClose={() => setShowComments(false)} />
               </div>
             )}
           </div>
