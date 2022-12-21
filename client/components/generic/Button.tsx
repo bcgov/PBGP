@@ -18,6 +18,7 @@ export const buttonColor: Record<string, string> = {
   link: `text-bcBlueLink`,
   default: `border border-gray-400 bg-gray-300 hover:bg-gray-100 focus:ring-gray-500`,
   link: `text-bcBlueLink`,
+  default: `border border-gray-400 bg-gray-300 hover:bg-gray-100 focus:ring-gray-500`,
 };
 
 export const buttonBase = `w-auto inline-flex justify-center items-center rounded 
