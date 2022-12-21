@@ -20,7 +20,7 @@ export class BroaderReviewScoreService {
   }
 
   async getBroaderReviewScore(id: string) {
-    const score = await this.scoreRepository.findOne(id);
+    const score = await this.scoreRepository.findOne(id, { relations: ['user', 'application'] });
     if (!score) {
       throw new GenericException(BroaderReviewScoreError.SCORE_NOT_FOUND);
     }
@@ -32,6 +32,7 @@ export class BroaderReviewScoreService {
     application: Application,
     scoreDto: ScoreDto
   ): Promise<BroaderReviewScore> {
+    // const scoreObj = { finalScore: 0, data: scoreDto, overallComments: scoreDto.overallComments}
     const score = await this.scoreRepository.create(scoreDto);
     score.user = user;
     score.application = application;
@@ -46,10 +47,10 @@ export class BroaderReviewScoreService {
     scoreDto: ScoreDto
   ): Promise<BroaderReviewScore> {
     const score = await this.getBroaderReviewScore(scoreId);
-    if (score.userId !== user.id) {
+    if (score.user.id !== user.id) {
       throw new GenericException(BroaderReviewScoreError.USER_MISMATCH);
     }
-    if (score.applicationId !== application.id) {
+    if (score.application.id !== application.id) {
       throw new GenericException(BroaderReviewScoreError.APPLICATION_MISMATCH);
     }
     return this.scoreRepository.save({ ...score, ...scoreDto });
