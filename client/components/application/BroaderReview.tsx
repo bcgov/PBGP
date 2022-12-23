@@ -1,6 +1,6 @@
 import { Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
-import { useHttp } from '../../services/useHttp';
+import { useHttp, useApplicationScores } from '../../services';
 import { Button, TooltipIcon } from '../generic';
 import { EvaluationBoardData } from '../../constants';
 import { Textarea, Field, Label, Select, Option } from '../form';
@@ -27,24 +27,18 @@ export type LabelReviewProps = {
   tooltiptext?: string;
   description?: string;
   obj?: ObjReviewProps[] | null | undefined;
+  data: any[];
 };
-
-const projectScopeObj = [
-  { value: 'Airside', text: 'Airside / core aviation infrastructure' },
-  { value: 'Transitional', text: 'Transitional infrastructure' },
-  { value: 'Groundside', text: 'Groundside / ancillary infrastructure' },
-  { value: 'Climate', text: 'Climate / environmental project' },
-  { value: 'Facility', text: 'Facility master plan' },
-  { value: 'GPS', text: 'GPS approach' },
-];
 
 export const BroderReviewInput: React.FC<LabelReviewProps> = ({
   label,
   name,
   obj,
+  data,
   description,
   tooltiptext,
 }) => {
+    // console.log("++++++++++++++++ data ", data)
   return (
     <div className='md:flex md:items-center mb-2'>
       <div className='md:w-3/4'>
@@ -82,52 +76,51 @@ export const BroderReviewInput: React.FC<LabelReviewProps> = ({
 
 export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, users, onClose }) => {
   const { fetchData, sendApiRequest } = useHttp();
-  const [applicationScores, setApplicationScores] = useState<any[]>([]);
+  const { applicationScores, setApplicationScores } = useApplicationScores(applicationId);
 
-  const fetchApplicationScores = () => {
+  const handleSubmit = () => {
     fetchData(
-      {
-        endpoint: API_ENDPOINT.getApplicationScores(applicationId),
-      },
-      (data: any) => {
-        setApplicationScores(data.comments);
-      },
-    );
+        {
+          endpoint: API_ENDPOINT.getApplicationScores(applicationId),
+        },
+        (data: any) => {
+            //Filter data with userID 
+          //setApplicationScores(data);
+        },
+      );
   };
 
-  const postComment = (data: any, { setStatus, resetForm }: any) => {
-    console.log('++++++++++ SAVE ', data);
-    return;
-    sendApiRequest(
-      {
-        endpoint: API_ENDPOINT.getApplicationComments(applicationId),
-        method: 'POST',
-        data,
-      },
-      () => {
-        toast.success('Comment added successfully!!');
-        resetForm({
-          comment: '',
-        });
-        setStatus({ success: true });
-        //setApplicationScores();
-      },
-    );
-  };
-
-  useEffect(() => {
-    if (applicationId) {
-      fetchApplicationScores();
-    }
-  }, []);
-
-  const handleSubmit = (values: any) => {
-    // console.log("+++++++++++++ handleSubmit values:", values)
+  const initialValues = {
+    data: {
+      projectTypeScore: 0,
+      projectNeedScore: 0,
+      projectFundingScore: 0,
+      pastBcaapFundingScore: 0,  
+      facilityMasterPlanScore: 0,
+      facilityUsageScore: 0,
+      trafficDataScore: 0,
+      climatePerspectiveScore: 0,
+      climateBestPracticesScore: 0,
+      environmentalRisksScore: 0,
+      environmentalInnovationScore: 0,
+      projectDescriptionScore: 0,
+      climateGoalsScore: 0,
+      organizationClimateGoalScore: 0,
+      successMeasurementScore: 0,
+      safetyScore: 0,
+      medevacScore: 0,
+      localBenefitsScore: 0,
+      longTermScore: 0,
+      communitySupportScore: 0,
+      contingencyPlanScore: 0,
+      classBCostScore: 0,
+    },
   };
 
   return (
-    <Formik initialValues={{}} onSubmit={handleSubmit} enableReinitialize={true}>
+    <Formik initialValues={{initialValues}} onSubmit={handleSubmit} enableReinitialize={true}>
       {() => (
+        <Form className=''>
         <div className='open:bg-white border border-2 m-2 open:shadow-lg rounded-sm'>
           <div className='leading-6 bg-gray-100 p-4 text-bcBluePrimary dark:text-white font-semibold select-none cursor-pointer'>
             <div className='flex'>
@@ -150,16 +143,7 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, use
                   John (completed)
                 </Button>
                 <Button variant='outline'>Jenna (In progress)</Button>
-
-                {/* <Formik
-              initialValues={{
-                comment: '',
-              }}
-              onSubmit={postComment}
-              enableReinitialize={true}
-            >
-              {() => ( */}
-                <Form className=''>
+                  
                   <div className='mt-4 bg-white overflow-y-auto h-96 pt-4 pb-4'>
                     {EvaluationBoardData.map((item, index) => (
                       <BroderReviewInput
@@ -169,21 +153,15 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, use
                         description={item.description}
                         name={item.name}
                         tooltiptext={item.tooltiptext}
+                        data={applicationScores}
                       />
                     ))}
-
-                    <Textarea name='comment' label='Your comments...' />
-                    <Button variant='primary' type='submit'>
-                      Post comment
-                    </Button>
                   </div>
-                </Form>
-                {/* )}
-            </Formik> */}
               </div>
             </div>
           </div>
         </div>
+        </Form>
       )}
     </Formik>
   );
