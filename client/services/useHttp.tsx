@@ -38,6 +38,7 @@ export const useHttp = (): HttpReturn => {
       method: REQUEST_METHOD.GET,
       params: requestConfig?.params,
       data: requestConfig?.data,
+      responseType: requestConfig?.responseType,
     };
     try {
       setIsLoading(true);
