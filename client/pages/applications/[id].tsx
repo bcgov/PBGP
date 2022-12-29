@@ -29,6 +29,7 @@ const ApplicationDetails: NextPage = () => {
     getNextStatusUpdates,
     updateEvaluator,
     userList,
+    isPanelDefaultOpen,
   } = useApplicationDetails(id);
 
   return (
@@ -97,7 +98,11 @@ const ApplicationDetails: NextPage = () => {
                         (each.conditional.show && formData[each.conditional.when] == true)),
                   )
                   .map((each, i: number) => (
-                    <Panel title={each.title} key={each.key} isOpen={i === 0}>
+                    <Panel
+                      title={each.title}
+                      key={each.key}
+                      isOpen={isPanelDefaultOpen(i, details.status, each.title)}
+                    >
                       <div className='leading-6 p-6 grid lg:grid-cols-2 md:grid-cols-2 gap-4'>
                         {each.components?.map((eachComp: any) => (
                           <RenderCHFSElement
