@@ -1,4 +1,7 @@
 import Image from 'next/image';
+import { API_ENDPOINT } from '../../constants';
+import { useHttp } from '../../services/useHttp';
+import { Button } from '../generic';
 
 const TYPE_AS_STRING = [
   'textfield',
@@ -48,21 +51,27 @@ const renderDataMap = (e: any, data: any) => (
   </>
 );
 
-const renderDataGrid = (e: any, data: any) => (
+const renderDataGrid = (e: any, data: any, downloadFile: any) => (
   <>
     <span className='font-bold'>{e.label}</span>
     {data[e.key]?.map((eachFormData: any) =>
-      e?.components?.map((e: any) => renderElement(e, eachFormData)),
+      e?.components?.map((e: any) => renderElement(e, eachFormData, downloadFile)),
     )}
   </>
 );
 
-const renderFile = (e: any, data: any) => (
-  <>
-    <span className='font-bold'>{e.label}</span>
-    {data[e.key]?.length == 1 && <span>{data[e.key][0]['originalName']}</span>}
-  </>
-);
+const renderFile = (e: any, data: any, downloadFile: any) => {
+  return (
+    <>
+      <span className='font-bold'>{e.label}</span>
+      {data[e.key]?.length == 1 && (
+        <Button variant='link' onClick={() => downloadFile(data[e.key][0])}>
+          {data[e.key][0]['originalName']}
+        </Button>
+      )}
+    </>
+  );
+};
 
 const renderSignature = (e: any, data: any) => (
   <>
@@ -71,16 +80,16 @@ const renderSignature = (e: any, data: any) => (
   </>
 );
 
-const renderRespectiveElement = (e: any, formData: any) => {
+const renderRespectiveElement = (e: any, formData: any, downloadFile: any) => {
   switch (e.type) {
     case 'selectboxes':
       return renderSelectBoxes(e, formData);
     case 'datamap':
       return renderDataMap(e, formData);
     case 'datagrid':
-      return renderDataGrid(e, formData);
+      return renderDataGrid(e, formData, downloadFile);
     case 'simplefile':
-      return renderFile(e, formData);
+      return renderFile(e, formData, downloadFile);
     case 'signature':
       return renderSignature(e, formData);
     default:
@@ -97,20 +106,45 @@ const renderRespectiveElement = (e: any, formData: any) => {
   }
 };
 
-const renderElement = (e: any, formData: any) => (
+const renderElement = (e: any, formData: any, downloadFile: any) => (
   <div key={e.key} className='w-fit grid grid-flow-row'>
-    {renderRespectiveElement(e, formData)}
+    {renderRespectiveElement(e, formData, downloadFile)}
   </div>
 );
 
-export const renderCHFSElements = (component: any, formData: any) => {
+export const RenderCHFSElement: React.FC<any> = ({ component, formData }) => {
+  const { fetchData } = useHttp();
+
+  const downloadFile = (data: any) => {
+    fetchData(
+      {
+        endpoint: API_ENDPOINT.getApplicationAttachments(data.data.id),
+        responseType: 'blob',
+      },
+      (response: any) => {
+        const href = URL.createObjectURL(response);
+
+        // create "a" HTML element with href to file & click
+        const link = document.createElement('a');
+        link.href = href;
+        link.setAttribute('download', `${data.originalName}`); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+
+        // clean up "a" element & remove ObjectURL
+        document.body.removeChild(link);
+        URL.revokeObjectURL(href);
+      },
+    );
+  };
+
   return !component.hidden && !NOT_TO_BE_RENDERED.includes(component.type) ? (
     !NESTED_COMPONENTS.includes(component.type) ? (
-      renderElement(component, formData)
+      renderElement(component, formData, downloadFile)
     ) : (
       <>
         {component.columns?.map((eachCol: any) =>
-          eachCol?.components?.map((e: any) => renderElement(e, formData)),
+          eachCol?.components?.map((e: any) => renderElement(e, formData, downloadFile)),
         )}
       </>
     )

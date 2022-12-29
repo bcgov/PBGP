@@ -9,7 +9,7 @@ import {
   Link,
   MenuButton,
   Panel,
-  renderCHFSElements,
+  RenderCHFSElement,
   withAuth,
 } from '../../components';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
@@ -100,9 +100,13 @@ const ApplicationDetails: NextPage = () => {
                   .map((each, i: number) => (
                     <Panel title={each.title} key={each.key} isOpen={i === 0}>
                       <div className='leading-6 p-6 grid lg:grid-cols-2 md:grid-cols-2 gap-4'>
-                        {each.components?.map((eachComp: any) =>
-                          renderCHFSElements(eachComp, formData),
-                        )}
+                        {each.components?.map((eachComp: any) => (
+                          <RenderCHFSElement
+                            component={eachComp}
+                            formData={formData}
+                            key={eachComp.id}
+                          />
+                        ))}
                       </div>
                     </Panel>
                   ))}
