@@ -100,3 +100,28 @@ export interface ApplicationTableProps {
 export type KeyValuePair = {
   [key: string]: any;
 };
+
+export interface BroaderReviewValues {
+  projectTypeScore: string;
+  projectNeedScore: number;
+  projectFundingScore: number;
+  pastBcaapFundingScore: number;
+  facilityMasterPlanScore: number;
+  facilityUsageScore: number;
+  trafficDataScore: number;
+  climatePerspectiveScore: number;
+  climateBestPracticesScore: number;
+  environmentalRisksScore: number;
+  environmentalInnovationScore: number;
+  projectDescriptionScore: number;
+  climateGoalsScore: number;
+  organizationClimateGoalScore: number;
+  successMeasurementScore: number;
+  safetyScore: number;
+  medevacScore: number;
+  localBenefitsScore: number;
+  longTermScore: number;
+  communitySupportScore: number;
+  contingencyPlanScore: number;
+  classBCostScore: number;
+}

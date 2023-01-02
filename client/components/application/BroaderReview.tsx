@@ -1,14 +1,15 @@
-import { Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
-import { useHttp, useApplicationScores } from '../../services';
+import { Formik, Form, FormikHelpers } from 'formik';
+import { useHttp, useApplicationScores, useTeamManagement } from '../../services';
 import { Button, TooltipIcon } from '../generic';
-import { EvaluationBoardData } from '../../constants';
-import { Textarea, Field, Label, Select, Option } from '../form';
+import { EvaluationBoardData, defaultBroadReviewValues } from '../../constants';
+import { Field, Select, Option } from '../form';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { API_ENDPOINT, CommentResponseType, CommentType } from '../../constants';
+import { API_ENDPOINT } from '../../constants';
 import { UserInterface } from '../../contexts';
+import { BroaderReviewValues } from 'constants/interfaces';
 
 export type BroaderReviewProps = {
   applicationId: string;
@@ -27,28 +28,35 @@ export type LabelReviewProps = {
   tooltiptext?: string;
   description?: string;
   obj?: ObjReviewProps[] | null | undefined;
-  data: any[];
+};
+
+export const BroderReviewUsers: React.FC<any> = ({ user, selected, handleClick }) => {
+  return (
+    <Button variant={selected ? 'primary' : 'outline'} key={user.id} onClick={handleClick}>
+      <div className='rounded-full h-6 w-6 flex items-center justify-center bg-green-600'>
+        <FontAwesomeIcon icon={faCheck} className='h-4 w-4 text-white ' />
+      </div>
+      {user.displayName} (completed)
+    </Button>
+  );
 };
 
 export const BroderReviewInput: React.FC<LabelReviewProps> = ({
   label,
   name,
   obj,
-  data,
   description,
   tooltiptext,
 }) => {
-    // console.log("++++++++++++++++ data ", data)
   return (
     <div className='md:flex md:items-center mb-2'>
       <div className='md:w-3/4'>
         {label && (
           <div className='mb-4'>
-            <div className='text-bcBluePrimary font-bold'>{label}</div>
-            <div className='text-bcBluePrimary'>
-              {description}{' '}
-              <TooltipIcon icon={faExclamationCircle} text={tooltiptext} style='h-4 w-4' />
+            <div className='text-bcBluePrimary font-bold'>
+              {label} <TooltipIcon icon={faExclamationCircle} text={tooltiptext} style='h-4 w-4' />
             </div>
+            <div className='text-bcBluePrimary'>{description}</div>
           </div>
         )}
       </div>
@@ -67,8 +75,13 @@ export const BroderReviewInput: React.FC<LabelReviewProps> = ({
           </Select>
         )}
       </div>
-      <div className='md:w-1/4 ml-4'>
-        <Field name={name} type='number' label='' />
+      <div className='p-5 md:w-1/4 ml-4 w-10'>
+        <Field
+          name={name}
+          type='number'
+          label=''
+          className='w-20 text-center border border-gray-400 bg-white px-4 py-2 rounded'
+        />
       </div>
     </div>
   );
@@ -76,91 +89,100 @@ export const BroderReviewInput: React.FC<LabelReviewProps> = ({
 
 export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, users, onClose }) => {
   const { fetchData, sendApiRequest } = useHttp();
-  const { applicationScores, setApplicationScores } = useApplicationScores(applicationId);
+  const { applicationScores, setApplicationScores, filterApplicationByScorer } =
+    useApplicationScores(applicationId);
+  const [scorer, setScorer] = useState<string>('');
+  const [applicationScoresByScorer, setApplicationScoresByScorer] =
+    useState(defaultBroadReviewValues);
+  const { userData } = useTeamManagement();
 
-  const handleSubmit = () => {
-    fetchData(
-        {
-          endpoint: API_ENDPOINT.getApplicationScores(applicationId),
-        },
-        (data: any) => {
-            //Filter data with userID 
-          //setApplicationScores(data);
-        },
-      );
+  const handleApplicationScoresByScorer = () => {
+    filterApplicationByScorer(scorer).map((data: any) => {
+      if (Object.keys(data.data).length != 0) {
+        setApplicationScoresByScorer(data.data);
+      }
+    });
   };
 
-  const initialValues = {
-    data: {
-      projectTypeScore: 0,
-      projectNeedScore: 0,
-      projectFundingScore: 0,
-      pastBcaapFundingScore: 0,  
-      facilityMasterPlanScore: 0,
-      facilityUsageScore: 0,
-      trafficDataScore: 0,
-      climatePerspectiveScore: 0,
-      climateBestPracticesScore: 0,
-      environmentalRisksScore: 0,
-      environmentalInnovationScore: 0,
-      projectDescriptionScore: 0,
-      climateGoalsScore: 0,
-      organizationClimateGoalScore: 0,
-      successMeasurementScore: 0,
-      safetyScore: 0,
-      medevacScore: 0,
-      localBenefitsScore: 0,
-      longTermScore: 0,
-      communitySupportScore: 0,
-      contingencyPlanScore: 0,
-      classBCostScore: 0,
-    },
+  useEffect(() => {
+    handleApplicationScoresByScorer();
+  }, [scorer]);
+
+  useEffect(() => {
+    handleApplicationScoresByScorer();
+  }, []);
+
+  const handleSubmit = (values: BroaderReviewValues) => {
+    // console.log('+++++++++++ handleSubmit', values);
+    // sendApiRequest(
+    //   {
+    //     endpoint: API_ENDPOINT.updateApplicationScores(applicationId),
+    //     method: REQUEST_METHOD.PATCH,
+    //     data: values,
+    //   },
+    //   () => {
+    //     fetchUsers();
+    //   },
+    // );
+  };
+
+  const handleChangeScorer = (id: string) => {
+    setScorer(id);
   };
 
   return (
-    <Formik initialValues={{initialValues}} onSubmit={handleSubmit} enableReinitialize={true}>
+    <Formik
+      initialValues={applicationScoresByScorer}
+      onSubmit={(
+        values: BroaderReviewValues,
+        { setSubmitting }: FormikHelpers<BroaderReviewValues>,
+      ) => {
+        handleSubmit(values);
+        setSubmitting(false);
+      }}
+    >
       {() => (
         <Form className=''>
-        <div className='open:bg-white border border-2 m-2 open:shadow-lg rounded-sm'>
-          <div className='leading-6 bg-gray-100 p-4 text-bcBluePrimary dark:text-white font-semibold select-none cursor-pointer'>
-            <div className='flex'>
-              <div className='w-1/2'>Evaluation Board</div>
-              <div className='w-1/2 flex justify-end'>
-                <button type='submit' onClick={handleSubmit}>
-                  Save
-                </button>
+          <div className='open:bg-white border border-2 m-2 open:shadow-lg rounded-sm'>
+            <div className='leading-6 bg-gray-100 p-4 text-bcBluePrimary dark:text-white font-semibold select-none cursor-pointer'>
+              <div className='flex'>
+                <div className='w-1/2'>Evaluation Board</div>
+                <div className='w-1/2 flex justify-end'>
+                  <button type='submit'>Save</button>
+                </div>
               </div>
             </div>
-          </div>
-          <div>
-            <div className='p-4 grid grid-flow-row gap-4'>
-              <div>
-                <Button variant='default'>My review</Button>
-                <Button variant='outline'>
-                  <div className='rounded-full h-6 w-6 flex items-center justify-center bg-green-600'>
-                    <FontAwesomeIcon icon={faCheck} className='h-4 w-4 text-white ' />
-                  </div>
-                  John (completed)
-                </Button>
-                <Button variant='outline'>Jenna (In progress)</Button>
-                  
-                  <div className='mt-4 bg-white overflow-y-auto h-96 pt-4 pb-4'>
+            <div>
+              <div className='p-4 grid grid-flow-row gap-4'>
+                <div>
+                  {userData &&
+                    userData.map((user: any, index: number) => {
+                      return (
+                        <BroderReviewUsers
+                          user={user}
+                          selected={scorer == user.id}
+                          handleClick={() => handleChangeScorer(user.id)}
+                        />
+                      );
+                    })}
+                  <div className='mt-4 bg-white overflow-y-auto pt-4 pb-4'>
                     {EvaluationBoardData.map((item, index) => (
-                      <BroderReviewInput
-                        key={index}
-                        obj={item.obj}
-                        label={item.label}
-                        description={item.description}
-                        name={item.name}
-                        tooltiptext={item.tooltiptext}
-                        data={applicationScores}
-                      />
+                      <>
+                        <BroderReviewInput
+                          key={`BroderReviewInput_${index}`}
+                          obj={item.obj}
+                          label={item.label}
+                          description={item.description}
+                          name={item.name}
+                          tooltiptext={item.tooltiptext}
+                        />
+                      </>
                     ))}
                   </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
         </Form>
       )}
     </Formik>
