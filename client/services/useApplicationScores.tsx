@@ -6,21 +6,26 @@ export const useApplicationScores = (applicationId: string) => {
   const [applicationScores, setApplicationScores] = useState<any[]>([]);
   const { fetchData, sendApiRequest } = useHttp();
 
+  useEffect(() => {
+    if (applicationId) {
+      fetchApplicationScores();
+    }
+  }, []);
+
   const fetchApplicationScores = () => {
     fetchData(
       {
         endpoint: API_ENDPOINT.getApplicationScores(applicationId),
       },
       (data: any) => {
-        // console.log('++++++++++++ HOOK data', data);
         setApplicationScores(data);
       },
     );
   };
-  useEffect(() => {
-    if (applicationId) {
-      fetchApplicationScores();
-    }
-  }, []);
-  return { applicationScores, setApplicationScores };
+
+  const filterApplicationByScorer = (scorerID: string) => {
+    return applicationScores.filter((item: any) => item.user == scorerID);
+  };
+
+  return { applicationScores, setApplicationScores, filterApplicationByScorer };
 };

@@ -259,3 +259,30 @@ export const EvaluationBoardData = [
     obj: null,
   },
 ];
+
+export const defaultBroadReviewValues = {
+  data: {
+    projectTypeScore: 5,
+    projectNeedScore: 5,
+    projectFundingScore: 10,
+    pastBcaapFundingScore: 0,
+    facilityMasterPlanScore: 0,
+    facilityUsageScore: 0,
+    trafficDataScore: 0,
+    climatePerspectiveScore: 0,
+    climateBestPracticesScore: 0,
+    environmentalRisksScore: 0,
+    environmentalInnovationScore: 0,
+    projectDescriptionScore: 0,
+    climateGoalsScore: 0,
+    organizationClimateGoalScore: 0,
+    successMeasurementScore: 0,
+    safetyScore: 0,
+    medevacScore: 0,
+    localBenefitsScore: 0,
+    longTermScore: 0,
+    communitySupportScore: 0,
+    contingencyPlanScore: 0,
+    classBCostScore: 0,
+  },
+};
