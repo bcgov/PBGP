@@ -23,7 +23,7 @@ import { AssignToUserDto } from '../common/dto/assign-to-user.dto';
 import { User } from '../user/user.entity';
 import { CommentResultRo } from './ro/app-comment.ro';
 import { UpdateStatusDto } from './dto/update-status.dto';
-import { ScoreDto } from '../score/dto/score.dto';
+import { ScoreDto, WorkshopScoreDto } from '../score/dto/score.dto';
 
 @ApiBearerAuth()
 @Controller('applications')
@@ -96,7 +96,7 @@ export class ApplicationController {
     return SUCCESS_RESPONSE;
   }
 
-  // Score Section
+  // Broader Review Score Section
   @Get('/:applicationId/scores')
   async getScores(@Param('applicationId') applicationId: string) {
     return this.applicationService.getBroaderReviewScores(applicationId);
@@ -119,5 +119,30 @@ export class ApplicationController {
     @GetUser() user: User
   ) {
     return this.applicationService.updateBroaderReviewScore(user, applicationId, scoreId, scoreDto);
+  }
+
+  // Workshop Score Section
+  @Get('/:applicationId/scores')
+  async getWorkshopScores(@Param('applicationId') applicationId: string) {
+    return this.applicationService.getWorkshopScores(applicationId);
+  }
+
+  @Post('/:applicationId/scores')
+  async createWorkshopScore(
+    @Body() scoreDto: WorkshopScoreDto,
+    @GetUser() user: User,
+    @Param('applicationId') applicationId: string
+  ) {
+    return this.applicationService.createWorkshopScore(user, applicationId, scoreDto);
+  }
+
+  @Patch('/:applicationId/scores/:scoreId')
+  async updateWorkshopScore(
+    @Param('applicationId') applicationId: string,
+    @Param('scoreId') scoreId: string,
+    @Body() scoreDto: WorkshopScoreDto,
+    @GetUser() user: User
+  ) {
+    return this.applicationService.updateWorkshopScore(user, applicationId, scoreId, scoreDto);
   }
 }
