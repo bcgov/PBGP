@@ -122,12 +122,12 @@ export class ApplicationController {
   }
 
   // Workshop Score Section
-  @Get('/:applicationId/scores')
+  @Get('/:applicationId/workshop-scores')
   async getWorkshopScores(@Param('applicationId') applicationId: string) {
     return this.applicationService.getWorkshopScores(applicationId);
   }
 
-  @Post('/:applicationId/scores')
+  @Post('/:applicationId/workshop-scores')
   async createWorkshopScore(
     @Body() scoreDto: WorkshopScoreDto,
     @GetUser() user: User,
@@ -136,7 +136,7 @@ export class ApplicationController {
     return this.applicationService.createWorkshopScore(user, applicationId, scoreDto);
   }
 
-  @Patch('/:applicationId/scores/:scoreId')
+  @Patch('/:applicationId/workshop-scores/:scoreId')
   async updateWorkshopScore(
     @Param('applicationId') applicationId: string,
     @Param('scoreId') scoreId: string,
