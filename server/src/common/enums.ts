@@ -28,3 +28,8 @@ export enum SyncTypes {
   SUBMISSIONS = 'SUBMISSIONS',
   ATTACHMENTS = 'ATTACHMENTS',
 }
+
+export enum WorkshopScoreStatus {
+  IN_PROGRESS = 'In Progress',
+  FINALIZED = 'Finalized',
+}

@@ -1,4 +1,6 @@
-import { CompletionStatuses } from '@/common/enums';
+import { CompletionStatuses } from '../../common/enums';
+import { WorkshopScoreStatus } from '../../common/enums';
+
 import {
   IsEmpty,
   IsEnum,
@@ -198,4 +200,9 @@ export class ScoreDto {
 
   @IsEnum(CompletionStatuses)
   completionStatus: CompletionStatuses;
+}
+
+export class WorkshopScoreDto extends ScoreDto {
+  @IsEnum(WorkshopScoreStatus)
+  status: WorkshopScoreStatus;
 }
