@@ -256,10 +256,12 @@ export const EvaluationBoardData = [
 ];
 
 export const defaultBroadReviewValues = {
+  finalScore: 0,
+  overallComments: '',
   data: {
-    projectTypeScore: 5,
-    projectNeedScore: 5,
-    projectFundingScore: 10,
+    projectTypeScore: 0,
+    projectNeedScore: 0,
+    projectFundingScore: 0,
     pastBcaapFundingScore: 0,
     facilityMasterPlanScore: 0,
     facilityUsageScore: 0,
@@ -279,5 +281,6 @@ export const defaultBroadReviewValues = {
     communitySupportScore: 0,
     contingencyPlanScore: 0,
     classBCostScore: 0,
+    concernsScore: 0,
   },
 };

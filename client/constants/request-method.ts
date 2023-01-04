@@ -16,4 +16,5 @@ export const API_ENDPOINT = {
   getApplicationStatus: (applicationId: string) => `/applications/${applicationId}/status`,
   getApplicationEvaluator: (applicationId: string) => `/applications/${applicationId}/assign`,
   getApplicationScores: (applicationId: string) => `/applications/${applicationId}/scores`,
+  updateApplicationScores:  (applicationId: string, scoreId: string) => `/applications/${applicationId}/scores/${scoreId}`,
 };

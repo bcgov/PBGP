@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Formik, Form, FormikHelpers } from 'formik';
+import { Formik, Form, useFormikContext } from 'formik';
 import { useHttp, useApplicationScores, useTeamManagement } from '../../services';
 import { Button, TooltipIcon } from '../generic';
-import { EvaluationBoardData, defaultBroadReviewValues } from '../../constants';
-import { Field, Select, Option } from '../form';
+import {
+  EvaluationBoardData,
+  defaultBroadReviewValues,
+  API_ENDPOINT,
+  REQUEST_METHOD,
+} from '../../constants';
+import { Field, Select, Option, Textarea } from '../form';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { API_ENDPOINT } from '../../constants';
 import { UserInterface } from '../../contexts';
 import { BroaderReviewValues } from 'constants/interfaces';
+import { useAuthContext } from '../../contexts';
 
 export type BroaderReviewProps = {
   applicationId: string;
@@ -27,16 +32,23 @@ export type LabelReviewProps = {
   name: string;
   tooltiptext?: string;
   description?: string;
+  selectedUser: string;
   obj?: ObjReviewProps[] | null | undefined;
 };
 
-export const BroderReviewUsers: React.FC<any> = ({ user, selected, handleClick }) => {
+export const BroderReviewUsers: React.FC<any> = ({ user, selected, handleClick, id }) => {
   return (
-    <Button variant={selected ? 'primary' : 'outline'} key={user.id} onClick={handleClick}>
-      <div className='rounded-full h-6 w-6 flex items-center justify-center bg-green-600'>
+    <Button
+      variant={selected ? 'primary' : 'outline'}
+      type='button'
+      key={user.id}
+      onClick={handleClick}
+      customClass='mb-2 ml-2'
+    >
+      {/* <div className='rounded-full h-6 w-6 flex items-center justify-center bg-green-600'>
         <FontAwesomeIcon icon={faCheck} className='h-4 w-4 text-white ' />
-      </div>
-      {user.displayName} (completed)
+      </div> */}
+      {user.id != id ? user.displayName : 'My Review'}
     </Button>
   );
 };
@@ -47,12 +59,15 @@ export const BroderReviewInput: React.FC<LabelReviewProps> = ({
   obj,
   description,
   tooltiptext,
+  selectedUser,
 }) => {
+  const { user } = useAuthContext();
+
   return (
-    <div className='md:flex md:items-center mb-2'>
+    <div className='md:flex md:items-center mb-3'>
       <div className='md:w-3/4'>
         {label && (
-          <div className='mb-4'>
+          <div className=''>
             <div className='text-bcBluePrimary font-bold'>
               {label} <TooltipIcon icon={faExclamationCircle} text={tooltiptext} style='h-4 w-4' />
             </div>
@@ -60,27 +75,52 @@ export const BroderReviewInput: React.FC<LabelReviewProps> = ({
           </div>
         )}
       </div>
-      <div className='md:w-1/4 ml-4'>
-        {obj && (
-          <Select label='' name='outline' disabled={false}>
-            {obj &&
-              obj.map((option, index) => (
-                <Option
-                  label={option.text}
-                  value={option.value}
-                  selected={index === 0 ? true : false}
-                  key={index}
-                ></Option>
-              ))}
-          </Select>
-        )}
-      </div>
-      <div className='p-5 md:w-1/4 ml-4 w-10'>
+
+      <div className='ml-4 w-14 -mt-2 md:w-1/4 ml-4'>
         <Field
           name={name}
           type='number'
           label=''
-          className='w-20 text-center border border-gray-400 bg-white px-4 py-2 rounded'
+          disabled={user && user.id != selectedUser}
+          className={`w-14 text-center ${
+            user && user.id != selectedUser ? 'bg-slate-100' : ''
+          } BroderReviewInput border border-gray-400 bg-white pl-2 py-2 rounded`}
+        />
+      </div>
+    </div>
+  );
+};
+
+export const FinalScore: React.FC<any> = () => {
+  const { values, submitForm } = useFormikContext();
+  const [total, setTotal] = useState<number>();
+
+  function addScores(array: any) {
+    let sum = 0;
+    array.forEach((item: any) => {
+      sum += item;
+    });
+    return sum;
+  }
+
+  useEffect(() => {
+    if (!values) return;
+    const total = Object.values(values.data);
+    setTotal(addScores(total));
+  }, [values]);
+
+  return (
+    <div className='flex'>
+      <div className='w-3/4 p-2'>
+        <label className='text-xl'>FinalScore</label>
+      </div>
+      <div className='w-1/4 p-2'>
+        <input
+          type='number'
+          name='finalScore'
+          disabled
+          value={total}
+          className='w-14 text-center bg-slate-100 BroderReviewInput border border-gray-400 bg-white pl-2 py-2 rounded'
         />
       </div>
     </div>
@@ -89,66 +129,103 @@ export const BroderReviewInput: React.FC<LabelReviewProps> = ({
 
 export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, users, onClose }) => {
   const { fetchData, sendApiRequest } = useHttp();
-  const { applicationScores, setApplicationScores, filterApplicationByScorer } =
+  const { applicationScores, setApplicationScores, fetchApplicationScores } =
     useApplicationScores(applicationId);
-  const [scorer, setScorer] = useState<string>('');
-  const [applicationScoresByScorer, setApplicationScoresByScorer] =
-    useState(defaultBroadReviewValues);
+  const [selectedUser, setSelectedUser] = useState<string | undefined>('');
+  const [applicationScoresByScorer, setApplicationScoresByScorer] = useState<any>();
   const { userData } = useTeamManagement();
+  const { user } = useAuthContext();
+  const [newScore, setNewScore] = useState<boolean>(true);
+  const [scoreId, setScoreId] = useState<string>('');
 
-  const handleApplicationScoresByScorer = () => {
-    filterApplicationByScorer(scorer).map((data: any) => {
-      if (Object.keys(data.data).length != 0) {
-        setApplicationScoresByScorer(data.data);
+  // Check if scorer has already scored application
+  const handleApplicationScoresByUser = () => {
+    const singleScore = applicationScores.filter((item: any) => item.user == selectedUser);
+    let data = { data: {} };
+    if (singleScore.length > 0) {
+      setScoreId(singleScore[0].id);
+      setNewScore(false);
+      if (Object.keys(singleScore[0].data).length != 0) {
+        data.data = singleScore[0].data;
+        setApplicationScoresByScorer(data);
+      } else {
+        setApplicationScoresByScorer(defaultBroadReviewValues);
       }
-    });
+    } else {
+      setApplicationScoresByScorer(defaultBroadReviewValues);
+    }
   };
 
   useEffect(() => {
-    handleApplicationScoresByScorer();
-  }, [scorer]);
+    if (applicationScores.length == 0) return;
+    handleApplicationScoresByUser();
+  }, [applicationScores]);
 
   useEffect(() => {
-    handleApplicationScoresByScorer();
+    if (applicationScores.length == 0) return;
+    handleApplicationScoresByUser();
+  }, [selectedUser]);
+
+  useEffect(() => {
+    const id = user && user.id;
+    setSelectedUser(id);
   }, []);
 
-  const handleSubmit = (values: BroaderReviewValues) => {
-    // console.log('+++++++++++ handleSubmit', values);
-    // sendApiRequest(
-    //   {
-    //     endpoint: API_ENDPOINT.updateApplicationScores(applicationId),
-    //     method: REQUEST_METHOD.PATCH,
-    //     data: values,
-    //   },
-    //   () => {
-    //     fetchUsers();
-    //   },
-    // );
+  function addScores(array: any) {
+    let sum = 0;
+    array.forEach((item: any) => {
+      sum += item;
+    });
+    return sum;
+  }
+
+  const handleSubmit = (values: any) => {
+    let obj = { data: {}, overallComments: '', finalScore: 0 };
+    // calculate all score values for finalScore
+    const total = Object.values(values.data);
+
+    obj.data = values.data;
+    obj.finalScore = addScores(total);
+    obj.overallComments = values.overallComments;
+
+    sendApiRequest(
+      {
+        endpoint: newScore
+          ? API_ENDPOINT.getApplicationScores(applicationId)
+          : API_ENDPOINT.updateApplicationScores(applicationId, scoreId),
+        method: newScore ? REQUEST_METHOD.POST : REQUEST_METHOD.PATCH,
+        data: obj,
+      },
+      () => {
+        toast.success('UPDATED score successful!');
+        // update score with new data
+        fetchApplicationScores();
+      },
+    );
   };
 
   const handleChangeScorer = (id: string) => {
-    setScorer(id);
+    setSelectedUser(id);
   };
 
   return (
     <Formik
       initialValues={applicationScoresByScorer}
-      onSubmit={(
-        values: BroaderReviewValues,
-        { setSubmitting }: FormikHelpers<BroaderReviewValues>,
-      ) => {
-        handleSubmit(values);
-        setSubmitting(false);
-      }}
+      onSubmit={handleSubmit}
+      enableReinitialize={true}
     >
       {() => (
         <Form className=''>
           <div className='open:bg-white border border-2 m-2 open:shadow-lg rounded-sm'>
-            <div className='leading-6 bg-gray-100 p-4 text-bcBluePrimary dark:text-white font-semibold select-none cursor-pointer'>
+            <div className='leading-6 p-2 bg-gray-100 text-bcBluePrimary dark:text-white font-semibold select-none cursor-pointer'>
               <div className='flex'>
-                <div className='w-1/2'>Evaluation Board</div>
+                <div className='w-1/2 p-2'>Evaluation Board</div>
                 <div className='w-1/2 flex justify-end'>
-                  <button type='submit'>Save</button>
+                  {selectedUser == user.id && (
+                    <Button variant='primary' customClass='py-2 ' type='submit'>
+                      Save
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
@@ -156,16 +233,18 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, use
               <div className='p-4 grid grid-flow-row gap-4'>
                 <div>
                   {userData &&
-                    userData.map((user: any, index: number) => {
+                    userData.map((item: any, index: number) => {
                       return (
                         <BroderReviewUsers
-                          user={user}
-                          selected={scorer == user.id}
-                          handleClick={() => handleChangeScorer(user.id)}
+                          user={item}
+                          id={user.id}
+                          selected={selectedUser == item.id}
+                          handleClick={() => handleChangeScorer(item.id)}
                         />
                       );
                     })}
-                  <div className='mt-4 bg-white overflow-y-auto pt-4 pb-4'>
+
+                  <div className='mt-4 bg-white pt-4 pb-4'>
                     {EvaluationBoardData.map((item, index) => (
                       <>
                         <BroderReviewInput
@@ -174,11 +253,23 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, use
                           label={item.label}
                           description={item.description}
                           name={item.name}
+                          selectedUser={selectedUser}
                           tooltiptext={item.tooltiptext}
                         />
                       </>
                     ))}
                   </div>
+                  <Textarea name='overallComments' label='Overall comments' />
+
+                  <FinalScore />
+                  {/* <Field
+                    name='finalScore'
+                    type='number'
+                    label='Final Score'
+                    disabled={true}
+                    className={`w-14 text-center bg-slate-100
+                     BroderReviewInput border border-gray-400 bg-white pl-2 py-2 rounded`}
+                  /> */}
                 </div>
               </div>
             </div>

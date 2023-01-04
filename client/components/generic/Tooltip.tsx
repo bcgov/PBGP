@@ -23,17 +23,17 @@ export const TooltipIcon = ({
 }: TooltipIconProps) => {
   return (
     <div className={`inline-block w-[15px]`}>
-      <div className='relative flex flex-col items-center group'>
+      <div className='relative flex flex-col font-thin items-center group'>
         <button className='w-[15px]'>
           <FontAwesomeIcon className={`${style}`} icon={icon}></FontAwesomeIcon>
         </button>
         <div
-          className={`absolute bottom-3 flex flex-col items-center hidden mb-[10px] group-hover:flex`}
+          className={`absolute bottom-3 flex flex-col items-center font-thin  hidden mb-[10px] group-hover:flex`}
         >
-          <span className='relative z-10 min-w-[300px] w-auto p-3 text-sm leading-none text-white bg-bcBlueAccent shadow-sm rounded-sm'>
+          <span className='relative z-10 min-w-[300px] font-thin w-auto p-3 text-sm leading-none text-white bg-bcBluePrimary shadow-sm rounded'>
             {text}
           </span>
-          <div className='w-3 h-3 -mt-2 rotate-45 bg-bcBlueAccent'></div>
+          <div className='w-3 h-3 -mt-2 rotate-45 bg-bcBluePrimary'></div>
         </div>
       </div>
     </div>
