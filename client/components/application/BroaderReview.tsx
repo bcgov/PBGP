@@ -134,18 +134,22 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
   // Check if scorer has already scored application
   const handleApplicationScoresByUser = () => {
     const singleScore = applicationScores.filter((item: any) => item.user == selectedUser);
-    const data = { data: {} };
+    let data = {};
     if (singleScore.length > 0) {
       setScoreId(singleScore[0].id);
       setNewScore(false);
-      if (Object.keys(singleScore[0].data).length != 0) {
-        data.data = singleScore[0].data;
+      data = singleScore[0];
+
+      if (Object.keys(singleScore[0].data).length == 0) {
+        //data = { data: defaultBroadReviewValues, overallComments: singleScore[0].overallComments };
+        data.data = defaultBroadReviewValues;
         setApplicationScoresByScorer(data);
-      } else {
-        setApplicationScoresByScorer(defaultBroadReviewValues);
+        return;
       }
+      setApplicationScoresByScorer(data);
     } else {
-      setApplicationScoresByScorer(defaultBroadReviewValues);
+      let test = { data: defaultBroadReviewValues, overallComments: '' };
+      setApplicationScoresByScorer(test);
     }
   };
 
@@ -201,6 +205,10 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
     setSelectedUser(id);
   };
 
+  // useEffect(() => {
+  //   console.log('++++++++++ UESEEFFECT applicationScoresByScorer', applicationScoresByScorer);
+  // }, [applicationScoresByScorer]);
+
   return (
     <Formik
       initialValues={applicationScoresByScorer}
@@ -253,8 +261,7 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
                       </>
                     ))}
                   </div>
-                  <Textarea name='overallComments' label='Overall comments' />
-
+                  <Textarea name='overallComments' label='Overall comments' disabled={user && user.id != selectedUser} />
                   <FinalScore />
                 </div>
               </div>
