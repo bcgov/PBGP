@@ -8,12 +8,10 @@ import {
   API_ENDPOINT,
   REQUEST_METHOD,
 } from '../../constants';
-import { Field, Select, Option, Textarea } from '../form';
+import { Field, Textarea } from '../form';
 import { toast } from 'react-toastify';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationCircle, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { UserInterface } from '../../contexts';
-import { BroaderReviewValues } from 'constants/interfaces';
 import { useAuthContext } from '../../contexts';
 
 export type BroaderReviewProps = {
@@ -45,9 +43,6 @@ export const BroderReviewUsers: React.FC<any> = ({ user, selected, handleClick, 
       onClick={handleClick}
       customClass='mb-2 ml-2'
     >
-      {/* <div className='rounded-full h-6 w-6 flex items-center justify-center bg-green-600'>
-        <FontAwesomeIcon icon={faCheck} className='h-4 w-4 text-white ' />
-      </div> */}
       {user.id != id ? user.displayName : 'My Review'}
     </Button>
   );
@@ -56,7 +51,6 @@ export const BroderReviewUsers: React.FC<any> = ({ user, selected, handleClick, 
 export const BroderReviewInput: React.FC<LabelReviewProps> = ({
   label,
   name,
-  obj,
   description,
   tooltiptext,
   selectedUser,
@@ -92,7 +86,7 @@ export const BroderReviewInput: React.FC<LabelReviewProps> = ({
 };
 
 export const FinalScore: React.FC<any> = () => {
-  const { values, submitForm } = useFormikContext();
+  const { values } = useFormikContext();
   const [total, setTotal] = useState<number>();
 
   function addScores(array: any) {
@@ -127,10 +121,9 @@ export const FinalScore: React.FC<any> = () => {
   );
 };
 
-export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, users, onClose }) => {
-  const { fetchData, sendApiRequest } = useHttp();
-  const { applicationScores, setApplicationScores, fetchApplicationScores } =
-    useApplicationScores(applicationId);
+export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) => {
+  const { sendApiRequest } = useHttp();
+  const { applicationScores, fetchApplicationScores } = useApplicationScores(applicationId);
   const [selectedUser, setSelectedUser] = useState<string | undefined>('');
   const [applicationScoresByScorer, setApplicationScoresByScorer] = useState<any>();
   const { userData } = useTeamManagement();
@@ -141,7 +134,7 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, use
   // Check if scorer has already scored application
   const handleApplicationScoresByUser = () => {
     const singleScore = applicationScores.filter((item: any) => item.user == selectedUser);
-    let data = { data: {} };
+    const data = { data: {} };
     if (singleScore.length > 0) {
       setScoreId(singleScore[0].id);
       setNewScore(false);
@@ -180,7 +173,7 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, use
   }
 
   const handleSubmit = (values: any) => {
-    let obj = { data: {}, overallComments: '', finalScore: 0 };
+    const obj = { data: {}, overallComments: '', finalScore: 0 };
     // calculate all score values for finalScore
     const total = Object.values(values.data);
 
@@ -236,6 +229,7 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, use
                     userData.map((item: any, index: number) => {
                       return (
                         <BroderReviewUsers
+                          key={`BroderReviewUsers_${index}`}
                           user={item}
                           id={user.id}
                           selected={selectedUser == item.id}
@@ -262,14 +256,6 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId, use
                   <Textarea name='overallComments' label='Overall comments' />
 
                   <FinalScore />
-                  {/* <Field
-                    name='finalScore'
-                    type='number'
-                    label='Final Score'
-                    disabled={true}
-                    className={`w-14 text-center bg-slate-100
-                     BroderReviewInput border border-gray-400 bg-white pl-2 py-2 rounded`}
-                  /> */}
                 </div>
               </div>
             </div>
