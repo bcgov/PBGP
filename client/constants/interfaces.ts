@@ -102,6 +102,8 @@ export type KeyValuePair = {
 };
 
 export interface BroaderReviewValues {
+  overallComments: string;
+  finalScore: number;
   projectTypeScore: string;
   projectNeedScore: number;
   projectFundingScore: number;

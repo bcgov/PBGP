@@ -23,9 +23,5 @@ export const useApplicationScores = (applicationId: string) => {
     );
   };
 
-  const filterApplicationByScorer = (scorerID: string) => {
-    return applicationScores.filter((item: any) => item.user == scorerID);
-  };
-
-  return { applicationScores, setApplicationScores, filterApplicationByScorer };
+  return { applicationScores, setApplicationScores, fetchApplicationScores };
 };
