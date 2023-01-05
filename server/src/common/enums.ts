@@ -17,3 +17,8 @@ export enum AxiosResponseTypes {
   ARRAY_BUFFER = 'arraybuffer',
   STREAM = 'stream',
 }
+
+export enum CompletionStatuses {
+  IN_PROGRESS = 'In Progress',
+  COMPLETED = 'Completed',
+}
