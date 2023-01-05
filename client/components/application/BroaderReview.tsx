@@ -86,7 +86,7 @@ export const BroderReviewInput: React.FC<LabelReviewProps> = ({
 };
 
 export const FinalScore: React.FC<any> = () => {
-  const { values } = useFormikContext();
+  const { values } = useFormikContext<any>();
   const [total, setTotal] = useState<number>();
 
   function addScores(array: any) {
@@ -134,14 +134,13 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
   // Check if scorer has already scored application
   const handleApplicationScoresByUser = () => {
     const singleScore = applicationScores.filter((item: any) => item.user == selectedUser);
-    let data = {};
+    let data;
     if (singleScore.length > 0) {
       setScoreId(singleScore[0].id);
       setNewScore(false);
       data = singleScore[0];
 
       if (Object.keys(singleScore[0].data).length == 0) {
-        //data = { data: defaultBroadReviewValues, overallComments: singleScore[0].overallComments };
         data.data = defaultBroadReviewValues;
         setApplicationScoresByScorer(data);
         return;
@@ -218,7 +217,7 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
               <div className='flex'>
                 <div className='w-1/2 p-2'>Evaluation Board</div>
                 <div className='w-1/2 flex justify-end'>
-                  {selectedUser == user.id && (
+                  {user && selectedUser == user.id && (
                     <Button variant='primary' customClass='py-2 ' type='submit'>
                       Save
                     </Button>
@@ -235,7 +234,7 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
                         <BroderReviewUsers
                           key={`BroderReviewUsers_${index}`}
                           user={item}
-                          id={user.id}
+                          id={user && user.id}
                           selected={selectedUser == item.id}
                           handleClick={() => handleChangeScorer(item.id)}
                         />
@@ -251,7 +250,7 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
                           label={item.label}
                           description={item.description}
                           name={item.name}
-                          selectedUser={selectedUser}
+                          selectedUser={selectedUser || ''}
                           tooltiptext={item.tooltiptext}
                         />
                       </>
