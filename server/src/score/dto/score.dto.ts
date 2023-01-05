@@ -1,4 +1,6 @@
+import { CompletionStatuses } from '@/common/enums';
 import {
+  IsEnum,
   IsIn,
   IsNumber,
   IsOptional,
@@ -168,4 +170,8 @@ export class ScoreDto {
   @Max(112)
   @Min(0)
   finalScore: number;
+
+  @IsEnum(CompletionStatuses)
+  @IsOptional()
+  completionStatus: CompletionStatuses;
 }
