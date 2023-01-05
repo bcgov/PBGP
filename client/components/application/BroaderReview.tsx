@@ -133,6 +133,13 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
 
   // Check if scorer has already scored application
   const handleApplicationScoresByUser = () => {
+    // If there are no entries in the database
+    if (applicationScores.length == 0) {
+      setDefaultScoreValues();
+      return;
+    }
+
+    // If there are entries in the database
     const singleScore = applicationScores.filter((item: any) => item.user == selectedUser);
     let data;
     if (singleScore.length > 0) {
@@ -147,13 +154,15 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
       }
       setApplicationScoresByScorer(data);
     } else {
-      const test = { data: defaultBroadReviewValues, overallComments: '' };
-      setApplicationScoresByScorer(test);
+      setDefaultScoreValues();
     }
   };
 
+  const setDefaultScoreValues = () => {
+    setApplicationScoresByScorer({ data: defaultBroadReviewValues, overallComments: '' });
+  };
+
   useEffect(() => {
-    if (applicationScores.length == 0) return;
     handleApplicationScoresByUser();
   }, [applicationScores]);
 
