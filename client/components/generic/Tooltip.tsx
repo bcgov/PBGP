@@ -24,9 +24,9 @@ export const TooltipIcon = ({
   return (
     <div className={`inline-block w-[15px]`}>
       <div className='relative flex flex-col font-thin items-center group'>
-        <button className='w-[15px]'>
+        <div className='w-[15px]'>
           <FontAwesomeIcon className={`${style}`} icon={icon}></FontAwesomeIcon>
-        </button>
+        </div>
         <div
           className={`absolute bottom-3 flex flex-col items-center font-thin  hidden mb-[10px] group-hover:flex`}
         >
