@@ -87,7 +87,11 @@ const ApplicationDetails: NextPage = () => {
           </div>
 
           <div className='grid grid-cols-4 gap-4'>
-            <div className={`${showComments || details.status == 'BROADER_REVIEW' ? 'col-span-2' : 'col-span-full'} `}>
+            <div
+              className={`${
+                showComments || details.status == 'BROADER_REVIEW' ? 'col-span-2' : 'col-span-full'
+              } `}
+            >
               {schema?.length > 0 &&
                 formData &&
                 schema
@@ -118,7 +122,11 @@ const ApplicationDetails: NextPage = () => {
             )}
             {details && details.status == 'BROADER_REVIEW' && (
               <div className='col-span-2 pb-4'>
-                <BroaderReview applicationId={id} users={userList} onClose={() => setShowComments(false)} />
+                <BroaderReview
+                  applicationId={id}
+                  users={userList}
+                  onClose={() => setShowComments(false)}
+                />
               </div>
             )}
           </div>
