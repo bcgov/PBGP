@@ -15,33 +15,35 @@ import { UserInterface } from '../../contexts';
 import { useAuthContext } from '../../contexts';
 import * as Yup from "yup";
 
+const minValidationText = 'Must be greater than or equal to ';
+const maxValidationText = 'Must be less than or equal to ';
+
 const validationSchema = Yup.object().shape({
   data: Yup.object().shape({
-    projectTypeScore: Yup.number().min(0).max(10).required(),
-    projectNeedScore: Yup.number().min(0).max(5).required(),
-    projectFundingScore: Yup.number().min(0).max(5).required(),
-    pastBcaapFundingScore: Yup.number().min(0).max(3).required(),
-    facilityMasterPlanScore: Yup.number().min(0).max(2).required(),
-    facilityUsageScore: Yup.number().min(0).max(2).required(),
-    trafficDataScore: Yup.number().min(0).max(3).required(),
-    climatePerspectiveScore: Yup.number().min(0).max(5).required(),
-    climateBestPracticesScore: Yup.number().min(0).max(5).required(),
-    environmentalRisksScore: Yup.number().min(0).max(5).required(),
-    environmentalInnovationScore: Yup.number().min(0).max(5).required(),
-    projectDescriptionScore: Yup.number().min(0).max(2).required(),
-    climateGoalsScore: Yup.number().min(0).max(5).required(),
-    organizationClimateGoalScore: Yup.number().min(0).max(5).required(),
-    successMeasurementScore: Yup.number().min(0).max(5).required(),
-    safetyScore: Yup.number().min(0).max(15).required(),
-    medevacScore: Yup.number().min(0).max(15).required(),
-    localBenefitsScore: Yup.number().min(0).max(10).required(),
-    longTermScore: Yup.number().min(0).max(5).required(),
-    communitySupportScore: Yup.number().min(0).max(3).required(),
-    concernsScore: Yup.number().min(0).max(5).required(),
-    contingencyPlanScore: Yup.number().min(0).max(2).required(),
-    classBCostScore: Yup.number().min(0).max(5).required(),
-    thirdPartyContributionScore: Yup.number().min(0).max(2).required(),
-    finalScore: Yup.number().min(0).max(10).required(),
+    projectTypeScore: Yup.number().min(0, minValidationText+'0').max(10, maxValidationText+'10').required(),
+    projectNeedScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
+    projectFundingScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
+    pastBcaapFundingScore: Yup.number().min(0, minValidationText+'0').max(3, maxValidationText+'3').required(),
+    facilityMasterPlanScore: Yup.number().min(0, minValidationText+'0').max(2, maxValidationText+'2').required(),
+    facilityUsageScore: Yup.number().min(1, minValidationText+'1').max(2, maxValidationText+'2').required(),
+    trafficDataScore: Yup.number().min(0, minValidationText+'0').max(3, maxValidationText+'3').required(),
+    climatePerspectiveScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
+    climateBestPracticesScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
+    environmentalRisksScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
+    environmentalInnovationScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
+    projectDescriptionScore: Yup.number().min(0, minValidationText+'0').max(2, maxValidationText+'2').required(),
+    climateGoalsScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
+    organizationClimateGoalScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
+    successMeasurementScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
+    safetyScore: Yup.number().min(0, minValidationText+'0').max(15, maxValidationText+'15').required(),
+    medevacScore: Yup.number().min(0, minValidationText+'0').max(15, maxValidationText+'15').required(),
+    localBenefitsScore: Yup.number().min(0, minValidationText+'0').max(10, maxValidationText+'10').required(),
+    longTermScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
+    communitySupportScore: Yup.number().min(0, minValidationText+'0').max(3, maxValidationText+'3').required(),
+    concernsScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
+    contingencyPlanScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'2').required(),
+    classBCostScore: Yup.number().min(1, minValidationText+'1').max(5, maxValidationText+'5').required(),
+    thirdPartyContributionScore: Yup.number().min(1, minValidationText+'1').max(2, maxValidationText+'2'),
   }),
 });
 
@@ -252,9 +254,9 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
   return (
     <Formik
       initialValues={applicationScoresByScorer}
+      validationSchema={validationSchema}
       onSubmit={handleSubmit}
       enableReinitialize={true}
-      validationSchema={validationSchema}
     >
       {() => (
         <Form className=''>
@@ -310,12 +312,7 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
                     disabled={user && user.id != selectedUser}
                   />
                   <FinalScore />
-                  <Field
-                name="finalScore"
-                type="number"
-                className="input"
-                label="Final Score"
-              />
+                  
                 {/* <Error name="finalScore" /> */}
                 </div>
               </div>
