@@ -39,3 +39,8 @@ export const FacilityUsage = [
 export const classNames = (...classes: any[]) => {
   return classes.filter(Boolean).join(' ');
 };
+
+export enum NextStatusUpdates {
+  PROCEED = 'Proceed to Next Step',
+  DISCARD = 'Discard',
+}

@@ -2,7 +2,13 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import useSWR from 'swr';
-import { ApplicationStatus, API_ENDPOINT, REQUEST_METHOD, Routes } from '../constants';
+import {
+  ApplicationStatus,
+  API_ENDPOINT,
+  REQUEST_METHOD,
+  Routes,
+  NextStatusUpdates,
+} from '../constants';
 import { KeyValuePair } from '../constants/interfaces';
 import { UserInterface } from '../contexts';
 import { useHttp } from './useHttp';
@@ -82,35 +88,39 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
   };
 
   const getNextStatusUpdates = (id: string, status: ApplicationStatus) => {
-    const statusUpdates = [
-      {
-        label: 'Discard',
-        onClick: () => updateStatus(id, ApplicationStatus.DISCARD),
-      },
-    ];
+    const statusUpdates = [];
 
     switch (status) {
       case ApplicationStatus.INITIAL_REVIEW:
-        statusUpdates.unshift({
-          label: 'Proceed to Next Step',
+        statusUpdates.push({
+          label: NextStatusUpdates.PROCEED,
           onClick: () => updateStatus(id, ApplicationStatus.FUNDING_REVIEW),
+        });
+        statusUpdates.push({
+          label: NextStatusUpdates.DISCARD,
+          onClick: () => updateStatus(id, ApplicationStatus.DISCARD),
         });
         break;
       case ApplicationStatus.FUNDING_REVIEW:
-        statusUpdates.unshift({
-          label: 'Proceed to Next Step',
+        statusUpdates.push({
+          label: NextStatusUpdates.PROCEED,
           onClick: () => updateStatus(id, ApplicationStatus.BROADER_REVIEW),
         });
         break;
       case ApplicationStatus.BROADER_REVIEW:
-        statusUpdates.unshift({
-          label: 'Proceed to Next Step',
+        statusUpdates.push({
+          label: NextStatusUpdates.PROCEED,
           onClick: () => updateStatus(id, ApplicationStatus.WORKSHOP),
         });
         break;
 
       case ApplicationStatus.WORKSHOP:
       default:
+        // TODO: Logic after workshop process
+        statusUpdates.push({
+          label: NextStatusUpdates.PROCEED,
+          onClick: () => alert('WIP'),
+        });
         break;
     }
 
@@ -130,6 +140,14 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
         },
       );
     }
+  };
+
+  const isPanelDefaultOpen = (index: number, status: string, title: string): boolean => {
+    if (status === ApplicationStatus.FUNDING_REVIEW) {
+      return title === 'Funding and Project Cost Estimate Information';
+    }
+
+    return index === 0;
   };
 
   useEffect(() => {
@@ -155,5 +173,6 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
     getNextStatusUpdates,
     updateEvaluator,
     userList,
+    isPanelDefaultOpen,
   };
 };
