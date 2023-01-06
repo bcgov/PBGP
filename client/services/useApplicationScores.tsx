@@ -18,6 +18,7 @@ export const useApplicationScores = (applicationId: string) => {
         endpoint: API_ENDPOINT.getApplicationScores(applicationId),
       },
       (data: any) => {
+        console.log("+++++++++++ Scores Data", data)
         setApplicationScores(data);
       },
     );

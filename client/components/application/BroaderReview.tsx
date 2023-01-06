@@ -13,6 +13,37 @@ import { toast } from 'react-toastify';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { UserInterface } from '../../contexts';
 import { useAuthContext } from '../../contexts';
+import * as Yup from "yup";
+
+const validationSchema = Yup.object().shape({
+  data: Yup.object().shape({
+    projectTypeScore: Yup.number().min(0).max(10).required(),
+    projectNeedScore: Yup.number().min(0).max(5).required(),
+    projectFundingScore: Yup.number().min(0).max(5).required(),
+    pastBcaapFundingScore: Yup.number().min(0).max(3).required(),
+    facilityMasterPlanScore: Yup.number().min(0).max(2).required(),
+    facilityUsageScore: Yup.number().min(0).max(2).required(),
+    trafficDataScore: Yup.number().min(0).max(3).required(),
+    climatePerspectiveScore: Yup.number().min(0).max(5).required(),
+    climateBestPracticesScore: Yup.number().min(0).max(5).required(),
+    environmentalRisksScore: Yup.number().min(0).max(5).required(),
+    environmentalInnovationScore: Yup.number().min(0).max(5).required(),
+    projectDescriptionScore: Yup.number().min(0).max(2).required(),
+    climateGoalsScore: Yup.number().min(0).max(5).required(),
+    organizationClimateGoalScore: Yup.number().min(0).max(5).required(),
+    successMeasurementScore: Yup.number().min(0).max(5).required(),
+    safetyScore: Yup.number().min(0).max(15).required(),
+    medevacScore: Yup.number().min(0).max(15).required(),
+    localBenefitsScore: Yup.number().min(0).max(10).required(),
+    longTermScore: Yup.number().min(0).max(5).required(),
+    communitySupportScore: Yup.number().min(0).max(3).required(),
+    concernsScore: Yup.number().min(0).max(5).required(),
+    contingencyPlanScore: Yup.number().min(0).max(2).required(),
+    classBCostScore: Yup.number().min(0).max(5).required(),
+    thirdPartyContributionScore: Yup.number().min(0).max(2).required(),
+    finalScore: Yup.number().min(0).max(10).required(),
+  }),
+});
 
 export type BroaderReviewProps = {
   applicationId: string;
@@ -34,7 +65,8 @@ export type LabelReviewProps = {
   obj?: ObjReviewProps[] | null | undefined;
 };
 
-export const BroderReviewUsers: React.FC<any> = ({ user, selected, handleClick, id }) => {
+export const BroderReviewUsers: React.FC<any> = ({ user, selected, handleClick, id, scoreStatus }) => {
+  const status = Object.keys(scoreStatus).length > 0 ? <span className={`rounded px-2 ml-2 text-xs ${ scoreStatus[0].completionStatus == 'Completed'? 'bg-bcGreenSuccess':'bg-slate-400'} py-1 text-white`}>{scoreStatus[0].completionStatus}</span> : '';
   return (
     <Button
       variant={selected ? 'primary' : 'outline'}
@@ -43,7 +75,8 @@ export const BroderReviewUsers: React.FC<any> = ({ user, selected, handleClick, 
       onClick={handleClick}
       customClass='mb-2 ml-2'
     >
-      {user.id != id ? user.displayName : 'My Review'}
+      {user.id != id ? user.displayName : 'My Review '} 
+      {status}
     </Button>
   );
 };
@@ -106,9 +139,10 @@ export const FinalScore: React.FC<any> = () => {
   return (
     <div className='flex'>
       <div className='w-3/4 p-2'>
-        <label className='text-xl'>FinalScore</label>
+        <label className='text-xl'>Final Score</label>
       </div>
       <div className='w-1/4 p-2'>
+    
         <input
           type='number'
           name='finalScore'
@@ -213,11 +247,14 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
     setSelectedUser(id);
   };
 
+
+
   return (
     <Formik
       initialValues={applicationScoresByScorer}
       onSubmit={handleSubmit}
       enableReinitialize={true}
+      validationSchema={validationSchema}
     >
       {() => (
         <Form className=''>
@@ -239,10 +276,12 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
                 <div>
                   {userData &&
                     userData.map((item: any, index: number) => {
+                      const scoreStatus = applicationScores.filter((i:any)=> (item.id == i.user)) 
                       return (
                         <BroderReviewUsers
                           key={`BroderReviewUsers_${index}`}
                           user={item}
+                          scoreStatus={scoreStatus}
                           id={user && user.id}
                           selected={selectedUser == item.id}
                           handleClick={() => handleChangeScorer(item.id)}
@@ -271,6 +310,13 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
                     disabled={user && user.id != selectedUser}
                   />
                   <FinalScore />
+                  <Field
+                name="finalScore"
+                type="number"
+                className="input"
+                label="Final Score"
+              />
+                {/* <Error name="finalScore" /> */}
                 </div>
               </div>
             </div>

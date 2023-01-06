@@ -76,28 +76,28 @@ export const EvaluationBoardData = [
     description: 'Project scope?',
     name: 'data.projectTypeScore',
     tooltiptext:
-      'Score 8-10 for airside safety, GPS approach, climate or facility master plan; score 6-7 for airside other; score 4-5 for transitional; or score 0-3 for groundside or ancillary. The scores range is based on the type of project, while the score within the range is a relative priority based on an assessment of the project scope. The “response” column in the table will include only the response from the application instead of the complete list included above.',
+      'Score 8-10 for airside safety, GPS approach, climate or facility master plan. Score 6-7 for airside other. Score 4-5 for transitional. Score 0-3 for groundside or ancillary. The scores range is based on the type of project, while the score within the range is a relative priority based on an assessment of the project scope. The “response” column in the table will include only the response from the application instead of the complete list included above.',
   },
   {
     name: 'data.projectNeedScore',
     label: 'Need for project?',
     description: 'Drawn from Project Rationale',
     tooltiptext:
-      'Score 4-5 if critical to maintain services or if project is required by Transport Canada; score 2-3 if project deemed important; score 0-1 if project is intended to expand services.',
+      'Score 4-5 if critical to maintain services or if project is required by Transport Canada. Score 2-3 if project deemed important. Score 0-1 if project is intended to expand services.',
   },
   {
     name: 'data.projectFundingScore',
     label: 'Need for funding?',
     description: 'Drawn from Project Rationale',
     tooltiptext:
-      'Score 4-5 if project cannot proceed without BCAAP funding; score 2-3 if BCAAP funding will expedite the project; score 0-1 if BCAAP funding is minimally important to whether the project proceeds.',
+      'Score 4-5 if project cannot proceed without BCAAP funding. Score 2-3 if BCAAP funding will expedite the project. Score 0-1 if BCAAP funding is minimally important to whether the project proceeds.',
   },
   {
     name: 'data.pastBcaapFundingScore',
     label: 'Past BCAAP funding?',
     description: 'BCAAP staff to evaluate this line',
     tooltiptext:
-      'Score 0 if BCAAP funded project still underway at facility; score 1, 2 or 3, respectively, if a BCAAP project was approved at facility 2, 3 or 4 (or more) years ago.',
+      'Score 0 if BCAAP funded project still underway at facility. Score 1, 2 or 3, respectively, if a BCAAP project was approved at facility 2, 3 or 4 (or more) years ago.',
   },
   {
     name: 'data.facilityMasterPlanScore',
@@ -111,7 +111,7 @@ export const EvaluationBoardData = [
     label: 'Facility usage?',
     description: '',
     tooltiptext:
-      'Score 2 if application checks 3 or more of the facility usage boxes; score 1 is fewer than 3 are checked.',
+      'Score 2 if application checks 3 or more of the facility usage boxes. Score 1 is fewer than 3 are checked.',
     obj: null,
   },
   {
@@ -127,7 +127,7 @@ export const EvaluationBoardData = [
     label: 'Outline the benefits of the project from an environmental and/or climate perspective.',
     description: '',
     tooltiptext:
-      'Score 4-5 if applicant demonstrates that project will result in significant environmental benefit; score 2-3 if modest benefit; score 0-1 if minimal benefit.',
+      'Score 4-5 if applicant demonstrates that project will result in significant environmental benefit. Score 2-3 if modest benefit. Score 0-1 if minimal benefit.',
     obj: null,
   },
   {
@@ -136,7 +136,7 @@ export const EvaluationBoardData = [
       'How are best practices from an environmental and/or climate perspective incorporated into the design and construction of this project?',
     description: '',
     tooltiptext:
-      'Score 4-5 if applicant demonstrates that project incorporates significant environmental best practices into design and construction; score 2-3 if modest incorporation; score 0-1 if minimal incorporation.',
+      'Score 4-5 if applicant demonstrates that project incorporates significant environmental best practices into design and construction. Score 2-3 if modest incorporation. Score 0-1 if minimal incorporation.',
     obj: null,
   },
   {
@@ -145,7 +145,7 @@ export const EvaluationBoardData = [
       'Have any specific environmentally related risks been identified with this project and, if yes, what is your planning for addressed these risks?',
     description: '',
     tooltiptext:
-      'Score 4-5 if applicant demonstrates minimal environmental risk to project; score 2-3 if modest risk; score 0-1 if high risk.',
+      'Score 4-5 if applicant demonstrates minimal environmental risk to project. Score 2-3 if modest risk. Score 0-1 if high risk.',
     obj: null,
   },
   {
@@ -154,7 +154,7 @@ export const EvaluationBoardData = [
       'Is any type of innovation from an environmental and/or climate perspective being incorporated into this project?',
     description: '',
     tooltiptext:
-      'Score 4-5 if applicant demonstrates that project incorporates significant innovation; score 2-3 if modest innovation; score 0-1 if minimal innovation.',
+      'Score 4-5 if applicant demonstrates that project incorporates significant innovation. Score 2-3 if modest innovation. Score 0-1 if minimal innovation.',
     obj: null,
   },
   {
@@ -171,7 +171,7 @@ export const EvaluationBoardData = [
       'What are the environmental and/or climate goals of your project? How will this project result in sustainable environmental / climate benefits moving forward?',
     description: '',
     tooltiptext:
-      'Score 4-5 if applicant demonstrates that project will result in significant environmental benefit; score 2-3 if modest benefit; score 0-1 if minimal benefit.',
+      'Score 4-5 if applicant demonstrates that project will result in significant environmental benefit. Score 2-3 if modest benefit. Score 0-1 if minimal benefit.',
     obj: null,
   },
   {
@@ -180,7 +180,7 @@ export const EvaluationBoardData = [
       'How does this project fit with your organization’s broader environmental and/or climate goals? Is this project part of a broader strategy? Please provide details.',
     description: '',
     tooltiptext:
-      'Score 4-5 if applicant demonstrates that project is part of a significant broader environmental strategy; score 2-3 if modest; score 0-1 if minimal.',
+      'Score 4-5 if applicant demonstrates that project is part of a significant broader environmental strategy. Score 2-3 if modest; score 0-1 if minimal.',
     obj: null,
   },
   {
@@ -188,7 +188,7 @@ export const EvaluationBoardData = [
     label: 'How will this project be assessed to determine success? How will success be measured?',
     description: '',
     tooltiptext:
-      'Score 4-5 if applicant demonstrates that project includes significant measurable assessment metrics; score 2-3 if modest; score 0-1 if minimal.',
+      'Score 4-5 if applicant demonstrates that project includes significant measurable assessment metrics. Score 2-3 if modest; score 0-1 if minimal.',
     obj: null,
   },
   {
@@ -196,7 +196,7 @@ export const EvaluationBoardData = [
     label: 'How will this project improve safety?',
     description: '',
     tooltiptext:
-      'Score 11-15 if applicant demonstrates that the project will bring significant safety benefits; score 6-10 for modest safety benefits; score 0-5 for minimal safety benefits.',
+      'Score 11-15 if applicant demonstrates that the project will bring significant safety benefits. Score 6-10 for modest safety benefits. Score 0-5 for minimal safety benefits.',
     obj: null,
   },
   {
@@ -204,7 +204,7 @@ export const EvaluationBoardData = [
     label: 'How will the project benefit medevac and/or wildfire suppression? ',
     description: '',
     tooltiptext:
-      'Score 11-15 if applicant demonstrates and BCEHS, BCWS or EMBC confirms, that the project will bring significant medevac or wildfire benefits; score 6-10 for modest benefits; score 0-5 for minimal benefits.',
+      'Score 11-15 if applicant demonstrates and BCEHS, BCWS or EMBC confirms, that the project will bring significant medevac or wildfire benefits. Score 6-10 for modest benefits. Score 0-5 for minimal benefits.',
     obj: null,
   },
   {
@@ -213,7 +213,7 @@ export const EvaluationBoardData = [
       'How will this project provide local, regional and/or provincial economic benefits, including how this project may support your facility in recovery from the impacts of COVID-19?',
     description: '',
     tooltiptext:
-      'Score 8-10 if applicant demonstrates and JERI or TACS confirms, that the project will bring significant economic benefits; score 4-7 for modest benefits; score 0-3 for minimal benefits.',
+      'Score 8-10 if applicant demonstrates and JERI or TACS confirms, that the project will bring significant economic benefits. Score 4-7 for modest benefits. Score 0-3 for minimal benefits.',
     obj: null,
   },
   {
@@ -222,7 +222,7 @@ export const EvaluationBoardData = [
       'How will the project advance the long-term goals and visions for the facility and community?',
     description: '',
     tooltiptext:
-      'Score 4-5 if applicant demonstrates that the project is fully consistent with community vision; score 2-3 for modest consistency, score 0-1 for limited consistency.',
+      'Score 4-5 if applicant demonstrates that the project is fully consistent with community vision. Score 2-3 for modest consistency, score 0-1 for limited consistency.',
     obj: null,
   },
   {
@@ -255,6 +255,14 @@ export const EvaluationBoardData = [
     label: 'Class B Project Cost Estimates',
     description: '',
     tooltiptext:
+      'Score 5 (high) to 1 (low) based on assessor’s confidence with the project cost estimate provided. Estimates must be Class B or better, but elements to review include the use of broad contingencies or the application of multiple layers of contingencies. Engineering Branch may provide some insight to this line for high-cost projects.',
+    obj: null,
+  },
+  {
+    name: 'data.thirdPartyContributionScore',
+    label: 'Applicant or third-party contributions. ',
+    description: '',
+    tooltiptext:
       'Score 1 point for the presence of third-party contributions. Score 1 point if the ask of BCAAP is less than the eligible ask of BCAAP.',
     obj: null,
   },
@@ -284,4 +292,5 @@ export const defaultBroadReviewValues = {
   contingencyPlanScore: 0,
   classBCostScore: 0,
   concernsScore: 0,
+  thirdPartyContributionScore: 0,
 };
