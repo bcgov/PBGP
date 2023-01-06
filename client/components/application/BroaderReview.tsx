@@ -8,42 +8,112 @@ import {
   API_ENDPOINT,
   REQUEST_METHOD,
 } from '../../constants';
-import { Field, Textarea } from '../form';
+import { Field, Textarea, Radio } from '../form';
 import { toast } from 'react-toastify';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { UserInterface } from '../../contexts';
-import { useAuthContext } from '../../contexts';
-import * as Yup from "yup";
+import { UserInterface, useAuthContext } from '../../contexts';
+import * as Yup from 'yup';
 
 const minValidationText = 'Must be greater than or equal to ';
 const maxValidationText = 'Must be less than or equal to ';
 
 const validationSchema = Yup.object().shape({
   data: Yup.object().shape({
-    projectTypeScore: Yup.number().min(0, minValidationText+'0').max(10, maxValidationText+'10').required(),
-    projectNeedScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
-    projectFundingScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
-    pastBcaapFundingScore: Yup.number().min(0, minValidationText+'0').max(3, maxValidationText+'3').required(),
-    facilityMasterPlanScore: Yup.number().min(0, minValidationText+'0').max(2, maxValidationText+'2').required(),
-    facilityUsageScore: Yup.number().min(1, minValidationText+'1').max(2, maxValidationText+'2').required(),
-    trafficDataScore: Yup.number().min(0, minValidationText+'0').max(3, maxValidationText+'3').required(),
-    climatePerspectiveScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
-    climateBestPracticesScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
-    environmentalRisksScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
-    environmentalInnovationScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
-    projectDescriptionScore: Yup.number().min(0, minValidationText+'0').max(2, maxValidationText+'2').required(),
-    climateGoalsScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
-    organizationClimateGoalScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
-    successMeasurementScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
-    safetyScore: Yup.number().min(0, minValidationText+'0').max(15, maxValidationText+'15').required(),
-    medevacScore: Yup.number().min(0, minValidationText+'0').max(15, maxValidationText+'15').required(),
-    localBenefitsScore: Yup.number().min(0, minValidationText+'0').max(10, maxValidationText+'10').required(),
-    longTermScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
-    communitySupportScore: Yup.number().min(0, minValidationText+'0').max(3, maxValidationText+'3').required(),
-    concernsScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'5').required(),
-    contingencyPlanScore: Yup.number().min(0, minValidationText+'0').max(5, maxValidationText+'2').required(),
-    classBCostScore: Yup.number().min(1, minValidationText+'1').max(5, maxValidationText+'5').required(),
-    thirdPartyContributionScore: Yup.number().min(1, minValidationText+'1').max(2, maxValidationText+'2'),
+    projectTypeScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(10, maxValidationText + '10')
+      .required(),
+    projectNeedScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(5, maxValidationText + '5')
+      .required(),
+    projectFundingScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(5, maxValidationText + '5')
+      .required(),
+    pastBcaapFundingScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(3, maxValidationText + '3')
+      .required(),
+    facilityMasterPlanScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(2, maxValidationText + '2')
+      .required(),
+    facilityUsageScore: Yup.number()
+      .min(1, minValidationText + '1')
+      .max(2, maxValidationText + '2')
+      .required(),
+    trafficDataScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(3, maxValidationText + '3')
+      .required(),
+    climatePerspectiveScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(5, maxValidationText + '5')
+      .required(),
+    climateBestPracticesScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(5, maxValidationText + '5')
+      .required(),
+    environmentalRisksScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(5, maxValidationText + '5')
+      .required(),
+    environmentalInnovationScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(5, maxValidationText + '5')
+      .required(),
+    projectDescriptionScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(2, maxValidationText + '2')
+      .required(),
+    climateGoalsScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(5, maxValidationText + '5')
+      .required(),
+    organizationClimateGoalScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(5, maxValidationText + '5')
+      .required(),
+    successMeasurementScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(5, maxValidationText + '5')
+      .required(),
+    safetyScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(15, maxValidationText + '15')
+      .required(),
+    medevacScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(15, maxValidationText + '15')
+      .required(),
+    localBenefitsScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(10, maxValidationText + '10')
+      .required(),
+    longTermScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(5, maxValidationText + '5')
+      .required(),
+    communitySupportScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(3, maxValidationText + '3')
+      .required(),
+    concernsScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(5, maxValidationText + '5')
+      .required(),
+    contingencyPlanScore: Yup.number()
+      .min(0, minValidationText + '0')
+      .max(5, maxValidationText + '2')
+      .required(),
+    classBCostScore: Yup.number()
+      .min(1, minValidationText + '1')
+      .max(5, maxValidationText + '5')
+      .required(),
+    thirdPartyContributionScore: Yup.number()
+      .min(1, minValidationText + '1')
+      .max(2, maxValidationText + '2'),
   }),
 });
 
@@ -67,8 +137,25 @@ export type LabelReviewProps = {
   obj?: ObjReviewProps[] | null | undefined;
 };
 
-export const BroderReviewUsers: React.FC<any> = ({ user, selected, handleClick, id, scoreStatus }) => {
-  const status = Object.keys(scoreStatus).length > 0 ? <span className={`rounded px-2 ml-2 text-xs ${ scoreStatus[0].completionStatus == 'Completed'? 'bg-bcGreenSuccess':'bg-slate-400'} py-1 text-white`}>{scoreStatus[0].completionStatus}</span> : '';
+export const BroderReviewUsers: React.FC<any> = ({
+  user,
+  selected,
+  handleClick,
+  id,
+  scoreStatus,
+}) => {
+  const status =
+    Object.keys(scoreStatus).length > 0 ? (
+      <span
+        className={`rounded px-2 ml-2 text-xs ${
+          scoreStatus[0].completionStatus == 'Completed' ? 'bg-bcGreenSuccess' : 'bg-slate-400'
+        } py-1 text-white`}
+      >
+        {scoreStatus[0].completionStatus}
+      </span>
+    ) : (
+      ''
+    );
   return (
     <Button
       variant={selected ? 'primary' : 'outline'}
@@ -77,7 +164,7 @@ export const BroderReviewUsers: React.FC<any> = ({ user, selected, handleClick, 
       onClick={handleClick}
       customClass='mb-2 ml-2'
     >
-      {user.id != id ? user.displayName : 'My Review '} 
+      {user.id != id ? user.displayName : 'My Review '}
       {status}
     </Button>
   );
@@ -137,14 +224,12 @@ export const FinalScore: React.FC<any> = () => {
     const total = Object.values(values.data);
     setTotal(addScores(total));
   }, [values]);
-
   return (
     <div className='flex'>
       <div className='w-3/4 p-2'>
         <label className='text-xl'>Final Score</label>
       </div>
       <div className='w-1/4 p-2'>
-    
         <input
           type='number'
           name='finalScore'
@@ -221,13 +306,14 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
   }
 
   const handleSubmit = (values: any) => {
-    const obj = { data: {}, overallComments: '', finalScore: 0 };
+    const obj = { data: {}, overallComments: '', finalScore: 0, completionStatus: '' };
     // calculate all score values for finalScore
     const total = Object.values(values.data);
 
     obj.data = values.data;
     obj.finalScore = addScores(total);
     obj.overallComments = values.overallComments;
+    obj.completionStatus = values.completionStatus;
 
     sendApiRequest(
       {
@@ -248,8 +334,6 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
   const handleChangeScorer = (id: string) => {
     setSelectedUser(id);
   };
-
-
 
   return (
     <Formik
@@ -278,7 +362,7 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
                 <div>
                   {userData &&
                     userData.map((item: any, index: number) => {
-                      const scoreStatus = applicationScores.filter((i:any)=> (item.id == i.user)) 
+                      const scoreStatus = applicationScores.filter((i: any) => item.id == i.user);
                       return (
                         <BroderReviewUsers
                           key={`BroderReviewUsers_${index}`}
@@ -312,8 +396,21 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
                     disabled={user && user.id != selectedUser}
                   />
                   <FinalScore />
-                  
-                {/* <Error name="finalScore" /> */}
+
+                  {user && selectedUser == user.id && (
+                    <div className='flex flex-1 w-full justify-start'>
+                      <Radio
+                        title='Status '
+                        legend='Select status for your score on this application.'
+                        name='completionStatus'
+                        horizontal={true}
+                        options={[
+                          { label: 'In Progress', value: 'In Progress' },
+                          { label: 'Completed', value: 'Completed' },
+                        ]}
+                      ></Radio>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

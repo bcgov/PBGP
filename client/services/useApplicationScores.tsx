@@ -4,7 +4,7 @@ import { useHttp } from './useHttp';
 
 export const useApplicationScores = (applicationId: string) => {
   const [applicationScores, setApplicationScores] = useState<any[]>([]);
-  const { fetchData, sendApiRequest } = useHttp();
+  const { fetchData } = useHttp();
 
   useEffect(() => {
     if (applicationId) {
@@ -18,7 +18,6 @@ export const useApplicationScores = (applicationId: string) => {
         endpoint: API_ENDPOINT.getApplicationScores(applicationId),
       },
       (data: any) => {
-        console.log("+++++++++++ Scores Data", data)
         setApplicationScores(data);
       },
     );

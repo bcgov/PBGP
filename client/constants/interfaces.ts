@@ -127,4 +127,5 @@ export interface BroaderReviewValues {
   contingencyPlanScore: number;
   classBCostScore: number;
   thirdPartyContributionScore: number;
+  completionStatus: string;
 }

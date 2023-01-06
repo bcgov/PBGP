@@ -293,4 +293,6 @@ export const defaultBroadReviewValues = {
   classBCostScore: 0,
   concernsScore: 0,
   thirdPartyContributionScore: 0,
+  completionStatus: 'In Progress',
+  finalScore: 0,
 };
