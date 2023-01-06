@@ -39,6 +39,7 @@ export const FacilityUsage = [
 export const classNames = (...classes: any[]) => {
   return classes.filter(Boolean).join(' ');
 };
+
 const evaluationObj1 = [
   { value: 'Airside', text: 'Airside / core aviation infrastructure' },
   { value: 'Transitional', text: 'Transitional infrastructure' },
@@ -280,3 +281,8 @@ export const defaultBroadReviewValues = {
   classBCostScore: 0,
   concernsScore: 0,
 };
+
+export enum NextStatusUpdates {
+  PROCEED = 'Proceed to Next Step',
+  DISCARD = 'Discard',
+}
