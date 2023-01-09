@@ -44,6 +44,11 @@ export enum NextStatusUpdates {
   PROCEED = 'Proceed to Next Step',
   DISCARD = 'Discard',
 }
+
+export enum ReviewCompletionStatus {
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETE = 'COMPLETE',
+}
 const evaluationObj1 = [
   { value: 'Airside', text: 'Airside / core aviation infrastructure' },
   { value: 'Transitional', text: 'Transitional infrastructure' },
@@ -73,41 +78,42 @@ export const EvaluationBoardData = [
   {
     obj: evaluationObj1,
     label: 'What type of project is being applied for?',
-    description: 'Project scope?',
-    name: 'data.projectTypeScore',
+    description:
+      'Refer `Project Scope` and `Type of Project` in General Project Information and Description section',
+    name: 'projectTypeScore',
     tooltiptext:
-      'Score 8-10 for airside safety, GPS approach, climate or facility master plan. Score 6-7 for airside other. Score 4-5 for transitional. Score 0-3 for groundside or ancillary. The scores range is based on the type of project, while the score within the range is a relative priority based on an assessment of the project scope. The “response” column in the table will include only the response from the application instead of the complete list included above.',
+      'Score 8-10 for airside safety, GPS approach, climate or facility master plan. Score 6-7 for airside other. Score 4-5 for transitional. Score 0-3 for groundside or ancillary. The scores range is based on the type of project, while the score within the range is a relative priority based on an assessment of the project scope.',
   },
   {
-    name: 'data.projectNeedScore',
+    name: 'projectNeedScore',
     label: 'Need for project?',
-    description: 'Drawn from Project Rationale',
+    description: 'Refer `Project Rationale` in General Project Information and Description section',
     tooltiptext:
       'Score 4-5 if critical to maintain services or if project is required by Transport Canada. Score 2-3 if project deemed important. Score 0-1 if project is intended to expand services.',
   },
   {
-    name: 'data.projectFundingScore',
+    name: 'projectFundingScore',
     label: 'Need for funding?',
-    description: 'Drawn from Project Rationale',
+    description: 'Refer `Project Rationale` in General Project Information and Description section',
     tooltiptext:
       'Score 4-5 if project cannot proceed without BCAAP funding. Score 2-3 if BCAAP funding will expedite the project. Score 0-1 if BCAAP funding is minimally important to whether the project proceeds.',
   },
   {
-    name: 'data.pastBcaapFundingScore',
+    name: 'pastBcaapFundingScore',
     label: 'Past BCAAP funding?',
     description: 'BCAAP staff to evaluate this line',
     tooltiptext:
       'Score 0 if BCAAP funded project still underway at facility. Score 1, 2 or 3, respectively, if a BCAAP project was approved at facility 2, 3 or 4 (or more) years ago.',
   },
   {
-    name: 'data.facilityMasterPlanScore',
+    name: 'facilityMasterPlanScore',
     label: 'Is this project identified in your facility master plan?',
     description: 'BCAAP staff to evaluate this line',
     tooltiptext: 'Score 2 if “yes”, score 0 if “no” or “NA”.',
     obj: evaluationObj2,
   },
   {
-    name: 'data.facilityUsageScore',
+    name: 'facilityUsageScore',
     label: 'Facility usage?',
     description: '',
     tooltiptext:
@@ -115,15 +121,15 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.trafficDataScore',
+    name: 'trafficDataScore',
     label: 'Traffic data? ',
     description: '',
     tooltiptext:
-      'Score 0 to 3, respectively, if the applicant provides 0 years of data, 1 year of date, 2 years of date, or 3 or more years of data.',
+      'Score 0 to 3, respectively, if the applicant provides 0 years of data, 1 year of date, 2 years of date, or 3 or more years of ',
     obj: null,
   },
   {
-    name: 'data.climatePerspectiveScore',
+    name: 'climatePerspectiveScore',
     label: 'Outline the benefits of the project from an environmental and/or climate perspective.',
     description: '',
     tooltiptext:
@@ -131,7 +137,7 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.climateBestPracticesScore',
+    name: 'climateBestPracticesScore',
     label:
       'How are best practices from an environmental and/or climate perspective incorporated into the design and construction of this project?',
     description: '',
@@ -140,7 +146,7 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.environmentalRisksScore',
+    name: 'environmentalRisksScore',
     label:
       'Have any specific environmentally related risks been identified with this project and, if yes, what is your planning for addressed these risks?',
     description: '',
@@ -149,7 +155,7 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.environmentalInnovationScore',
+    name: 'environmentalInnovationScore',
     label:
       'Is any type of innovation from an environmental and/or climate perspective being incorporated into this project?',
     description: '',
@@ -158,7 +164,7 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.projectDescriptionScore',
+    name: 'projectDescriptionScore',
     label: 'Which of the following best describes your project?',
     description: '',
     tooltiptext:
@@ -166,7 +172,7 @@ export const EvaluationBoardData = [
     obj: evaluationObj3,
   },
   {
-    name: 'data.climateGoalsScore',
+    name: 'climateGoalsScore',
     label:
       'What are the environmental and/or climate goals of your project? How will this project result in sustainable environmental / climate benefits moving forward?',
     description: '',
@@ -175,7 +181,7 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.organizationClimateGoalScore',
+    name: 'organizationClimateGoalScore',
     label:
       'How does this project fit with your organization’s broader environmental and/or climate goals? Is this project part of a broader strategy? Please provide details.',
     description: '',
@@ -184,7 +190,7 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.successMeasurementScore',
+    name: 'successMeasurementScore',
     label: 'How will this project be assessed to determine success? How will success be measured?',
     description: '',
     tooltiptext:
@@ -192,7 +198,7 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.safetyScore',
+    name: 'safetyScore',
     label: 'How will this project improve safety?',
     description: '',
     tooltiptext:
@@ -200,7 +206,7 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.medevacScore',
+    name: 'medevacScore',
     label: 'How will the project benefit medevac and/or wildfire suppression? ',
     description: '',
     tooltiptext:
@@ -208,7 +214,7 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.localBenefitsScore',
+    name: 'localBenefitsScore',
     label:
       'How will this project provide local, regional and/or provincial economic benefits, including how this project may support your facility in recovery from the impacts of COVID-19?',
     description: '',
@@ -217,7 +223,7 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.longTermScore',
+    name: 'longTermScore',
     label:
       'How will the project advance the long-term goals and visions for the facility and community?',
     description: '',
@@ -226,7 +232,7 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.communitySupportScore',
+    name: 'communitySupportScore',
     label: 'Community support.',
     description: '',
     tooltiptext:
@@ -234,7 +240,7 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.concernsScore',
+    name: 'concernsScore',
     label:
       'Have any concerns or issues with respect to this project been raised by facility users or by members of the surrounding community? What are those concerns or issues? What plans, if any, do you have to addresses these concerns or issues?',
     description: '',
@@ -243,7 +249,7 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.contingencyPlanScore',
+    name: 'contingencyPlanScore',
     label:
       'Do you have a contingency plan in place to ensure the project will be completed if costs increase?',
     description: '',
@@ -251,7 +257,7 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.classBCostScore',
+    name: 'classBCostScore',
     label: 'Class B Project Cost Estimates',
     description: '',
     tooltiptext:
@@ -259,8 +265,8 @@ export const EvaluationBoardData = [
     obj: null,
   },
   {
-    name: 'data.thirdPartyContributionScore',
-    label: 'Applicant or third-party contributions. ',
+    name: 'thirdPartyContributionScore',
+    label: 'Applicant or third-party contributions',
     description: '',
     tooltiptext:
       'Score 1 point for the presence of third-party contributions. Score 1 point if the ask of BCAAP is less than the eligible ask of BCAAP.',
@@ -269,30 +275,31 @@ export const EvaluationBoardData = [
 ];
 
 export const defaultBroadReviewValues = {
-  projectTypeScore: 0,
-  projectNeedScore: 0,
-  projectFundingScore: 0,
-  pastBcaapFundingScore: 0,
-  facilityMasterPlanScore: 0,
-  facilityUsageScore: 0,
-  trafficDataScore: 0,
-  climatePerspectiveScore: 0,
-  climateBestPracticesScore: 0,
-  environmentalRisksScore: 0,
-  environmentalInnovationScore: 0,
-  projectDescriptionScore: 0,
-  climateGoalsScore: 0,
-  organizationClimateGoalScore: 0,
-  successMeasurementScore: 0,
-  safetyScore: 0,
-  medevacScore: 0,
-  localBenefitsScore: 0,
-  longTermScore: 0,
-  communitySupportScore: 0,
-  contingencyPlanScore: 0,
-  classBCostScore: 0,
-  concernsScore: 0,
-  thirdPartyContributionScore: 0,
-  completionStatus: 'In Progress',
-  finalScore: 0,
+  projectTypeScore: '',
+  projectNeedScore: '',
+  projectFundingScore: '',
+  pastBcaapFundingScore: '',
+  facilityMasterPlanScore: '',
+  facilityUsageScore: '',
+  trafficDataScore: '',
+  climatePerspectiveScore: '',
+  climateBestPracticesScore: '',
+  environmentalRisksScore: '',
+  environmentalInnovationScore: '',
+  projectDescriptionScore: '',
+  climateGoalsScore: '',
+  organizationClimateGoalScore: '',
+  successMeasurementScore: '',
+  safetyScore: '',
+  medevacScore: '',
+  localBenefitsScore: '',
+  longTermScore: '',
+  communitySupportScore: '',
+  contingencyPlanScore: '',
+  classBCostScore: '',
+  concernsScore: '',
+  thirdPartyContributionScore: '',
+  completionStatus: ReviewCompletionStatus.IN_PROGRESS,
+  finalScore: '',
+  overallComments: '',
 };

@@ -37,7 +37,7 @@ export class BroaderReviewScoreService {
     scoreDto: ScoreDto
   ): Promise<BroaderReviewScore> {
     // const scoreObj = { finalScore: 0, data: scoreDto, overallComments: scoreDto.overallComments}
-    const score = await this.scoreRepository.create(scoreDto);
+    const score = this.scoreRepository.create(scoreDto);
     score.user = user;
     score.application = application;
 

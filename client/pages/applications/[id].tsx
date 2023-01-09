@@ -90,7 +90,11 @@ const ApplicationDetails: NextPage = () => {
           <div className='grid grid-cols-4 gap-4'>
             <div
               className={`${
-                showComments || details.status == 'BROADER_REVIEW' ? 'col-span-2' : 'col-span-full'
+                details.status == 'BROADER_REVIEW'
+                  ? 'col-span-2'
+                  : showComments
+                  ? 'col-span-3'
+                  : 'col-span-full'
               } `}
             >
               {schema?.length > 0 &&

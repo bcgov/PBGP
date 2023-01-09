@@ -19,6 +19,6 @@ export enum AxiosResponseTypes {
 }
 
 export enum CompletionStatuses {
-  IN_PROGRESS = 'In Progress',
-  COMPLETED = 'Completed',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETE = 'COMPLETE',
 }
