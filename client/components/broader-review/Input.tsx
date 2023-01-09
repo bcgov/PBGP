@@ -1,6 +1,5 @@
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { Field } from 'formik';
-import { useAuthContext } from '../../contexts';
 import { TooltipIcon } from '../generic';
 
 export type ObjProps = {
@@ -14,6 +13,7 @@ export type InputProps = {
   tooltiptext?: string;
   description?: string;
   selectedUser: string;
+  disabled: boolean;
   obj?: ObjProps[] | null | undefined;
 };
 
@@ -22,10 +22,8 @@ export const Input: React.FC<InputProps> = ({
   name,
   description,
   tooltiptext,
-  selectedUser,
+  disabled,
 }) => {
-  const { user } = useAuthContext();
-
   return (
     <div className='md:flex md:items-center'>
       <div className='md:w-3/4'>
@@ -45,9 +43,9 @@ export const Input: React.FC<InputProps> = ({
           as='input'
           name={name}
           type='number'
-          disabled={user && user.id != selectedUser}
+          disabled={disabled}
           className={`w-14 text-center ${
-            user && user.id != selectedUser ? 'bg-slate-100' : ''
+            disabled ? 'bg-slate-100' : ''
           } BroderReviewInput border border-gray-400 bg-white pl-2 py-2 rounded`}
         />
       </div>

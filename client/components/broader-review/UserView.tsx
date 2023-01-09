@@ -1,6 +1,12 @@
 import { Button } from '../generic';
 
-export const UserView: React.FC<any> = ({ user, selected, handleClick, id, scoreStatus }) => {
+export const UserView: React.FC<any> = ({
+  user,
+  selected,
+  handleClick,
+  loggedInUser,
+  scoreStatus,
+}) => {
   const status =
     Object.keys(scoreStatus).length > 0 ? (
       <span
@@ -21,7 +27,7 @@ export const UserView: React.FC<any> = ({ user, selected, handleClick, id, score
       onClick={handleClick}
       customClass='mb-2 ml-2'
     >
-      {user.id != id ? user.displayName : 'My Review '}
+      {loggedInUser && user.id != loggedInUser.id ? user.displayName : 'My Review'}
       {status}
     </Button>
   );
