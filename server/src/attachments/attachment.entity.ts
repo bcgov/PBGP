@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, VersionColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 
 @Entity({
@@ -7,6 +7,9 @@ import { CustomBaseEntity } from '../common/custom-base.entity';
 export class Attachment extends CustomBaseEntity {
   @PrimaryColumn({ name: 'attachment_id', type: 'varchar', length: '100', nullable: false })
   id: string;
+
+  @VersionColumn()
+  version: number;
 
   @Column({ type: 'varchar', length: '200', nullable: false, unique: true })
   url: string;
