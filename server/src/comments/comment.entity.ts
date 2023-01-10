@@ -1,5 +1,5 @@
 import { Application } from '../application/application.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, VersionColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 import { User } from '../user/user.entity';
 
@@ -9,6 +9,9 @@ import { User } from '../user/user.entity';
 export class Comment extends CustomBaseEntity {
   @PrimaryGeneratedColumn('uuid', { name: 'comment_id' })
   id: string;
+
+  @VersionColumn()
+  version: number;
 
   @Column({ type: 'varchar', length: 2000, nullable: false })
   comment: string;
