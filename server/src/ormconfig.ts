@@ -18,6 +18,7 @@ const config: PostgresConnectionOptions = {
   username: process.env.POSTGRES_USERNAME || 'freshworks',
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DATABASE || 'pbgp',
+  schema: 'app_pbgp',
   cli: {
     migrationsDir: 'src/migration',
     entitiesDir: 'src/**/*.entity.ts',
