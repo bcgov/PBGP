@@ -12,11 +12,19 @@ import { FormMetaDataDto } from '../../common/dto/form-metadata.dto';
 import { extractObjects, getGenericError } from '../../common/utils';
 import { AttachmentService } from '../../attachments/attachment.service';
 import { Attachment } from '../../attachments/attachment.entity';
-import { AxiosResponseTypes } from '../../common/enums';
+import { AxiosResponseTypes, SyncTypes } from '../../common/enums';
 import { GenericException } from '@/common/generic-exception';
 import { DatabaseError } from '../database.error';
 
 // CHEFS Constants
+// const CHEFS_FORM_IDS = [
+//   'ae20a4c4-72cb-4562-9d54-3e781dcc68f5',
+//   '096d8f86-f604-490e-ac15-c548910e3097',
+//   'b723cb59-334d-4372-9a8c-212d55b3cdc3',
+//   'bb0871ca-516f-42ed-91e6-3f8175d18448',
+// ];
+
+const CHEFS_FORM_IDS = ['4b19eee6-f42d-481f-8279-cbc28ab68cf0'];
 const CHEFS_BASE_URL = 'https://submit.digital.gov.bc.ca/app/api/v1';
 const FILE_URL = 'https://submit.digital.gov.bc.ca';
 
@@ -63,6 +71,18 @@ export class SyncChefsDataService {
       }
     }
     throw new GenericException(DatabaseError.TOKEN_NOT_FOUND);
+  }
+
+  private getSubmissionIdsFromArgs(args: string[]) {
+    if (args[4] && args[4].includes('submissionIds=')) {
+      const parts = args[4].split('=');
+      if (parts[0]) {
+        if (parts[1]) {
+          return parts[1].split(',').filter((arr) => arr.length > 0);
+        }
+      }
+    }
+    return [];
   }
 
   async updateAttachments() {
@@ -170,7 +190,7 @@ export class SyncChefsDataService {
     }
   }
 
-  async syncChefsData(): Promise<void> {
+  async syncChefsData(syncType: SyncTypes): Promise<void> {
     const method = REQUEST_METHODS.GET;
 
     const token = this.getTokenFromArgs(process.argv);
@@ -179,7 +199,7 @@ export class SyncChefsDataService {
       Authorization: `Bearer ${token}`,
     };
 
-    this.CHEFS_FORM_IDS.forEach(async (formId) => {
+    CHEFS_FORM_IDS.forEach(async (formId) => {
       const options = {
         method,
         headers,
@@ -187,16 +207,34 @@ export class SyncChefsDataService {
 
       try {
         const formResponse = await axios({ ...options, url: this.getFormUrl(formId) });
-        const submissionIds = formResponse.data
+
+        const submissionIdsFromArgs = this.getSubmissionIdsFromArgs(process.argv);
+        const submissionIdsFromForm = formResponse.data
           .filter((submission) => submission.formSubmissionStatusCode === 'SUBMITTED')
           .map((submission) => submission.submissionId);
 
-        submissionIds.forEach((submissionId) => {
-          this.createOrUpdateSubmission(submissionId, {
-            ...options,
-            url: this.getSubmissionUrl(submissionId),
+        let submissionIds: string[];
+        if (syncType === SyncTypes.SUBMISSIONS) {
+          submissionIds = submissionIdsFromForm.filter((submissionId) =>
+            submissionIdsFromArgs.includes(submissionId)
+          );
+        } else {
+          submissionIds = submissionIdsFromForm;
+        }
+
+        if (submissionIds && submissionIds.length > 0) {
+          submissionIds.forEach((submissionId) => {
+            this.createOrUpdateSubmission(submissionId, {
+              ...options,
+              url: this.getSubmissionUrl(submissionId),
+            });
           });
-        });
+        } else {
+          Logger.log(
+            `No submissions with ID's ${submissionIdsFromArgs} found in the form with ID ${formId}. \nSkipping...`
+          );
+          return;
+        }
       } catch (e) {
         Logger.error(
           `Error occured fetching form - ${formId} - `,

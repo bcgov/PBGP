@@ -22,3 +22,9 @@ export enum CompletionStatuses {
   IN_PROGRESS = 'IN_PROGRESS',
   COMPLETE = 'COMPLETE',
 }
+
+export enum SyncTypes {
+  ALL = 'ALL',
+  SUBMISSIONS = 'SUBMISSIONS',
+  ATTACHMENTS = 'ATTACHMENTS',
+}
