@@ -63,6 +63,18 @@ export class SyncChefsDataService {
     throw new GenericException(DatabaseError.TOKEN_NOT_FOUND);
   }
 
+  private getSubmissionIdsFromArgs(args: string[]) {
+    if (args[4] && args[4].includes('submissionIds=')) {
+      const parts = args[4].split('=');
+      if (parts[0]) {
+        if (parts[1]) {
+          return parts[1].split(',').filter((arr) => arr.length > 0);
+        }
+      }
+    }
+    return [];
+  }
+
   private async createOrUpdateAttachments(data) {
     const responseDataFileArrays = Object.values(data).filter(
       (value) => Array.isArray(value) && value.length > 0
@@ -165,9 +177,15 @@ export class SyncChefsDataService {
 
       try {
         const formResponse = await axios({ ...options, url: this.getFormUrl(formId) });
-        const submissionIds = formResponse.data
-          .filter((submission) => submission.formSubmissionStatusCode === 'SUBMITTED')
-          .map((submission) => submission.submissionId);
+        const submissionIdsFromArgs = this.getSubmissionIdsFromArgs(process.argv);
+        let submissionIds: string[];
+        if (submissionIdsFromArgs.length > 0) {
+          submissionIds = submissionIdsFromArgs;
+        } else {
+          submissionIds = formResponse.data
+            .filter((submission) => submission.formSubmissionStatusCode === 'SUBMITTED')
+            .map((submission) => submission.submissionId);
+        }
 
         for (const submissionId of submissionIds) {
           try {
