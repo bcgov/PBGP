@@ -5,6 +5,11 @@ import { NestFactory } from '@nestjs/core';
 (async () => {
   const appContext = await NestFactory.createApplicationContext(AppModule);
   const syncChefsDataService = appContext.get(SyncChefsDataService);
-
-  syncChefsDataService.syncChefsData();
+  switch (process.env.SYNC_TYPE) {
+    case 'ATTACHMENTS':
+      syncChefsDataService.updateAttachments();
+      break;
+    default:
+      syncChefsDataService.syncChefsData();
+  }
 })();

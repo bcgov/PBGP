@@ -67,7 +67,7 @@ export const ApplicationDashboard: React.FC<any> = () => {
     if (!totalApplications || Number(page) == Math.ceil(totalApplications / Number(limit))) return;
     const params = {
       ...query,
-      page: Math.ceil(totalApplications / Number(page)),
+      page: Math.ceil(totalApplications / Number(limit)),
       limit: Number(limit),
     };
     SetQueryParams(push, query, params);
