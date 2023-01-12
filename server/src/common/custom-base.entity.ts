@@ -1,4 +1,4 @@
-import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { CreateDateColumn, UpdateDateColumn, VersionColumn } from 'typeorm';
 
 export class CustomBaseEntity {
   @CreateDateColumn({ name: 'db_create_timestamp' })
@@ -6,4 +6,7 @@ export class CustomBaseEntity {
 
   @UpdateDateColumn({ name: 'db_last_update_timestamp' })
   updatedAt: Date;
+
+  @VersionColumn()
+  version: number;
 }
