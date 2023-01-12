@@ -1,14 +1,7 @@
 import { Application } from '../application/application.entity';
 import { ScoreBaseEntity } from '../common/score-base.entity';
 import { User } from '../user/user.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  JoinColumn,
-  ManyToOne,
-  Column,
-  VersionColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, JoinColumn, ManyToOne, Column } from 'typeorm';
 import { CompletionStatuses } from '../common/enums';
 
 @Entity({
@@ -17,9 +10,6 @@ import { CompletionStatuses } from '../common/enums';
 export class BroaderReviewScore extends ScoreBaseEntity {
   @PrimaryGeneratedColumn('uuid', { name: 'border_review_score_id' })
   id: string;
-
-  @VersionColumn()
-  version: number;
 
   @ManyToOne(() => User)
   @JoinColumn()
