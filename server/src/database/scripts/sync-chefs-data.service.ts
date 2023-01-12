@@ -17,17 +17,12 @@ import { GenericException } from '@/common/generic-exception';
 import { DatabaseError } from '../database.error';
 
 // CHEFS Constants
-const CHEFS_FORM_IDS = [
-  'ae20a4c4-72cb-4562-9d54-3e781dcc68f5',
-  '096d8f86-f604-490e-ac15-c548910e3097',
-  'b723cb59-334d-4372-9a8c-212d55b3cdc3',
-  'bb0871ca-516f-42ed-91e6-3f8175d18448',
-];
 const CHEFS_BASE_URL = 'https://submit.digital.gov.bc.ca/app/api/v1';
 const FILE_URL = 'https://submit.digital.gov.bc.ca';
 
 @Injectable()
 export class SyncChefsDataService {
+  CHEFS_FORM_IDS: string[];
   constructor(
     @InjectRepository(Application)
     private readonly applicationRepo: Repository<Application>,
@@ -35,7 +30,9 @@ export class SyncChefsDataService {
     private readonly formMetadataRepo: Repository<FormMetaData>,
     private readonly appService: ApplicationService,
     private readonly attachmentService: AttachmentService
-  ) {}
+  ) {
+    this.CHEFS_FORM_IDS = JSON.parse(process.env.CHEFS_FORM_IDS);
+  }
 
   private getFormUrl(formId: string): string {
     return `${CHEFS_BASE_URL}/forms/${formId}/submissions`;
@@ -182,7 +179,7 @@ export class SyncChefsDataService {
       Authorization: `Bearer ${token}`,
     };
 
-    CHEFS_FORM_IDS.forEach(async (formId) => {
+    this.CHEFS_FORM_IDS.forEach(async (formId) => {
       const options = {
         method,
         headers,
