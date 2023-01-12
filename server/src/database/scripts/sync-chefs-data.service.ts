@@ -13,10 +13,9 @@ import { extractObjects, getGenericError } from '../../common/utils';
 import { AttachmentService } from '../../attachments/attachment.service';
 import { Attachment } from '../../attachments/attachment.entity';
 import { AxiosResponseTypes } from '../../common/enums';
-import { GenericException } from '@/common/generic-exception';
+import { GenericException } from '../../common/generic-exception';
 import { DatabaseError } from '../database.error';
 
-// CHEFS Constants
 const CHEFS_BASE_URL = 'https://submit.digital.gov.bc.ca/app/api/v1';
 const FILE_URL = 'https://submit.digital.gov.bc.ca';
 
@@ -63,6 +62,18 @@ export class SyncChefsDataService {
       }
     }
     throw new GenericException(DatabaseError.TOKEN_NOT_FOUND);
+  }
+
+  private getSubmissionIdsFromArgs(args: string[]) {
+    if (args[4] && args[4].includes('submissionIds=')) {
+      const parts = args[4].split('=');
+      if (parts[0]) {
+        if (parts[1]) {
+          return parts[1].split(',').filter((arr) => arr.length > 0);
+        }
+      }
+    }
+    return [];
   }
 
   async updateAttachments() {
@@ -170,14 +181,52 @@ export class SyncChefsDataService {
     }
   }
 
+  private getHeadersFromToken(token: string) {
+    return {
+      'Content-Type': 'application/x-www-formid-urlencoded',
+      Authorization: `Bearer ${token}`,
+    };
+  }
+
+  private getSubmissionsFromIds(submissionIds: string[], options) {
+    submissionIds.forEach((submissionId) => {
+      this.createOrUpdateSubmission(submissionId, {
+        ...options,
+        url: this.getSubmissionUrl(submissionId),
+      });
+    });
+  }
+
+  async syncSubmissions(): Promise<void> {
+    const method = REQUEST_METHODS.GET;
+    const token = this.getTokenFromArgs(process.argv);
+    const headers = this.getHeadersFromToken(token);
+    const options = {
+      method,
+      headers,
+    };
+    const submissionIds = this.getSubmissionIdsFromArgs(process.argv);
+
+    try {
+      if (submissionIds && submissionIds.length > 0) {
+        this.getSubmissionsFromIds(submissionIds, options);
+      } else {
+        Logger.log(`No submission ID's provided. \nSkipping...`);
+        return;
+      }
+    } catch (e) {
+      Logger.error(
+        `Error occurred fetching submissions with ID's - ${submissionIds} - `,
+        JSON.stringify(getGenericError(e))
+      );
+    }
+  }
+
   async syncChefsData(): Promise<void> {
     const method = REQUEST_METHODS.GET;
 
     const token = this.getTokenFromArgs(process.argv);
-    const headers = {
-      'Content-Type': 'application/x-www-formid-urlencoded',
-      Authorization: `Bearer ${token}`,
-    };
+    const headers = this.getHeadersFromToken(token);
 
     this.CHEFS_FORM_IDS.forEach(async (formId) => {
       const options = {
@@ -187,19 +236,20 @@ export class SyncChefsDataService {
 
       try {
         const formResponse = await axios({ ...options, url: this.getFormUrl(formId) });
+
         const submissionIds = formResponse.data
           .filter((submission) => submission.formSubmissionStatusCode === 'SUBMITTED')
           .map((submission) => submission.submissionId);
 
-        submissionIds.forEach((submissionId) => {
-          this.createOrUpdateSubmission(submissionId, {
-            ...options,
-            url: this.getSubmissionUrl(submissionId),
-          });
-        });
+        if (submissionIds && submissionIds.length > 0) {
+          this.getSubmissionsFromIds(submissionIds, options);
+        } else {
+          Logger.log(`No submissions with found in the form with ID ${formId}. \nSkipping...`);
+          return;
+        }
       } catch (e) {
         Logger.error(
-          `Error occured fetching form - ${formId} - `,
+          `Error occurred fetching form - ${formId} - `,
           JSON.stringify(getGenericError(e))
         );
       }
