@@ -11,10 +11,10 @@ import { SyncTypes } from '../../common/enums';
       syncChefsDataService.updateAttachments();
       break;
     case SyncTypes.SUBMISSIONS:
-      syncChefsDataService.syncChefsData(SyncTypes.SUBMISSIONS);
+      syncChefsDataService.syncSubmissions();
       break;
     default:
-      syncChefsDataService.syncChefsData(SyncTypes.ALL);
+      syncChefsDataService.syncChefsData();
       break;
   }
 })();

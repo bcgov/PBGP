@@ -12,19 +12,18 @@ import { FormMetaDataDto } from '../../common/dto/form-metadata.dto';
 import { extractObjects, getGenericError } from '../../common/utils';
 import { AttachmentService } from '../../attachments/attachment.service';
 import { Attachment } from '../../attachments/attachment.entity';
-import { AxiosResponseTypes, SyncTypes } from '../../common/enums';
-import { GenericException } from '@/common/generic-exception';
+import { AxiosResponseTypes } from '../../common/enums';
+import { GenericException } from '../../common/generic-exception';
 import { DatabaseError } from '../database.error';
 
 // CHEFS Constants
-// const CHEFS_FORM_IDS = [
-//   'ae20a4c4-72cb-4562-9d54-3e781dcc68f5',
-//   '096d8f86-f604-490e-ac15-c548910e3097',
-//   'b723cb59-334d-4372-9a8c-212d55b3cdc3',
-//   'bb0871ca-516f-42ed-91e6-3f8175d18448',
-// ];
+const CHEFS_FORM_IDS = [
+  'ae20a4c4-72cb-4562-9d54-3e781dcc68f5',
+  '096d8f86-f604-490e-ac15-c548910e3097',
+  'b723cb59-334d-4372-9a8c-212d55b3cdc3',
+  'bb0871ca-516f-42ed-91e6-3f8175d18448',
+];
 
-const CHEFS_FORM_IDS = ['4b19eee6-f42d-481f-8279-cbc28ab68cf0'];
 const CHEFS_BASE_URL = 'https://submit.digital.gov.bc.ca/app/api/v1';
 const FILE_URL = 'https://submit.digital.gov.bc.ca';
 
@@ -190,14 +189,52 @@ export class SyncChefsDataService {
     }
   }
 
-  async syncChefsData(syncType: SyncTypes): Promise<void> {
-    const method = REQUEST_METHODS.GET;
-
-    const token = this.getTokenFromArgs(process.argv);
-    const headers = {
+  private getHeadersFromToken(token: string) {
+    return {
       'Content-Type': 'application/x-www-formid-urlencoded',
       Authorization: `Bearer ${token}`,
     };
+  }
+
+  private getSubmissionsFromIds(submissionIds: string[], options) {
+    submissionIds.forEach((submissionId) => {
+      this.createOrUpdateSubmission(submissionId, {
+        ...options,
+        url: this.getSubmissionUrl(submissionId),
+      });
+    });
+  }
+
+  async syncSubmissions(): Promise<void> {
+    const method = REQUEST_METHODS.GET;
+    const token = this.getTokenFromArgs(process.argv);
+    const headers = this.getHeadersFromToken(token);
+    const options = {
+      method,
+      headers,
+    };
+    const submissionIds = this.getSubmissionIdsFromArgs(process.argv);
+
+    try {
+      if (submissionIds && submissionIds.length > 0) {
+        this.getSubmissionsFromIds(submissionIds, options);
+      } else {
+        Logger.log(`No submission ID's provided. \nSkipping...`);
+        return;
+      }
+    } catch (e) {
+      Logger.error(
+        `Error occurred fetching submissions with ID's - ${submissionIds} - `,
+        JSON.stringify(getGenericError(e))
+      );
+    }
+  }
+
+  async syncChefsData(): Promise<void> {
+    const method = REQUEST_METHODS.GET;
+
+    const token = this.getTokenFromArgs(process.argv);
+    const headers = this.getHeadersFromToken(token);
 
     CHEFS_FORM_IDS.forEach(async (formId) => {
       const options = {
@@ -208,36 +245,19 @@ export class SyncChefsDataService {
       try {
         const formResponse = await axios({ ...options, url: this.getFormUrl(formId) });
 
-        const submissionIdsFromArgs = this.getSubmissionIdsFromArgs(process.argv);
-        const submissionIdsFromForm = formResponse.data
+        const submissionIds = formResponse.data
           .filter((submission) => submission.formSubmissionStatusCode === 'SUBMITTED')
           .map((submission) => submission.submissionId);
 
-        let submissionIds: string[];
-        if (syncType === SyncTypes.SUBMISSIONS) {
-          submissionIds = submissionIdsFromForm.filter((submissionId) =>
-            submissionIdsFromArgs.includes(submissionId)
-          );
-        } else {
-          submissionIds = submissionIdsFromForm;
-        }
-
         if (submissionIds && submissionIds.length > 0) {
-          submissionIds.forEach((submissionId) => {
-            this.createOrUpdateSubmission(submissionId, {
-              ...options,
-              url: this.getSubmissionUrl(submissionId),
-            });
-          });
+          this.getSubmissionsFromIds(submissionIds, options);
         } else {
-          Logger.log(
-            `No submissions with ID's ${submissionIdsFromArgs} found in the form with ID ${formId}. \nSkipping...`
-          );
+          Logger.log(`No submissions with found in the form with ID ${formId}. \nSkipping...`);
           return;
         }
       } catch (e) {
         Logger.error(
-          `Error occured fetching form - ${formId} - `,
+          `Error occurred fetching form - ${formId} - `,
           JSON.stringify(getGenericError(e))
         );
       }
