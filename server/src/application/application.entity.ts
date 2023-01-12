@@ -1,12 +1,5 @@
 import { FormMetaData } from '../FormMetaData/formmetadata.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToMany,
-  VersionColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { CustomBaseEntity } from '../common/custom-base.entity';
 import { User } from '../user/user.entity';
 import { Comment } from '../comments/comment.entity';
@@ -18,9 +11,6 @@ import { ApplicationStatus } from './constants';
 export class Application extends CustomBaseEntity {
   @PrimaryGeneratedColumn('uuid', { name: 'application_id' })
   id: string;
-
-  @VersionColumn()
-  version: number;
 
   @Column({ type: 'jsonb', nullable: true })
   // It's dynamic, so putting any here
