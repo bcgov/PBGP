@@ -34,4 +34,14 @@ export class AttachmentService {
 
     return await this.attachmentRepository.save(newAttachment);
   }
+
+  async getAllAttachments(withData = true) {
+    const qb = this.attachmentRepository.createQueryBuilder('attachment');
+
+    if (!withData) {
+      qb.where('attachment.data IS NULL ');
+    }
+
+    return qb.getMany();
+  }
 }

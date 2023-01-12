@@ -9,7 +9,7 @@ import { SaveApplicationDto } from '../../common/dto/save-application.dto';
 import { AxiosOptions } from '../../common/interfaces';
 import { FormMetaData } from '../../FormMetaData/formmetadata.entity';
 import { FormMetaDataDto } from '../../common/dto/form-metadata.dto';
-import { extractObjects } from '../../common/utils';
+import { extractObjects, getGenericError } from '../../common/utils';
 import { AttachmentService } from '../../attachments/attachment.service';
 import { Attachment } from '../../attachments/attachment.entity';
 import { AxiosResponseTypes } from '../../common/enums';
@@ -17,12 +17,12 @@ import { GenericException } from '@/common/generic-exception';
 import { DatabaseError } from '../database.error';
 
 // CHEFS Constants
-const CHEFS_FORM_IDS = ['4b19eee6-f42d-481f-8279-cbc28ab68cf0'];
 const CHEFS_BASE_URL = 'https://submit.digital.gov.bc.ca/app/api/v1';
 const FILE_URL = 'https://submit.digital.gov.bc.ca';
 
 @Injectable()
 export class SyncChefsDataService {
+  CHEFS_FORM_IDS: string[];
   constructor(
     @InjectRepository(Application)
     private readonly applicationRepo: Repository<Application>,
@@ -30,7 +30,9 @@ export class SyncChefsDataService {
     private readonly formMetadataRepo: Repository<FormMetaData>,
     private readonly appService: ApplicationService,
     private readonly attachmentService: AttachmentService
-  ) {}
+  ) {
+    this.CHEFS_FORM_IDS = JSON.parse(process.env.CHEFS_FORM_IDS);
+  }
 
   private getFormUrl(formId: string): string {
     return `${CHEFS_BASE_URL}/forms/${formId}/submissions`;
@@ -63,6 +65,40 @@ export class SyncChefsDataService {
     throw new GenericException(DatabaseError.TOKEN_NOT_FOUND);
   }
 
+  async updateAttachments() {
+    // Axios stuff
+    const method = REQUEST_METHODS.GET;
+    // Make sure you include the -- token=<token> into the script args
+    const token = this.getTokenFromArgs(process.argv);
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const responseType = AxiosResponseTypes.ARRAY_BUFFER;
+    const options = {
+      method,
+      headers,
+      responseType,
+    };
+    const files = await this.attachmentService.getAllAttachments(false);
+
+    for (const file of files) {
+      try {
+        Logger.log(`Fetching attachment - ${file.id}`);
+        // Get file data form server
+        const url = FILE_URL + file.url;
+        const fileRes = await axios({ ...options, url });
+        const fileData = Buffer.from(fileRes.data);
+
+        await this.attachmentService.updateAttachment({ ...file, data: fileData });
+      } catch (error) {
+        Logger.error(
+          `Error occured fetching attachment - ${file.id} - `,
+          JSON.stringify(getGenericError(error))
+        );
+      }
+    }
+  }
+
   private async createOrUpdateAttachments(data) {
     const responseDataFileArrays = Object.values(data).filter(
       (value) => Array.isArray(value) && value.length > 0
@@ -72,95 +108,81 @@ export class SyncChefsDataService {
     // Maybe there's a better way to check it
     const files = objects.filter((obj) => 'url' in obj && 'data' in obj);
 
-    // Axios stuff
-    const method = REQUEST_METHODS.GET;
-    // Make sure you include the -- token=<token> into the script args
-    const token = this.getTokenFromArgs(process.argv);
-    const headers = {
-      'Content-Type': 'application/x-www-formid-urlencoded',
-      Authorization: `Bearer ${token}`,
-    };
-    const responseType = AxiosResponseTypes.ARRAY_BUFFER;
-    const options = {
-      method,
-      headers,
-      responseType,
-    };
-
-    for (const file of files) {
-      // Get file data form server
-      const url = FILE_URL + file.url;
-      const fileRes = await axios({ ...options, url });
-      const fileData = Buffer.from(fileRes.data);
-
+    files.forEach(async (file) => {
       const newAttachmentData = {
         id: file.data.id,
         url: file.url,
-        data: fileData,
         originalName: file.originalName,
       } as Attachment;
 
       await this.attachmentService.createOrUpdateAttachment(newAttachmentData);
-    }
+    });
   }
 
   private async createOrUpdateSubmission(
     submissionId: string,
     axiosOptions: AxiosOptions
   ): Promise<void> {
-    const submissionResponse = await axios(axiosOptions);
-    const responseData = submissionResponse.data.submission;
-    const dbSubmission = await this.applicationRepo.findOne({
-      where: { submissionId: submissionId },
-    });
+    try {
+      const submissionResponse = await axios(axiosOptions);
+      const responseData = submissionResponse.data.submission;
+      const dbSubmission = await this.applicationRepo.findOne({
+        where: { submissionId: submissionId },
+      });
 
-    // Process attachments
-    this.createOrUpdateAttachments(responseData.submission.data);
+      // Process attachments
+      this.createOrUpdateAttachments(responseData.submission.data);
 
-    const newSubmissionData: SaveApplicationDto = {
-      submissionId: responseData.id,
-      submission: responseData.submission.data,
-      confirmationId: responseData.confirmationId,
-      facilityName: responseData.submission.data.facilityName,
-      projectTitle: responseData.submission.data.projectTitle,
-      totalEstimatedCost: responseData.submission.data.totalEstimatedCostOfProject,
-      asks: responseData.submission.data.totalRequestBeingMadeOfBcaapACDNotToExceedB,
-    };
-
-    if (dbSubmission) {
-      Logger.log('Submission exists: updating');
-      await this.appService.updateApplication(dbSubmission.id, newSubmissionData);
-    } else {
-      Logger.log("Submission doesn't exist: creating");
-
-      Logger.log('Processing FormMetadata');
-      const newFormData: FormMetaDataDto = {
-        name: submissionResponse.data.form.name,
-        description: submissionResponse.data.form.description,
-        active: submissionResponse.data.form.active,
-        chefsFormId: submissionResponse.data.form.id,
-        versionId: submissionResponse.data.version.id,
-        versionSchema: submissionResponse.data.version.schema,
+      const newSubmissionData: SaveApplicationDto = {
+        submissionId: responseData.id,
+        submission: responseData.submission.data,
+        confirmationId: responseData.confirmationId,
+        facilityName: responseData.submission.data.facilityName,
+        projectTitle: responseData.submission.data.projectTitle,
+        totalEstimatedCost: responseData.submission.data.totalEstimatedCostOfProject,
+        asks: responseData.submission.data.totalRequestBeingMadeOfBcaapACDNotToExceedB,
       };
-      const formMetaData = await this.createOrFindFormMetadate(newFormData);
 
-      await this.appService.createApplication(newSubmissionData, formMetaData);
+      if (dbSubmission) {
+        Logger.log('Submission exists: updating');
+        await this.appService.updateApplication(dbSubmission.id, newSubmissionData);
+      } else {
+        Logger.log("Submission doesn't exist: creating");
+
+        Logger.log('Processing FormMetadata');
+        const newFormData: FormMetaDataDto = {
+          name: submissionResponse.data.form.name,
+          description: submissionResponse.data.form.description,
+          active: submissionResponse.data.form.active,
+          chefsFormId: submissionResponse.data.form.id,
+          versionId: submissionResponse.data.version.id,
+          versionSchema: submissionResponse.data.version.schema,
+        };
+        const formMetaData = await this.createOrFindFormMetadate(newFormData);
+
+        await this.appService.createApplication(newSubmissionData, formMetaData);
+      }
+    } catch (e) {
+      Logger.error(
+        `Error occured fetching submission - ${submissionId} - `,
+        JSON.stringify(getGenericError(e))
+      );
     }
   }
 
   async syncChefsData(): Promise<void> {
     const method = REQUEST_METHODS.GET;
-    const headers = { 'Content-Type': 'application/x-www-formid-urlencoded' };
 
-    for (const formId of CHEFS_FORM_IDS) {
-      const auth = {
-        username: formId,
-        password: process.env.CHEFS_FORM_API_KEY,
-      };
+    const token = this.getTokenFromArgs(process.argv);
+    const headers = {
+      'Content-Type': 'application/x-www-formid-urlencoded',
+      Authorization: `Bearer ${token}`,
+    };
+
+    this.CHEFS_FORM_IDS.forEach(async (formId) => {
       const options = {
         method,
         headers,
-        auth,
       };
 
       try {
@@ -169,19 +191,18 @@ export class SyncChefsDataService {
           .filter((submission) => submission.formSubmissionStatusCode === 'SUBMITTED')
           .map((submission) => submission.submissionId);
 
-        for (const submissionId of submissionIds) {
-          try {
-            this.createOrUpdateSubmission(submissionId, {
-              ...options,
-              url: this.getSubmissionUrl(submissionId),
-            });
-          } catch (e) {
-            Logger.error(e);
-          }
-        }
+        submissionIds.forEach((submissionId) => {
+          this.createOrUpdateSubmission(submissionId, {
+            ...options,
+            url: this.getSubmissionUrl(submissionId),
+          });
+        });
       } catch (e) {
-        Logger.error(e);
+        Logger.error(
+          `Error occured fetching form - ${formId} - `,
+          JSON.stringify(getGenericError(e))
+        );
       }
-    }
+    });
   }
 }

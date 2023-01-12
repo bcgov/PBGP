@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 ADD ./.yarn/releases/yarn-3.2.4.cjs ./.yarn/releases/yarn-3.2.4.cjs
 
-RUN yarn set version ./.yarn/releases/yarn-3.2.4.cjs
+# RUN yarn set version berry
 
 COPY package.json yarn.lock .yarnrc.yml ./
 
