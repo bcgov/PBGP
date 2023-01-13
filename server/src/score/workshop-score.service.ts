@@ -38,9 +38,6 @@ export class WorkshopScoreService {
     application: Application,
     scoreDto: WorkshopScoreDto
   ): Promise<WorkshopScore> {
-    if (!user.isAdmin) {
-      throw new GenericException(ScoreError.UNAUTHORIZED);
-    }
     const score = await this.workshopScoreRepository.create(scoreDto);
     score.user = user;
     score.application = application;
@@ -54,9 +51,6 @@ export class WorkshopScoreService {
     scoreId: string,
     scoreDto: WorkshopScoreDto
   ): Promise<WorkshopScore> {
-    if (!user.isAdmin) {
-      throw new GenericException(ScoreError.UNAUTHORIZED);
-    }
     const score = await this.getWorkshopScore(scoreId);
     if (score.user.id !== user.id) {
       throw new GenericException(ScoreError.USER_MISMATCH);

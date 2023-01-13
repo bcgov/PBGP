@@ -24,6 +24,8 @@ import { User } from '../user/user.entity';
 import { CommentResultRo } from './ro/app-comment.ro';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { ScoreDto, WorkshopScoreDto } from '../score/dto/score.dto';
+import { GenericException } from '@/common/generic-exception';
+import { ScoreError } from '@/score/score.errors';
 
 @ApiBearerAuth()
 @Controller('applications')
@@ -133,6 +135,9 @@ export class ApplicationController {
     @GetUser() user: User,
     @Param('applicationId') applicationId: string
   ) {
+    if (!user.isAdmin) {
+      throw new GenericException(ScoreError.UNAUTHORIZED);
+    }
     return this.applicationService.createWorkshopScore(user, applicationId, scoreDto);
   }
 
@@ -143,6 +148,9 @@ export class ApplicationController {
     @Body() scoreDto: WorkshopScoreDto,
     @GetUser() user: User
   ) {
+    if (!user.isAdmin) {
+      throw new GenericException(ScoreError.UNAUTHORIZED);
+    }
     return this.applicationService.updateWorkshopScore(user, applicationId, scoreId, scoreDto);
   }
 }
