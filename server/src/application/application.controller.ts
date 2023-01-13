@@ -97,12 +97,12 @@ export class ApplicationController {
   }
 
   // Broader Review Score Section
-  @Get('/:applicationId/scores')
+  @Get('/:applicationId/broader')
   async getScores(@Param('applicationId') applicationId: string) {
     return this.applicationService.getBroaderReviewScores(applicationId);
   }
 
-  @Post('/:applicationId/scores')
+  @Post('/:applicationId/broader')
   async createScore(
     @Body() scoreDto: ScoreDto,
     @GetUser() user: User,
@@ -111,7 +111,7 @@ export class ApplicationController {
     return this.applicationService.createBroaderReviewScore(user, applicationId, scoreDto);
   }
 
-  @Patch('/:applicationId/scores/:scoreId')
+  @Patch('/:applicationId/broader/:scoreId')
   async updateScore(
     @Param('applicationId') applicationId: string,
     @Param('scoreId') scoreId: string,
@@ -122,12 +122,12 @@ export class ApplicationController {
   }
 
   // Workshop Score Section
-  @Get('/:applicationId/workshop-scores')
+  @Get('/:applicationId/workshop')
   async getWorkshopScores(@Param('applicationId') applicationId: string) {
     return this.applicationService.getWorkshopScores(applicationId);
   }
 
-  @Post('/:applicationId/workshop-scores')
+  @Post('/:applicationId/workshop')
   async createWorkshopScore(
     @Body() scoreDto: WorkshopScoreDto,
     @GetUser() user: User,
@@ -136,7 +136,7 @@ export class ApplicationController {
     return this.applicationService.createWorkshopScore(user, applicationId, scoreDto);
   }
 
-  @Patch('/:applicationId/workshop-scores/:scoreId')
+  @Patch('/:applicationId/workshop/:scoreId')
   async updateWorkshopScore(
     @Param('applicationId') applicationId: string,
     @Param('scoreId') scoreId: string,
