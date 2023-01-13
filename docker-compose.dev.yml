@@ -1,0 +1,81 @@
+version: "3.3"
+
+services:
+  ### Frontend #############################
+  client:
+    image: ${PROJECT}_client
+    container_name: ${PROJECT}-client
+    stdin_open: true
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    environment:
+      - NEXT_PUBLIC_KC_AUTH_URL=${KC_AUTH_URL}
+      - NEXT_PUBLIC_KC_AUTH_REALM=${KC_AUTH_REALM}
+      - NEXT_PUBLIC_KC_AUTH_CLIENT_ID=${KC_AUTH_CLIENT_ID}
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    volumes:
+      # Binds the application folder from the host inside the container for fast changes
+      - ./client:/usr/src/app
+      # Ignores/Hides the node_modules from the bind on the host allowing the node_modules
+      # from inside the container to be used instead
+      - /usr/src/app/node_modules
+    networks:
+      - default
+
+  ### API #############################
+  server:
+    image: ${PROJECT}-server
+    container_name: ${PROJECT}-server
+    stdin_open: true
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    environment:
+      - POSTGRES_HOST=${DB_SERVER}
+      - POSTGRES_DATABASE=${DB_NAME}
+      - POSTGRES_USERNAME=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - PORTGRES_PORT=${DB_PORT}
+      - KC_AUTH_URL=${KC_AUTH_URL}
+      - KC_AUTH_REALM=${KC_AUTH_REALM}
+      - KC_AUTH_CLIENT_ID=${KC_AUTH_CLIENT_ID}
+      - APP_PORT=8080
+    ports:
+      - "8080:8080"
+      - "9229:9229"
+    volumes:
+      # Binds the application folder from the host inside the container for fast changes
+      - ./server:/usr/src/app
+      # Ignores/Hides the node_modules from the bind on the host allowing the node_modules
+      # from inside the container to be used instead
+      - /usr/src/app/node_modules
+    depends_on:
+      - database
+    networks:
+      - default
+
+  ### Database #############################
+  database:
+    image: postgres:12-alpine
+    container_name: ${PROJECT}_db
+    volumes:
+      - ./database:/database
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - PGDATA=./database/postgresql/data/pgdata
+    restart: always
+    networks:
+      - default
+
+networks:
+  default:
+    driver: "bridge"

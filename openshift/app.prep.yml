@@ -1,0 +1,50 @@
+kind: Template
+apiVersion: template.openshift.io/v1
+labels:
+  app: ${APP_NAME}
+parameters:
+  - name: APP_NAME
+    description: App name that OpenShift objects will be prefixed with
+    required: true
+  - name: KC_AUTH_URL
+    description: Keycloak realm identifier
+    value: ""
+    required: true
+  - name: KC_AUTH_REALM
+    description: Placeholder for URL used to request authentication actions with Keycloak
+    value: ""
+    required: true
+  - name: KC_AUTH_CLIENT_ID
+    description: Client ID suffix for the application frontend
+    value: ""
+    required: true
+  - name: NEXT_PUBLIC_REDIRECT_URI
+    description: Auth redirect URI
+    value: ""
+    required: true
+  - name: NEXT_PUBLIC_SERVER_URL
+    description: Server URL
+    value: ""
+    required: true
+objects:
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: ${APP_NAME}-keycloak
+    stringData:
+      realm: ${KC_AUTH_REALM}
+      auth-url: ${KC_AUTH_URL}
+      client-id: ${KC_AUTH_CLIENT_ID}
+  - kind: ConfigMap
+    apiVersion: v1
+    metadata:
+      name: ${APP_NAME}-client-env
+    data:
+      NEXT_PUBLIC_REDIRECT_URI: ${NEXT_PUBLIC_REDIRECT_URI}
+      NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL}
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: ${APP_NAME}-server-env
+    stringData:
+      NEXT_PUBLIC_REDIRECT_URI: ${NEXT_PUBLIC_REDIRECT_URI}
