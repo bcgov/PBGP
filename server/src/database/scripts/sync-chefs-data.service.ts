@@ -18,6 +18,7 @@ import { DatabaseError } from '../database.error';
 
 const CHEFS_BASE_URL = 'https://submit.digital.gov.bc.ca/app/api/v1';
 const FILE_URL = 'https://submit.digital.gov.bc.ca';
+const MAX_PROJECT_TITLE_LENGTH = 100;
 
 @Injectable()
 export class SyncChefsDataService {
@@ -149,7 +150,10 @@ export class SyncChefsDataService {
         submission: responseData.submission.data,
         confirmationId: responseData.confirmationId,
         facilityName: responseData.submission.data.facilityName,
-        projectTitle: responseData.submission.data.projectTitle,
+        projectTitle: responseData.submission.data.projectTitle.substring(
+          0,
+          MAX_PROJECT_TITLE_LENGTH
+        ),
         totalEstimatedCost: responseData.submission.data.totalEstimatedCostOfProject,
         asks: responseData.submission.data.totalRequestBeingMadeOfBcaapACDNotToExceedB,
       };
