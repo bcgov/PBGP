@@ -2,7 +2,7 @@ import { Application } from '../application/application.entity';
 import { ScoreBaseEntity } from '../common/score-base.entity';
 import { User } from '../user/user.entity';
 import { Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne, Column } from 'typeorm';
-import { WorkshopScoreStatus } from '../common/enums';
+import { CompletionStatuses } from '@/common/enums';
 
 @Entity({
   name: 'pbgp_workshop_score',
@@ -15,9 +15,9 @@ export class WorkshopScore extends ScoreBaseEntity {
     type: 'varchar',
     nullable: false,
     length: 30,
-    default: WorkshopScoreStatus.IN_PROGRESS,
+    default: CompletionStatuses.IN_PROGRESS,
   })
-  status: WorkshopScoreStatus;
+  status: CompletionStatuses;
 
   @ManyToOne(() => User)
   @JoinColumn()

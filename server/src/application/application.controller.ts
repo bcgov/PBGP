@@ -1,4 +1,4 @@
-import { SUCCESS_RESPONSE } from '../common/constants';
+import { SUCCESS_RESPONSE, UserRoles } from '../common/constants';
 import { SaveApplicationDto } from '../common/dto/save-application.dto';
 import { GetApplicationsDto } from '../common/dto/get-applications.dto';
 import {
@@ -17,15 +17,13 @@ import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
 import { PaginationRO } from '../common/ro/pagination.ro';
 import { CommentDto } from '../comments/dto/comment.dto';
-import { GetUser } from '../common/decorator';
+import { GetUser, Roles } from '../common/decorator';
 import { Comment } from '../comments/comment.entity';
 import { AssignToUserDto } from '../common/dto/assign-to-user.dto';
 import { User } from '../user/user.entity';
 import { CommentResultRo } from './ro/app-comment.ro';
 import { UpdateStatusDto } from './dto/update-status.dto';
-import { ScoreDto, WorkshopScoreDto } from '../score/dto/score.dto';
-import { GenericException } from '@/common/generic-exception';
-import { ScoreError } from '@/score/score.errors';
+import { ScoreDto } from '../score/dto/score.dto';
 
 @ApiBearerAuth()
 @Controller('applications')
@@ -130,14 +128,13 @@ export class ApplicationController {
   }
 
   @Post('/:applicationId/workshop')
+  @Roles(UserRoles.ADMIN)
   async createWorkshopScore(
-    @Body() scoreDto: WorkshopScoreDto,
+    @Body() scoreDto: ScoreDto,
     @GetUser() user: User,
+
     @Param('applicationId') applicationId: string
   ) {
-    if (!user.isAdmin) {
-      throw new GenericException(ScoreError.UNAUTHORIZED);
-    }
     return this.applicationService.createWorkshopScore(user, applicationId, scoreDto);
   }
 
@@ -145,12 +142,8 @@ export class ApplicationController {
   async updateWorkshopScore(
     @Param('applicationId') applicationId: string,
     @Param('scoreId') scoreId: string,
-    @Body() scoreDto: WorkshopScoreDto,
-    @GetUser() user: User
+    @Body() scoreDto: ScoreDto
   ) {
-    if (!user.isAdmin) {
-      throw new GenericException(ScoreError.UNAUTHORIZED);
-    }
-    return this.applicationService.updateWorkshopScore(user, applicationId, scoreId, scoreDto);
+    return this.applicationService.updateWorkshopScore(applicationId, scoreId, scoreDto);
   }
 }

@@ -4,7 +4,7 @@ import { User } from '../user/user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { WorkshopScoreDto } from './dto/score.dto';
+import { ScoreDto } from './dto/score.dto';
 import { ScoreError } from './score.errors';
 import { WorkshopScore } from './workshop-score.entity';
 
@@ -36,7 +36,7 @@ export class WorkshopScoreService {
   async createWorkshopScore(
     user: User,
     application: Application,
-    scoreDto: WorkshopScoreDto
+    scoreDto: ScoreDto
   ): Promise<WorkshopScore> {
     const score = await this.workshopScoreRepository.create(scoreDto);
     score.user = user;
@@ -46,15 +46,12 @@ export class WorkshopScoreService {
   }
 
   async updateWorkshopScore(
-    user: User,
     application: Application,
     scoreId: string,
-    scoreDto: WorkshopScoreDto
+    scoreDto: ScoreDto
   ): Promise<WorkshopScore> {
     const score = await this.getWorkshopScore(scoreId);
-    if (score.user.id !== user.id) {
-      throw new GenericException(ScoreError.USER_MISMATCH);
-    }
+
     if (score.application.id !== application.id) {
       throw new GenericException(ScoreError.APPLICATION_MISMATCH);
     }

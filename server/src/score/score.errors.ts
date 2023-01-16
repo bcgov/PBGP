@@ -19,10 +19,4 @@ export const ScoreError = {
     errorMessage: 'Score is assigned to a application user',
     httpStatus: HttpStatus.BAD_REQUEST,
   } as GenericError,
-
-  UNAUTHORIZED: {
-    errorType: 'UNAUTHORIZED',
-    errorMessage: "You don't have admin permissions to perform this action",
-    httpStatus: HttpStatus.UNAUTHORIZED,
-  },
 };
