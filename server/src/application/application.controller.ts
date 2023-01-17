@@ -139,6 +139,7 @@ export class ApplicationController {
   }
 
   @Patch('/:applicationId/workshop/:scoreId')
+  @Roles(UserRoles.ADMIN)
   async updateWorkshopScore(
     @Param('applicationId') applicationId: string,
     @Param('scoreId') scoreId: string,

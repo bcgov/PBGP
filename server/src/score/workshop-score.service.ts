@@ -38,6 +38,12 @@ export class WorkshopScoreService {
     application: Application,
     scoreDto: ScoreDto
   ): Promise<WorkshopScore> {
+    const existingScore = await this.workshopScoreRepository.findOne({
+      where: { application: application },
+    });
+    if (existingScore) {
+      throw new GenericException(ScoreError.SCORE_EXISTS);
+    }
     const score = await this.workshopScoreRepository.create(scoreDto);
     score.user = user;
     score.application = application;

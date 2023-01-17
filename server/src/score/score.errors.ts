@@ -19,4 +19,10 @@ export const ScoreError = {
     errorMessage: 'Score is assigned to a application user',
     httpStatus: HttpStatus.BAD_REQUEST,
   } as GenericError,
+
+  SCORE_EXISTS: {
+    errorType: 'SCORE_EXISTS',
+    errorMessage: 'Score already exists for this application',
+    httpStatus: HttpStatus.BAD_REQUEST,
+  },
 };
