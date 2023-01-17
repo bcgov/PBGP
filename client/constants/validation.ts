@@ -16,9 +16,7 @@ export const BROADER_REVIEW_VALIDATION_SCHEMA = Yup.object().shape({
   pastBcaapFundingScore: Yup.number()
     .min(0, minValidationText + '0')
     .max(3, maxValidationText + '3'),
-  facilityMasterPlanScore: Yup.number()
-    .min(0, minValidationText + '0')
-    .max(2, maxValidationText + '2'),
+  facilityMasterPlanScore: Yup.number().oneOf([0, 2], 'Must be either 0 or 2'),
   facilityUsageScore: Yup.number()
     .min(1, minValidationText + '1')
     .max(2, maxValidationText + '2'),
@@ -67,13 +65,11 @@ export const BROADER_REVIEW_VALIDATION_SCHEMA = Yup.object().shape({
   concernsScore: Yup.number()
     .min(0, minValidationText + '0')
     .max(5, maxValidationText + '5'),
-  contingencyPlanScore: Yup.number()
-    .min(0, minValidationText + '0')
-    .max(5, maxValidationText + '2'),
+  contingencyPlanScore: Yup.number().oneOf([0, 2], 'Must be either 0 or 2'),
   classBCostScore: Yup.number()
     .min(1, minValidationText + '1')
     .max(5, maxValidationText + '5'),
   thirdPartyContributionScore: Yup.number()
     .min(1, minValidationText + '1')
-    .max(2, maxValidationText + '2'),
+    .max(1, maxValidationText + '1'),
 });
