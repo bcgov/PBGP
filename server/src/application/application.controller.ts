@@ -1,4 +1,4 @@
-import { SUCCESS_RESPONSE } from '../common/constants';
+import { SUCCESS_RESPONSE, UserRoles } from '../common/constants';
 import { SaveApplicationDto } from '../common/dto/save-application.dto';
 import { GetApplicationsDto } from '../common/dto/get-applications.dto';
 import {
@@ -17,7 +17,7 @@ import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
 import { PaginationRO } from '../common/ro/pagination.ro';
 import { CommentDto } from '../comments/dto/comment.dto';
-import { GetUser } from '../common/decorator';
+import { GetUser, Roles } from '../common/decorator';
 import { Comment } from '../comments/comment.entity';
 import { AssignToUserDto } from '../common/dto/assign-to-user.dto';
 import { User } from '../user/user.entity';
@@ -96,13 +96,13 @@ export class ApplicationController {
     return SUCCESS_RESPONSE;
   }
 
-  // Score Section
-  @Get('/:applicationId/scores')
+  // Broader Review Score Section
+  @Get('/:applicationId/broader')
   async getScores(@Param('applicationId') applicationId: string) {
     return this.applicationService.getBroaderReviewScores(applicationId);
   }
 
-  @Post('/:applicationId/scores')
+  @Post('/:applicationId/broader')
   async createScore(
     @Body() scoreDto: ScoreDto,
     @GetUser() user: User,
@@ -111,7 +111,7 @@ export class ApplicationController {
     return this.applicationService.createBroaderReviewScore(user, applicationId, scoreDto);
   }
 
-  @Patch('/:applicationId/scores/:scoreId')
+  @Patch('/:applicationId/broader/:scoreId')
   async updateScore(
     @Param('applicationId') applicationId: string,
     @Param('scoreId') scoreId: string,
@@ -119,5 +119,32 @@ export class ApplicationController {
     @GetUser() user: User
   ) {
     return this.applicationService.updateBroaderReviewScore(user, applicationId, scoreId, scoreDto);
+  }
+
+  // Workshop Score Section
+  @Get('/:applicationId/workshop')
+  async getWorkshopScores(@Param('applicationId') applicationId: string) {
+    return this.applicationService.getWorkshopScores(applicationId);
+  }
+
+  @Post('/:applicationId/workshop')
+  @Roles(UserRoles.ADMIN)
+  async createWorkshopScore(
+    @Body() scoreDto: ScoreDto,
+    @GetUser() user: User,
+
+    @Param('applicationId') applicationId: string
+  ) {
+    return this.applicationService.createWorkshopScore(user, applicationId, scoreDto);
+  }
+
+  @Patch('/:applicationId/workshop/:scoreId')
+  @Roles(UserRoles.ADMIN)
+  async updateWorkshopScore(
+    @Param('applicationId') applicationId: string,
+    @Param('scoreId') scoreId: string,
+    @Body() scoreDto: ScoreDto
+  ) {
+    return this.applicationService.updateWorkshopScore(applicationId, scoreId, scoreDto);
   }
 }

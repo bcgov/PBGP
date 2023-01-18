@@ -1,7 +1,7 @@
 import { HttpStatus } from '@nestjs/common';
 import { GenericError } from '../common/generic-exception';
 
-export const BroaderReviewScoreError = {
+export const ScoreError = {
   SCORE_NOT_FOUND: {
     errorType: 'SCORE_NOT_FOUND',
     errorMessage: 'Cannot find score',
@@ -19,4 +19,10 @@ export const BroaderReviewScoreError = {
     errorMessage: 'Score is assigned to a application user',
     httpStatus: HttpStatus.BAD_REQUEST,
   } as GenericError,
+
+  SCORE_EXISTS: {
+    errorType: 'SCORE_EXISTS',
+    errorMessage: 'Score already exists for this application',
+    httpStatus: HttpStatus.BAD_REQUEST,
+  },
 };

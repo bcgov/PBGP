@@ -6,6 +6,7 @@ import { ApplicationService } from './application.service';
 import { UserModule } from '../user/user.module';
 import { CommentModule } from '../comments/comment.module';
 import { BroaderReviewScoreModule } from '../score/broader-review-score.module';
+import { WorkshopScoreModule } from '../score/workshop-score.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { BroaderReviewScoreModule } from '../score/broader-review-score.module';
     UserModule,
     CommentModule,
     BroaderReviewScoreModule,
+    WorkshopScoreModule,
   ],
   exports: [ApplicationService],
   controllers: [ApplicationController],

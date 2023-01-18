@@ -18,6 +18,7 @@ import { ApplicationError } from './application.errors';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { BroaderReviewScoreService } from '../score/broader-review-score.service';
 import { ScoreDto } from '../score/dto/score.dto';
+import { WorkshopScoreService } from '../score/workshop-score.service';
 
 @Injectable()
 export class ApplicationService {
@@ -26,7 +27,8 @@ export class ApplicationService {
     private applicationRepository: Repository<Application>,
     private userService: UserService,
     private commentService: CommentService,
-    private scoreService: BroaderReviewScoreService
+    private broaderScoreService: BroaderReviewScoreService,
+    private workshopScoreService: WorkshopScoreService
   ) {}
 
   async getApplications(query: GetApplicationsDto): Promise<PaginationRO<Application>> | null {
@@ -138,15 +140,15 @@ export class ApplicationService {
     await this.unassignUser(applicationId, user);
   }
 
-  // Score Section
+  // Broader Review Score Section
   async getBroaderReviewScores(applicationId: string) {
-    return this.scoreService.getBroaderReviewScores(applicationId);
+    return this.broaderScoreService.getBroaderReviewScores(applicationId);
   }
 
   async createBroaderReviewScore(user: User, applicationId: string, scoreDto: ScoreDto) {
     const application = await this.getApplication(applicationId);
 
-    return this.scoreService.createBroaderReviewScore(user, application, scoreDto);
+    return this.broaderScoreService.createBroaderReviewScore(user, application, scoreDto);
   }
   async updateBroaderReviewScore(
     user: User,
@@ -156,6 +158,22 @@ export class ApplicationService {
   ) {
     const application = await this.getApplication(applicationId);
 
-    return this.scoreService.updateBroaderReviewScore(user, application, scoreId, scoreDto);
+    return this.broaderScoreService.updateBroaderReviewScore(user, application, scoreId, scoreDto);
+  }
+
+  // Workshop Score Section
+  async getWorkshopScores(applicationId: string) {
+    return this.workshopScoreService.getWorkshopScores(applicationId);
+  }
+
+  async createWorkshopScore(user: User, applicationId: string, scoreDto: ScoreDto) {
+    const application = await this.getApplication(applicationId);
+
+    return this.workshopScoreService.createWorkshopScore(user, application, scoreDto);
+  }
+  async updateWorkshopScore(applicationId: string, scoreId: string, scoreDto: ScoreDto) {
+    const application = await this.getApplication(applicationId);
+
+    return this.workshopScoreService.updateWorkshopScore(application, scoreId, scoreDto);
   }
 }
