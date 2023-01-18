@@ -19,7 +19,7 @@ export const useApplicationScores = (applicationId: string) => {
   const fetchApplicationScores = () => {
     fetchData(
       {
-        endpoint: API_ENDPOINT.getApplicationScores(applicationId),
+        endpoint: API_ENDPOINT.getBroaderScores(applicationId),
       },
       (data: any) => {
         setApplicationScores(data);
@@ -81,8 +81,8 @@ export const useApplicationScores = (applicationId: string) => {
     sendApiRequest(
       {
         endpoint: newScore
-          ? API_ENDPOINT.getApplicationScores(applicationId)
-          : API_ENDPOINT.updateApplicationScores(applicationId, scoreId),
+          ? API_ENDPOINT.getBroaderScores(applicationId)
+          : API_ENDPOINT.updateBroaderScores(applicationId, scoreId),
         method: newScore ? REQUEST_METHOD.POST : REQUEST_METHOD.PATCH,
         data: obj,
       },
