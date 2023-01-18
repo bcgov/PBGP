@@ -10,7 +10,7 @@ import {
   NextStatusUpdates,
 } from '../constants';
 import { KeyValuePair } from '../constants/interfaces';
-import { UserInterface } from '../contexts';
+import { useAuthContext, UserInterface } from '../contexts';
 import { useHttp } from './useHttp';
 import { useTeamManagement } from './useTeamManagement';
 
@@ -40,6 +40,7 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
 
   const { fetchData, sendApiRequest } = useHttp();
   const { userData } = useTeamManagement();
+  const { user } = useAuthContext();
 
   const topStatusObj = [
     { title: 'Status', value: 'status' },
@@ -65,30 +66,13 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
     });
   };
 
-  const getApplicationScoresById = (id: string): Promise<any> => {
-    return new Promise<any>(resolve => {
-      fetchData(
-        {
-          endpoint: API_ENDPOINT.getApplicationScores(id),
-        },
-        (data: any) => {
-          resolve(data);
-        },
-      );
-    }).then(data => {
-      return data;
-    });
-  };
-
   const { data } = useSWR(id, (id: string) => getApplicationById(id));
-  //const { scores } = useSWR(id, (id: string) => getApplicationScoresById(id));
 
   const [schema, setSchema] = useState<any[]>([]);
   const [formData, setFormData] = useState<KeyValuePair | undefined>();
   const [details, setDetails] = useState<ApplicationDetailsType | undefined>();
   const [showComments, setShowComments] = useState<boolean>(false);
   const [userList, setUserList] = useState<UserInterface[]>([]);
-  const [applicationScores, setApplicationScores] = useState<any[]>([]);
 
   const updateStatus = (id: string, status: ApplicationStatus) => {
     sendApiRequest(
@@ -125,10 +109,12 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
         });
         break;
       case ApplicationStatus.BROADER_REVIEW:
-        statusUpdates.push({
-          label: NextStatusUpdates.PROCEED,
-          onClick: () => updateStatus(id, ApplicationStatus.WORKSHOP),
-        });
+        if (user?.isAdmin) {
+          statusUpdates.push({
+            label: NextStatusUpdates.PROCEED,
+            onClick: () => updateStatus(id, ApplicationStatus.WORKSHOP),
+          });
+        }
         break;
 
       case ApplicationStatus.WORKSHOP:

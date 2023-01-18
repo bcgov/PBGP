@@ -13,7 +13,6 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  @Roles(UserRoles.ADMIN)
   getUsers(): Promise<User[]> {
     return this.userService.getUsers();
   }
