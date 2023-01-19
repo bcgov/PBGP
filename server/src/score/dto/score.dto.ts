@@ -1,4 +1,5 @@
-import { CompletionStatuses } from '@/common/enums';
+import { CompletionStatuses } from '../../common/enums';
+
 import {
   IsEmpty,
   IsEnum,

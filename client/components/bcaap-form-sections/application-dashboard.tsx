@@ -1,4 +1,4 @@
-import { Button, ApplicationTable } from '@components';
+import { Button, ApplicationTable, Spinner } from '@components';
 import { Pagination } from '../form';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,7 +18,7 @@ export const ApplicationDashboard: React.FC<any> = () => {
 
   const { searchFacilityName, searchConfirmationID, totalApplications, data } = state;
   const { push, query } = useRouter();
-  const { fetchData } = useHttp();
+  const { fetchData, isLoading } = useHttp();
   const { page, limit } = query;
 
   const setApplicationData = async (params: any) => {
@@ -100,48 +100,55 @@ export const ApplicationDashboard: React.FC<any> = () => {
           Applications
         </h1>
       </div>
-      <div className='w-full border py-4 px-8 mb-2'>
-        Filter By:
-        <div className='grid grid-cols-3 gap-1'>
-          <input
-            type='text'
-            className='bg-white rounded border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            placeholder={'Facility Name'}
-            onChange={e => setState(p => ({ ...p, searchFacilityName: e.target.value }))}
-            value={searchFacilityName}
-          />
-          <input
-            type='text'
-            className='bg-white rounded border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            placeholder={'Confirmation ID'}
-            onChange={e => setState(p => ({ ...p, searchConfirmationID: e.target.value }))}
-            value={searchConfirmationID}
-          />
 
-          <div className='grid grid-cols-2 gap-1'>
-            <Button onClick={handleFilter} variant='primary'>
-              <FontAwesomeIcon icon={faFilter} className='h-4 mr-2' />
-              Filter Records
-            </Button>
-            <Button onClick={handleClear} variant='outline'>
-              <FontAwesomeIcon icon={faTimes} className='h-4 mr-2' />
-              Clear Filter
-            </Button>
+      {isLoading ? (
+        <Spinner className='h-10 w-10' />
+      ) : (
+        <>
+          <div className='w-full border py-4 px-8 mb-2'>
+            Filter By:
+            <div className='grid grid-cols-3 gap-1'>
+              <input
+                type='text'
+                className='bg-white rounded border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                placeholder={'Facility Name'}
+                onChange={e => setState(p => ({ ...p, searchFacilityName: e.target.value }))}
+                value={searchFacilityName}
+              />
+              <input
+                type='text'
+                className='bg-white rounded border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                placeholder={'Confirmation ID'}
+                onChange={e => setState(p => ({ ...p, searchConfirmationID: e.target.value }))}
+                value={searchConfirmationID}
+              />
+
+              <div className='grid grid-cols-2 gap-1'>
+                <Button onClick={handleFilter} variant='primary'>
+                  <FontAwesomeIcon icon={faFilter} className='h-4 mr-2' />
+                  Filter Records
+                </Button>
+                <Button onClick={handleClear} variant='outline'>
+                  <FontAwesomeIcon icon={faTimes} className='h-4 mr-2' />
+                  Clear Filter
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      {data && <ApplicationTable applications={data} />}
+          {data && <ApplicationTable applications={data} />}
 
-      <Pagination
-        currentPage={Number(page)}
-        applicationsPerPage={Number(limit)}
-        totalApplications={totalApplications}
-        firstPage={firstPage}
-        lastPage={lastPage}
-        previousPage={previousPage}
-        nextPage={nextPage}
-      />
+          <Pagination
+            currentPage={Number(page)}
+            applicationsPerPage={Number(limit)}
+            totalApplications={totalApplications}
+            firstPage={firstPage}
+            lastPage={lastPage}
+            previousPage={previousPage}
+            nextPage={nextPage}
+          />
+        </>
+      )}
     </div>
   );
 };
