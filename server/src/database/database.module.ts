@@ -13,6 +13,7 @@ import { User } from '../user/user.entity';
 import { ApplicationModule } from '../application/application.module';
 import { Attachment } from '../attachments/attachment.entity';
 import { AttachmentModule } from '../attachments/attachment.module';
+import { WorkshopToPdfService } from '@/pdf-export/scripts/workshop-to-pdf.service';
 
 // const getEnvironmentSpecificConfig = (env?: string) => {
 //   switch (env) {
@@ -58,7 +59,7 @@ const appOrmConfig: PostgresConnectionOptions = {
     ApplicationModule,
     AttachmentModule,
   ],
-  providers: [Logger, SyncChefsDataService, FormMetaDataService],
+  providers: [Logger, SyncChefsDataService, WorkshopToPdfService, FormMetaDataService],
   exports: [TypeOrmModule],
 })
 export class DatabaseModule {}
