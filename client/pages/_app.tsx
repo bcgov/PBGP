@@ -31,6 +31,13 @@ const keycloakConfig = {
 const BASE_URL = publicRuntimeConfig.NEXT_PUBLIC_SERVER_URL;
 const REDIRECT_URL = publicRuntimeConfig.NEXT_PUBLIC_REDIRECT_URI;
 
+export const NEXT_PUBLIC_LARGE_PROJECT = publicRuntimeConfig.NEXT_PUBLIC_LARGE_PROJECT;
+export const NEXT_PUBLIC_SMALL_PROJECT = publicRuntimeConfig.NEXT_PUBLIC_SMALL_PROJECT;
+export const NEXT_PUBLIC_ENVIRONMENT_PLANNING =
+  publicRuntimeConfig.NEXT_PUBLIC_ENVIRONMENT_PLANNING;
+export const NEXT_PUBLIC_DEVELOPMENT_PLANNING =
+  publicRuntimeConfig.NEXT_PUBLIC_DEVELOPMENT_PLANNING;
+
 axios.defaults.baseURL = BASE_URL;
 
 function CustomApp({ Component, pageProps, cookies }: AppProps) {

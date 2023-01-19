@@ -5,6 +5,7 @@ import {
   EvaluationBoardData,
   BROADER_REVIEW_VALIDATION_SCHEMA,
   ReviewCompletionStatus,
+  ApplicationType,
 } from '../../constants';
 import { Textarea, Radio, Error } from '../form';
 import { UserInterface } from '../../contexts';
@@ -12,18 +13,22 @@ import { FinalScore, Input, UserView } from '../broader-review';
 
 export type BroaderReviewProps = {
   applicationId: string;
-  users: UserInterface[];
+  userList: UserInterface[];
   onClose: () => void;
+  applicationType: ApplicationType;
 };
 
-export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) => {
+export const BroaderReview: React.FC<BroaderReviewProps> = ({
+  applicationId,
+  userList,
+  applicationType,
+}) => {
   const {
     applicationScores,
     applicationScoresByScorer,
     handleSubmit,
     selectedUser,
     isLoggedInUser,
-    userData: usersList,
     handleChangeScorer,
     loggedInUser,
     isLoading,
@@ -65,8 +70,8 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
                   <div className='p-4 grid grid-flow-row gap-4'>
                     <div>
                       {/* TODO: User list on who's reviewing and completed should be fetched from the backend for each application */}
-                      {usersList &&
-                        usersList.map((item: any) => {
+                      {userList &&
+                        userList.map((item: any) => {
                           const scoreStatus = applicationScores.filter(
                             (i: any) => item.id == i.user,
                           );
@@ -83,7 +88,12 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({ applicationId }) =
                         })}
 
                       <div className='mt-4 bg-white pt-4 pb-4'>
-                        {EvaluationBoardData.map((item, index) => (
+                        {EvaluationBoardData.filter((item: any) => {
+                          if (item.criteria) {
+                            return item.criteria.includes(applicationType);
+                          }
+                          return true;
+                        }).map((item, index) => (
                           <div key={`BroderReviewInput_${selectedUser}_${index}`} className='mb-3'>
                             <Input
                               obj={item.obj}

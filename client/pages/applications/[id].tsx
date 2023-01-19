@@ -31,6 +31,7 @@ const ApplicationDetails: NextPage = () => {
     updateEvaluator,
     userList,
     isPanelDefaultOpen,
+    applicationType,
   } = useApplicationDetails(id);
 
   return (
@@ -129,12 +130,13 @@ const ApplicationDetails: NextPage = () => {
                 <Comments applicationId={id} onClose={() => setShowComments(false)} />
               </div>
             )}
-            {details && details.status == 'BROADER_REVIEW' && (
+            {details && applicationType && details.status == 'BROADER_REVIEW' && (
               <div className='col-span-2 pb-4'>
                 <BroaderReview
                   applicationId={id}
-                  users={userList}
+                  userList={userList}
                   onClose={() => setShowComments(false)}
+                  applicationType={applicationType}
                 />
               </div>
             )}

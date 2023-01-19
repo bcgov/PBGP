@@ -15,7 +15,7 @@ export class WorkshopScoreService {
     private workshopScoreRepository: Repository<WorkshopScore>
   ) {}
 
-  async getWorkshopScores(applicationId: string) {
+  async getWorkshopScoreForApplication(applicationId: string) {
     return await this.workshopScoreRepository.find({
       where: { application: applicationId },
       relations: ['user'],
@@ -39,14 +39,12 @@ export class WorkshopScoreService {
     scoreDto: ScoreDto
   ): Promise<WorkshopScore> {
     const existingScore = await this.workshopScoreRepository.findOne({
-      where: { application: application },
+      where: { application },
     });
     if (existingScore) {
       throw new GenericException(ScoreError.SCORE_EXISTS);
     }
-    const score = await this.workshopScoreRepository.create(scoreDto);
-    score.user = user;
-    score.application = application;
+    const score = this.workshopScoreRepository.create({ ...scoreDto, user, application });
 
     return this.workshopScoreRepository.save(score);
   }
