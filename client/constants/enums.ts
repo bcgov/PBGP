@@ -16,3 +16,10 @@ export enum ApplicationStatus {
   BROADER_REVIEW = 'BROADER_REVIEW',
   WORKSHOP = 'WORKSHOP',
 }
+
+export enum ApplicationType {
+  LARGE_PROJECT = 'LP',
+  SMALL_PROJECT = 'SP',
+  ENVIRONMENT_PLANNING = 'EP',
+  DEVELOPMENT_PLANNING = 'DP',
+}
