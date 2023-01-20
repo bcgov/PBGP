@@ -163,7 +163,7 @@ export class ApplicationService {
 
   // Workshop Score Section
   async getWorkshopScores(applicationId: string) {
-    return this.workshopScoreService.getWorkshopScores(applicationId);
+    return this.workshopScoreService.getWorkshopScoreForApplication(applicationId);
   }
 
   async createWorkshopScore(user: User, applicationId: string, scoreDto: ScoreDto) {

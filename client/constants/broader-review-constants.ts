@@ -1,4 +1,5 @@
 import { ReviewCompletionStatus } from './constants';
+import { ApplicationType } from './enums';
 
 const evaluationObj1 = [
   { value: 'Airside', text: 'Airside / core aviation infrastructure' },
@@ -62,6 +63,11 @@ export const EvaluationBoardData = [
     description: 'BCAAP staff to evaluate this line',
     tooltiptext: 'Score 2 if “yes”, score 0 if “no” or “NA”.',
     obj: evaluationObj2,
+    criteria: [
+      ApplicationType.LARGE_PROJECT,
+      ApplicationType.SMALL_PROJECT,
+      ApplicationType.ENVIRONMENT_PLANNING,
+    ],
   },
   {
     name: 'facilityUsageScore',
@@ -78,6 +84,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 0 to 3, respectively, if the applicant provides 0 years of data, 1 year of date, 2 years of date, or 3 or more years of ',
     obj: null,
+    criteria: [ApplicationType.LARGE_PROJECT],
   },
   {
     name: 'climatePerspectiveScore',
@@ -86,6 +93,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 4-5 if applicant demonstrates that project will result in significant environmental benefit. Score 2-3 if modest benefit. Score 0-1 if minimal benefit.',
     obj: null,
+    criteria: [ApplicationType.LARGE_PROJECT],
   },
   {
     name: 'climateBestPracticesScore',
@@ -95,6 +103,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 4-5 if applicant demonstrates that project incorporates significant environmental best practices into design and construction. Score 2-3 if modest incorporation. Score 0-1 if minimal incorporation.',
     obj: null,
+    criteria: [ApplicationType.LARGE_PROJECT],
   },
   {
     name: 'environmentalRisksScore',
@@ -104,6 +113,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 4-5 if applicant demonstrates minimal environmental risk to project. Score 2-3 if modest risk. Score 0-1 if high risk.',
     obj: null,
+    criteria: [ApplicationType.LARGE_PROJECT, ApplicationType.SMALL_PROJECT],
   },
   {
     name: 'environmentalInnovationScore',
@@ -113,6 +123,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 4-5 if applicant demonstrates that project incorporates significant innovation. Score 2-3 if modest innovation. Score 0-1 if minimal innovation.',
     obj: null,
+    criteria: [ApplicationType.LARGE_PROJECT, ApplicationType.SMALL_PROJECT],
   },
   {
     name: 'projectDescriptionScore',
@@ -121,6 +132,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 2 if checked or if “other” is checked and project inserted is aligned with program goals, 1 if environmental but not fully aligned with program goals, or 0 if not.',
     obj: evaluationObj3,
+    criteria: [ApplicationType.ENVIRONMENT_PLANNING],
   },
   {
     name: 'climateGoalsScore',
@@ -130,6 +142,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 4-5 if applicant demonstrates that project will result in significant environmental benefit. Score 2-3 if modest benefit. Score 0-1 if minimal benefit.',
     obj: null,
+    criteria: [ApplicationType.ENVIRONMENT_PLANNING],
   },
   {
     name: 'organizationClimateGoalScore',
@@ -139,6 +152,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 4-5 if applicant demonstrates that project is part of a significant broader environmental strategy. Score 2-3 if modest; score 0-1 if minimal.',
     obj: null,
+    criteria: [ApplicationType.ENVIRONMENT_PLANNING],
   },
   {
     name: 'successMeasurementScore',
@@ -147,6 +161,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 4-5 if applicant demonstrates that project includes significant measurable assessment metrics. Score 2-3 if modest; score 0-1 if minimal.',
     obj: null,
+    criteria: [ApplicationType.ENVIRONMENT_PLANNING],
   },
   {
     name: 'safetyScore',
@@ -155,6 +170,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 11-15 if applicant demonstrates that the project will bring significant safety benefits. Score 6-10 for modest safety benefits. Score 0-5 for minimal safety benefits.',
     obj: null,
+    criteria: [ApplicationType.LARGE_PROJECT],
   },
   {
     name: 'medevacScore',
@@ -163,6 +179,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 11-15 if applicant demonstrates and BCEHS, BCWS or EMBC confirms, that the project will bring significant medevac or wildfire benefits. Score 6-10 for modest benefits. Score 0-5 for minimal benefits.',
     obj: null,
+    criteria: [ApplicationType.LARGE_PROJECT],
   },
   {
     name: 'localBenefitsScore',
@@ -172,6 +189,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 8-10 if applicant demonstrates and JERI or TACS confirms, that the project will bring significant economic benefits. Score 4-7 for modest benefits. Score 0-3 for minimal benefits.',
     obj: null,
+    criteria: [ApplicationType.LARGE_PROJECT],
   },
   {
     name: 'longTermScore',
@@ -181,6 +199,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 4-5 if applicant demonstrates that the project is fully consistent with community vision. Score 2-3 for modest consistency, score 0-1 for limited consistency.',
     obj: null,
+    criteria: [ApplicationType.LARGE_PROJECT],
   },
   {
     name: 'communitySupportScore',
@@ -189,6 +208,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 1 point if there is a letter of support from the local chamber of commerce or business association. Score an additional 2 points if there are at least 3 letters of support or an additional 1 point if there are at least 2 letters of support.',
     obj: null,
+    criteria: [ApplicationType.LARGE_PROJECT],
   },
   {
     name: 'concernsScore',
@@ -198,6 +218,7 @@ export const EvaluationBoardData = [
     tooltiptext:
       'Score 4-5 if applicant can demonstrate that there are no local concerns or, if there are concerns, that there are appropriate mitigations in place. Score 0-3 if applicant does not detail any process for identifying or addressing concerns or if applicant identifies but fails to adequately address concerns.',
     obj: null,
+    criteria: [ApplicationType.LARGE_PROJECT],
   },
   {
     name: 'contingencyPlanScore',

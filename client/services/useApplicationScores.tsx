@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { API_ENDPOINT, INITIAL_BROADER_REVIEW_VALUES, REQUEST_METHOD } from '../constants';
 import { useAuthContext } from '../contexts';
 import { useHttp } from './useHttp';
-import { useTeamManagement } from './useTeamManagement';
 import { toast } from 'react-toastify';
 
 export const useApplicationScores = (applicationId: string) => {
@@ -10,7 +9,6 @@ export const useApplicationScores = (applicationId: string) => {
   const { fetchData, sendApiRequest, isLoading } = useHttp();
   const [selectedUser, setSelectedUser] = useState<string | undefined>('');
   const [applicationScoresByScorer, setApplicationScoresByScorer] = useState<any>();
-  const { userData } = useTeamManagement();
   const { user: loggedInUser } = useAuthContext();
   const [newScore, setNewScore] = useState<boolean>(true);
   const [scoreId, setScoreId] = useState<string>('');
@@ -123,7 +121,6 @@ export const useApplicationScores = (applicationId: string) => {
     handleSubmit,
     selectedUser,
     loggedInUser,
-    userData,
     handleChangeScorer,
     isLoggedInUser,
     isLoading,
