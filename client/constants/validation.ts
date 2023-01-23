@@ -70,6 +70,6 @@ export const APPLICATION_REVIEW_VALIDATION_SCHEMA = Yup.object().shape({
     .min(1, minValidationText + '1')
     .max(5, maxValidationText + '5'),
   thirdPartyContributionScore: Yup.number()
-    .min(1, minValidationText + '0')
-    .max(1, maxValidationText + '2'),
+    .min(0, minValidationText + '0')
+    .max(2, maxValidationText + '2'),
 });
