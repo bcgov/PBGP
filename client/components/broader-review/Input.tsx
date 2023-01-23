@@ -12,7 +12,6 @@ export type InputProps = {
   name: string;
   tooltiptext?: string;
   description?: string;
-  selectedUser: string;
   disabled: boolean;
   obj?: ObjProps[] | null | undefined;
 };

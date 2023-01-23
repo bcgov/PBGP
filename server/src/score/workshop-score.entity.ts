@@ -17,7 +17,7 @@ export class WorkshopScore extends ScoreBaseEntity {
     length: 30,
     default: CompletionStatuses.IN_PROGRESS,
   })
-  status: CompletionStatuses;
+  completionStatus: CompletionStatuses;
 
   @ManyToOne(() => User)
   @JoinColumn()

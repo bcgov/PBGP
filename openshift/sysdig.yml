@@ -1,0 +1,13 @@
+apiVersion: ops.gov.bc.ca/v1alpha1
+kind: SysdigTeam
+metadata:
+  name: ed9154-sysdigteam
+  namespace: ed9154-tools
+spec:
+  team:
+    description: The Sysdig Team for the OpenShift Project Set <PROJECT_SET_NAME>
+    users:
+      - name: karthikk.tamil.mani@ca.ey.com
+        role: ROLE_TEAM_EDIT
+      - name: iouri.atavine@gov.bc.ca
+        role: ROLE_TEAM_EDIT
