@@ -26,7 +26,7 @@ const evaluationObj3 = [
   { value: 'Other', text: 'Other' },
 ];
 
-export const EvaluationBoardData = [
+export const EvaluationReviewQuestions = [
   {
     obj: evaluationObj1,
     label: 'What type of project is being applied for?',
@@ -246,7 +246,7 @@ export const EvaluationBoardData = [
   },
 ];
 
-export const INITIAL_BROADER_REVIEW_VALUES = {
+export const INITIAL_REVIEW_VALUES = {
   projectTypeScore: '',
   projectNeedScore: '',
   projectFundingScore: '',

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { API_ENDPOINT, INITIAL_BROADER_REVIEW_VALUES, REQUEST_METHOD } from '../constants';
+import { API_ENDPOINT, INITIAL_REVIEW_VALUES, REQUEST_METHOD } from '../constants';
 import { useAuthContext } from '../contexts';
 import { useHttp } from './useHttp';
 import { toast } from 'react-toastify';
 
-export const useApplicationScores = (applicationId: string) => {
+export const useBroaderReview = (applicationId: string) => {
   const [applicationScores, setApplicationScores] = useState<any[]>([]);
   const { fetchData, sendApiRequest, isLoading } = useHttp();
   const [selectedUser, setSelectedUser] = useState<string | undefined>('');
@@ -42,7 +42,7 @@ export const useApplicationScores = (applicationId: string) => {
       data = singleScore[0];
 
       setApplicationScoresByScorer({
-        ...INITIAL_BROADER_REVIEW_VALUES,
+        ...INITIAL_REVIEW_VALUES,
         ...(data?.data ?? {}),
         overallComments: data?.overallComments ?? '',
         finalScore: data?.finalScore,
@@ -54,7 +54,7 @@ export const useApplicationScores = (applicationId: string) => {
   };
 
   const setDefaultScoreValues = () => {
-    setApplicationScoresByScorer(INITIAL_BROADER_REVIEW_VALUES);
+    setApplicationScoresByScorer(INITIAL_REVIEW_VALUES);
   };
 
   function addScores(array: any) {

@@ -1,4 +1,5 @@
 import { Formik, Form } from 'formik';
+import { useWorkshopReview } from '../../services';
 import { Button, Spinner } from '../generic';
 import {
   EvaluationReviewQuestions,
@@ -7,32 +8,19 @@ import {
   ApplicationType,
 } from '../../constants';
 import { Textarea, Radio, Error } from '../form';
-import { UserInterface } from '../../contexts';
-import { FinalScore, Input, UserView } from '../broader-review';
-import { useBroaderReview } from '../../services';
+import { FinalScore, Input } from '../broader-review';
 
-export type BroaderReviewProps = {
+export type WorkshopReviewProps = {
   applicationId: string;
-  userList: UserInterface[];
-  onClose: () => void;
   applicationType: ApplicationType;
 };
 
-export const BroaderReview: React.FC<BroaderReviewProps> = ({
+export const WorkshopReview: React.FC<WorkshopReviewProps> = ({
   applicationId,
-  userList,
   applicationType,
 }) => {
-  const {
-    applicationScores,
-    applicationScoresByScorer,
-    handleSubmit,
-    selectedUser,
-    isLoggedInUser,
-    handleChangeScorer,
-    loggedInUser,
-    isLoading,
-  } = useBroaderReview(applicationId);
+  const { applicationScores, handleSubmit, isLoading, loggedInUser } =
+    useWorkshopReview(applicationId);
 
   return (
     <>
@@ -40,7 +28,7 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({
         <Spinner className='h-10 w-10' />
       ) : (
         <Formik
-          initialValues={applicationScoresByScorer}
+          initialValues={applicationScores}
           validationSchema={APPLICATION_REVIEW_VALIDATION_SCHEMA}
           onSubmit={handleSubmit}
           enableReinitialize={true}
@@ -51,9 +39,9 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({
               <div className='open:bg-white border border-2 m-2 open:shadow-lg rounded-sm'>
                 <div className='leading-6 p-2 bg-gray-100 text-bcBluePrimary dark:text-white font-semibold select-none cursor-pointer'>
                   <div className='flex'>
-                    <div className='w-1/2 p-2'>Broader Evaluation Board</div>
+                    <div className='w-1/2 p-2'>Workshop Evaluation Board</div>
                     <div className='w-1/2 flex justify-end'>
-                      {isLoggedInUser && (
+                      {loggedInUser?.isAdmin && (
                         <Button
                           variant='primary'
                           customClass='py-2 '
@@ -69,24 +57,6 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({
                 <div>
                   <div className='p-4 grid grid-flow-row gap-4'>
                     <div>
-                      {/* TODO: User list on who's reviewing and completed should be fetched from the backend for each application */}
-                      {userList &&
-                        userList.map((item: any) => {
-                          const scoreStatus = applicationScores.filter(
-                            (i: any) => item.id == i.user,
-                          );
-                          return (
-                            <UserView
-                              key={`BroderReviewUsers_${item.id}`}
-                              user={item}
-                              scoreStatus={scoreStatus}
-                              loggedInUser={loggedInUser}
-                              selected={selectedUser == item.id}
-                              handleClick={() => handleChangeScorer(item.id)}
-                            />
-                          );
-                        })}
-
                       <div className='mt-4 bg-white pt-4 pb-4'>
                         {EvaluationReviewQuestions.filter((item: any) => {
                           if (item.criteria) {
@@ -94,14 +64,14 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({
                           }
                           return true;
                         }).map((item, index) => (
-                          <div key={`BroderReviewInput_${selectedUser}_${index}`} className='mb-3'>
+                          <div key={`WorkshopReviewInput_${index}`} className='mb-3'>
                             <Input
                               obj={item.obj}
                               label={item.label}
                               description={item.description}
                               name={item.name}
                               tooltiptext={item.tooltiptext}
-                              disabled={!isLoggedInUser}
+                              disabled={!loggedInUser?.isAdmin}
                             />
                             <Error name={item.name} />
                           </div>
@@ -110,24 +80,22 @@ export const BroaderReview: React.FC<BroaderReviewProps> = ({
                       <Textarea
                         name='overallComments'
                         label='Overall comments'
-                        disabled={!isLoggedInUser}
+                        disabled={!loggedInUser?.isAdmin}
                       />
                       <FinalScore />
 
-                      {isLoggedInUser && (
-                        <div className='flex flex-1 w-full justify-start'>
-                          <Radio
-                            title='Status'
-                            legend='Select status for your score on this application.'
-                            name='completionStatus'
-                            horizontal={true}
-                            options={[
-                              { label: 'In Progress', value: ReviewCompletionStatus.IN_PROGRESS },
-                              { label: 'Completed', value: ReviewCompletionStatus.COMPLETE },
-                            ]}
-                          ></Radio>
-                        </div>
-                      )}
+                      <div className='flex flex-1 w-full justify-start'>
+                        <Radio
+                          title='Status'
+                          legend='Select status for your score on this application.'
+                          name='completionStatus'
+                          horizontal={true}
+                          options={[
+                            { label: 'In Progress', value: ReviewCompletionStatus.IN_PROGRESS },
+                            { label: 'Completed', value: ReviewCompletionStatus.COMPLETE },
+                          ]}
+                        ></Radio>
+                      </div>
                     </div>
                   </div>
                 </div>

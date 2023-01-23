@@ -3,5 +3,6 @@ export * from './useGrantApplicationContent';
 export * from './useTeamManagement';
 export * from './useModal';
 export * from './useApplicationDetails';
-export * from './useApplicationScores';
+export * from './useBroaderReview';
 export * from './useHttp';
+export * from './useWorkshopReview';

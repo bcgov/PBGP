@@ -15,6 +15,8 @@ import {
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useApplicationDetails } from '../../services';
+import { ApplicationStatus } from '../../constants';
+import { WorkshopReview } from '../../components/application/WorkshopReview';
 
 const ApplicationDetails: NextPage = () => {
   const { query } = useRouter();
@@ -91,7 +93,9 @@ const ApplicationDetails: NextPage = () => {
           <div className='grid grid-cols-4 gap-4'>
             <div
               className={`${
-                details.status == 'BROADER_REVIEW'
+                [ApplicationStatus.BROADER_REVIEW, ApplicationStatus.WORKSHOP].includes(
+                  details.status,
+                )
                   ? 'col-span-2'
                   : showComments
                   ? 'col-span-3'
@@ -130,7 +134,7 @@ const ApplicationDetails: NextPage = () => {
                 <Comments applicationId={id} onClose={() => setShowComments(false)} />
               </div>
             )}
-            {details && applicationType && details.status == 'BROADER_REVIEW' && (
+            {details && applicationType && details.status === ApplicationStatus.BROADER_REVIEW && (
               <div className='col-span-2 pb-4'>
                 <BroaderReview
                   applicationId={id}
@@ -138,6 +142,11 @@ const ApplicationDetails: NextPage = () => {
                   onClose={() => setShowComments(false)}
                   applicationType={applicationType}
                 />
+              </div>
+            )}
+            {details && applicationType && details.status === ApplicationStatus.WORKSHOP && (
+              <div className='col-span-2 pb-4'>
+                <WorkshopReview applicationId={id} applicationType={applicationType} />
               </div>
             )}
           </div>
