@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 const minValidationText = 'Must be greater than or equal to ';
 const maxValidationText = 'Must be less than or equal to ';
 
-export const BROADER_REVIEW_VALIDATION_SCHEMA = Yup.object().shape({
+export const APPLICATION_REVIEW_VALIDATION_SCHEMA = Yup.object().shape({
   projectTypeScore: Yup.number()
     .min(0, minValidationText + '0')
     .max(10, maxValidationText + '10'),
@@ -70,6 +70,6 @@ export const BROADER_REVIEW_VALIDATION_SCHEMA = Yup.object().shape({
     .min(1, minValidationText + '1')
     .max(5, maxValidationText + '5'),
   thirdPartyContributionScore: Yup.number()
-    .min(1, minValidationText + '1')
-    .max(1, maxValidationText + '1'),
+    .min(0, minValidationText + '0')
+    .max(2, maxValidationText + '2'),
 });

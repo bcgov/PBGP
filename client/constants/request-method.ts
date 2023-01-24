@@ -19,4 +19,7 @@ export const API_ENDPOINT = {
   getBroaderScores: (applicationId: string) => `/applications/${applicationId}/broader`,
   updateBroaderScores: (applicationId: string, scoreId: string) =>
     `/applications/${applicationId}/broader/${scoreId}`,
+  getWorkshopScores: (applicationId: string) => `/applications/${applicationId}/workshop`,
+  updateWorksopScores: (applicationId: string, scoreId: string) =>
+    `/applications/${applicationId}/workshop/${scoreId}`,
 };
