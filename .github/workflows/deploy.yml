@@ -40,6 +40,6 @@ jobs:
       - name: Build & Deploy
         run: |
           oc login --token=$AUTH_TOKEN --server=$CLUSTER
-          oc patch bc/pbgp-client -p '{"spec":{"source":{"git":{"ref": $BRANCH_NAME }},"output":{"to":{"name":"pbgp-client:${{ steps.DEPLOY_ENV.outputs.DEPLOY_ENV }}"}}}}' -n ed9154-tools
-          oc patch bc/pbgp-server -p '{"spec":{"source":{"git":{"ref": $BRANCH_NAME }},"output":{"to":{"name":"pbgp-server:${{ steps.DEPLOY_ENV.outputs.DEPLOY_ENV }}"}}}}' -n ed9154-tools
+          oc patch bc/pbgp-client -p '{"spec":{"source":{"git":{"ref": "${{ BRANCH_NAME }}" }},"output":{"to":{"name":"pbgp-client:${{ steps.DEPLOY_ENV.outputs.DEPLOY_ENV }}"}}}}' -n ed9154-tools
+          oc patch bc/pbgp-server -p '{"spec":{"source":{"git":{"ref": "${{ BRANCH_NAME }}" }},"output":{"to":{"name":"pbgp-server:${{ steps.DEPLOY_ENV.outputs.DEPLOY_ENV }}"}}}}' -n ed9154-tools
           make server-build
