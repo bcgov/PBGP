@@ -1,0 +1,45 @@
+name: OpenShift Build and Deploy to Respective env
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  CLUSTER: https://api.silver.devops.gov.bc.ca:6443
+  AUTH_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+
+jobs:
+  deploy:
+    name: OpenShift Build & Deploy to DEV
+    runs-on: ubuntu-latest
+    concurrency: ci-build
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set DEPLOY_ENV variable
+        run: |
+          if [ $BRANCH_NAME = 'main' ]
+          then
+            echo '::set-output name=DEPLOY_ENV::prod'
+          elif [ ${{ github.ref_name }} = 'develop'  ]
+          then
+            echo '::set-output name=DEPLOY_ENV::dev'
+          else
+            echo '::set-output name=DEPLOY_ENV::test'
+          fi
+        id: DEPLOY_ENV
+
+      - name: Build & Deploy
+        run: |
+          oc login --token=$AUTH_TOKEN --server=$CLUSTER
+          oc patch bc/pbgp-client -p '{"spec":{"source":{"git":{"ref":"${BRANCH_NAME}"}},"output":{"to":{"name":"pbgp-client:${{ steps.DEPLOY_ENV.outputs.DEPLOY_ENV }}"}}}}' -n ed9154-tools
+          oc patch bc/pbgp-server -p '{"spec":{"source":{"git":{"ref":"${BRANCH_NAME}"}},"output":{"to":{"name":"pbgp-server:${{ steps.DEPLOY_ENV.outputs.DEPLOY_ENV }}"}}}}' -n ed9154-tools
+          make server-build
