@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import {
   AssignEvaluator,
   Button,
+  Link as LinkComponent,
   Comments,
   BroaderReview,
-  Link,
   MenuButton,
   Panel,
   RenderCHFSElement,
@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useApplicationDetails } from '../../services';
 import { ApplicationStatus } from '../../constants';
 import { WorkshopReview } from '../../components/application/WorkshopReview';
+import Link from 'next/link';
 
 const ApplicationDetails: NextPage = () => {
   const { query } = useRouter();
@@ -42,9 +43,9 @@ const ApplicationDetails: NextPage = () => {
       {details && id && typeof id === 'string' && (
         <div className='min-h-screen p-5 w-full bg-white'>
           <div className='w-full mt-2'>
-            <Link href='/applications' variant='link'>
+            <LinkComponent href='/applications' variant='link'>
               Applications
-            </Link>{' '}
+            </LinkComponent>{' '}
             &gt;&gt; Confirmation ID: {details.confirmationId}
           </div>
           <h1 className='text-3xl w-full text-bcBluePrimary text-left mb-2 mt-2'>

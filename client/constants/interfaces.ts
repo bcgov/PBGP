@@ -129,3 +129,5 @@ export interface BroaderReviewValues {
   thirdPartyContributionScore: number;
   completionStatus: string;
 }
+
+export interface ScoreSummaryTableProps {}
