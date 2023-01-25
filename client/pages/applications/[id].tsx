@@ -51,7 +51,7 @@ const ApplicationDetails: NextPage = () => {
             {details.projectTitle}
           </h1>
           <div className='flex flex-row mb-4 mt-4'>
-            <div className='flex flex-none flex-row  w-4/5 gap-2'>
+            <div className='flex flex-none flex-row  w-3/5 gap-2'>
               <div className='w-fit'>
                 <AssignEvaluator
                   users={userList}
@@ -66,11 +66,16 @@ const ApplicationDetails: NextPage = () => {
                 </Button>
               </div>
             </div>
-            <div className='w-1/5 grid justify-items-end gap-2'>
+            <div className='w-2/5 justify-end flex'>
               {details.status === ApplicationStatus.WORKSHOP ? (
-                <Button variant='primary' onClick={downloadPDF}>
-                  Download As PDF
-                </Button>
+                <div className='gap-2 flex'>
+                  <Button variant='primary' customClass='py-2'>
+                    View Summary Table
+                  </Button>
+                  <Button variant='primary' onClick={downloadPDF}>
+                    Download As PDF
+                  </Button>
+                </div>
               ) : (
                 <MenuButton title='Open' items={getNextStatusUpdates(id, details.status)} />
               )}
