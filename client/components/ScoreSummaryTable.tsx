@@ -62,7 +62,7 @@ export const ScoreSummaryTable: React.FC<ScoreSummaryTableProps> = ({ applicatio
     // isLoading,
   } = useBroaderReview(applicationId);
   useEffect(() => {
-    console.log(applicationScoresByScorer);
+    console.log(applicationScores);
   }, [applicationScores]);
   console.log(applicationId);
   return <div></div>;
