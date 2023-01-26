@@ -130,4 +130,6 @@ export interface BroaderReviewValues {
   completionStatus: string;
 }
 
-export interface ScoreSummaryTableProps {}
+export interface ScoreSummaryTableProps {
+  applicationId: string;
+}
