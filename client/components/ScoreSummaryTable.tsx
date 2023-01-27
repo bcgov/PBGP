@@ -1,12 +1,19 @@
-import { ScoreSummaryTableProps } from 'constants/interfaces';
-import Link from 'next/link';
+import { ApplicationType, EvaluationReviewQuestions } from '@constants';
+import { BroaderReviewScore, ScoreSummaryTableProps } from 'constants/interfaces';
 import { useEffect } from 'react';
-import { useBroaderReview } from 'services';
+import { useApplicationDetails, useBroaderReview } from 'services';
 
-// type Props = { scores: ScoreSummaryTableProps[] };
+export interface TableHeaderProps {
+  scores: BroaderReviewScore[];
+}
 
-const TableHeader: React.FC = () => {
-  const headers = ['Question', 'Final Score'];
+export interface TableBodyProps extends TableHeaderProps {
+  applicationType: ApplicationType | undefined;
+}
+
+const TableHeader: React.FC<TableHeaderProps> = ({ scores }) => {
+  const nameHeaders = scores.map((score: BroaderReviewScore) => score.displayName);
+  const headers = ['Question', ...nameHeaders];
   const tdStyles =
     'table-td table-header px-6 py-4 text-left text-sm font-strong border-b-2  border-bcYellowWarning';
   return (
@@ -23,56 +30,55 @@ const TableHeader: React.FC = () => {
   );
 };
 
-// const TableBody: React.FC<Props> = data => {
-//   const tdStyles =
-//     'table-td px-6 py-4 text-left text-sm font-strong flexitems-center justify-between';
-//   return (
-//     <tbody>
-//       {data.scores &&
-//         data.scores.map((row: any, index: number) => (
-//           <Link href={`scores/${row.id}`} key={`row${index}`}>
-//             <tr
-//               className='bg-white border-b-2 even:bg-bcGrayInput
-//               border-gray-200 cursor-pointer'
-//             >
-//               {/* <td className={tdStyles}>{row.confirmationId}</td>
-//               <td className={tdStyles}>{row.facilityName}</td>
-//               <td className={tdStyles}>{row.projectTitle}</td>
-//               <td className={tdStyles}>{row.totalEstimatedCost}</td>
-//               <td className={tdStyles}>{row.asks}</td>
-//               <td className={tdStyles}>{row.assignedTo ? row.assignedTo.displayName : ''}</td>
-//               <td className={tdStyles}>{row.updatedAt}</td>
-//               <td className={tdStyles}>{row.status}</td> */}
-//             </tr>
-//           </Link>
-//         ))}
-//     </tbody>
-//   );
-// };
+const TableBody: React.FC<TableBodyProps> = ({ scores, applicationType }) => {
+  const tdStyles =
+    'table-td px-6 py-4 text-left text-sm font-strong flexitems-center justify-between';
+  return (
+    <tbody>
+      {EvaluationReviewQuestions.filter((item: any) => {
+        if (item.criteria) {
+          return item.criteria.includes(applicationType);
+        }
+        return true;
+      }).map((item, index) => {
+        return (
+          <tr
+            key={`row-${index}`}
+            className='bg-white border-b-2 even:bg-bcGrayInput
+          border-gray-200 cursor-pointer'
+          >
+            <td className={`${tdStyles} w-1/5`}>
+              <p className='font-bold'>Question {index + 1}</p>
+              <p className='text-bcGray font-normal'>{item.label}</p>
+            </td>
 
-export const ScoreSummaryTable: React.FC<ScoreSummaryTableProps> = ({ applicationId }) => {
-  const {
-    applicationScores,
-    applicationScoresByScorer,
-    // handleSubmit,
-    // selectedUser,
-    // isLoggedInUser,
-    // handleChangeScorer,
-    // loggedInUser,
-    // isLoading,
-  } = useBroaderReview(applicationId);
-  useEffect(() => {
-    console.log(applicationScores);
-  }, [applicationScores]);
-  console.log(applicationId);
-  return <div></div>;
+            {scores &&
+              scores.map((score: any, index: number) => (
+                <td key={`score-${index}`} className={tdStyles}>
+                  {score.data[item.name]}
+                </td>
+              ))}
+          </tr>
+        );
+      })}
+    </tbody>
+  );
 };
 
-// {data && data.scores.length != 0 ? (
-//     <table className='min-w-full text-center'>
-//       {/* <TableHeader /> */}
-//       {/* <TableBody scores={data.scores} /> */}
-//     </table>
-//   ) : (
-//     <div className='text-center text-sm mt-4'>No scores found.</div>
-//   )}
+export const ScoreSummaryTable: React.FC<ScoreSummaryTableProps> = ({ applicationId }) => {
+  const { applicationScores } = useBroaderReview(applicationId);
+  const { applicationType } = useApplicationDetails(applicationId);
+
+  return (
+    <div>
+      {applicationScores && applicationScores.length != 0 ? (
+        <table className='min-w-full text-center'>
+          <TableHeader scores={applicationScores} />
+          <TableBody scores={applicationScores} applicationType={applicationType} />
+        </table>
+      ) : (
+        <div className='text-center text-sm mt-4'>No scores found.</div>
+      )}
+    </div>
+  );
+};
