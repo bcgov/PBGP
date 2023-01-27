@@ -49,10 +49,10 @@ const TableBody: React.FC<TableBodyProps> = ({ scores, applicationType }) => {
           border-gray-200 cursor-pointer'
           >
             <td className={`${tdStyles} w-1/5`}>
-              <p className='font-bold flex items-center'>
-                Question {index + 1}&nbsp;&nbsp;
+              <div className='flex items-center justify-between'>
+                <p className='font-bold'>Question {index + 1}&nbsp;&nbsp;</p>
                 <TooltipIcon icon={faQuestionCircle} text={item.tooltiptext} style='h-4 w-4' />
-              </p>
+              </div>
               <p className='text-xs text-bcGray font-normal'>{item.label}</p>
             </td>
 
