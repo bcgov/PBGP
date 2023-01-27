@@ -1,6 +1,5 @@
 import { ApplicationType, EvaluationReviewQuestions } from '@constants';
 import { BroaderReviewScore, ScoreSummaryTableProps } from 'constants/interfaces';
-import { useEffect } from 'react';
 import { useApplicationDetails, useBroaderReview } from 'services';
 
 export interface TableHeaderProps {
@@ -49,13 +48,13 @@ const TableBody: React.FC<TableBodyProps> = ({ scores, applicationType }) => {
           >
             <td className={`${tdStyles} w-1/5`}>
               <p className='font-bold'>Question {index + 1}</p>
-              <p className='text-bcGray font-normal'>{item.label}</p>
+              <p className='text-xs text-bcGray font-normal'>{item.label}</p>
             </td>
 
             {scores &&
               scores.map((score: any, index: number) => (
                 <td key={`score-${index}`} className={tdStyles}>
-                  {score.data[item.name]}
+                  {`${score.data[item.name]}/${item.maxScore}`}
                 </td>
               ))}
           </tr>
