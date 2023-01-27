@@ -1,6 +1,8 @@
 import { ApplicationType, EvaluationReviewQuestions } from '@constants';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { BroaderReviewScore, ScoreSummaryTableProps } from 'constants/interfaces';
 import { useApplicationDetails, useBroaderReview } from 'services';
+import { TooltipIcon } from './generic';
 
 export interface TableHeaderProps {
   scores: BroaderReviewScore[];
@@ -47,7 +49,10 @@ const TableBody: React.FC<TableBodyProps> = ({ scores, applicationType }) => {
           border-gray-200 cursor-pointer'
           >
             <td className={`${tdStyles} w-1/5`}>
-              <p className='font-bold'>Question {index + 1}</p>
+              <p className='font-bold flex items-center'>
+                Question {index + 1}&nbsp;&nbsp;
+                <TooltipIcon icon={faQuestionCircle} text={item.tooltiptext} style='h-4 w-4' />
+              </p>
               <p className='text-xs text-bcGray font-normal'>{item.label}</p>
             </td>
 
