@@ -34,6 +34,15 @@ const TableHeader: React.FC<TableHeaderProps> = ({ scores }) => {
 const TableBody: React.FC<TableBodyProps> = ({ scores, applicationType }) => {
   const tdStyles =
     'table-td px-6 py-4 text-left text-sm font-strong flexitems-center justify-between';
+  const trStyles = 'bg-white border-b-2 even:bg-bcGrayInput border-gray-200';
+  const summaryAppendix = [
+    {
+      name: 'overallComments',
+      label: 'Overall Comments',
+      tooltiptext: 'Your overall feedback for the project.',
+    },
+    { name: 'finalScore', label: 'Final Score', tooltiptext: 'Your final score for the project' },
+  ];
   return (
     <tbody>
       {EvaluationReviewQuestions.filter((item: any) => {
@@ -43,11 +52,7 @@ const TableBody: React.FC<TableBodyProps> = ({ scores, applicationType }) => {
         return true;
       }).map((item, index) => {
         return (
-          <tr
-            key={`row-${index}`}
-            className='bg-white border-b-2 even:bg-bcGrayInput
-          border-gray-200 cursor-pointer'
-          >
+          <tr key={`row-${index}`} className={trStyles}>
             <td className={`${tdStyles} w-1/5`}>
               <div className='flex items-center justify-between'>
                 <p className='font-bold'>Question {index + 1}&nbsp;&nbsp;</p>
@@ -60,6 +65,25 @@ const TableBody: React.FC<TableBodyProps> = ({ scores, applicationType }) => {
               scores.map((score: any, index: number) => (
                 <td key={`score-${index}`} className={tdStyles}>
                   {`${score.data[item.name]}/${item.maxScore}`}
+                </td>
+              ))}
+          </tr>
+        );
+      })}
+      {summaryAppendix.map((item, index) => {
+        return (
+          <tr key={`appendix-${index}`} className={trStyles}>
+            <td className={`${tdStyles} w-1/5`}>
+              <div className='flex items-center justify-between'>
+                <p className='font-bold'>{item.label}&nbsp;&nbsp;</p>
+                <TooltipIcon icon={faQuestionCircle} text={item.tooltiptext} style='h-4 w-4' />
+              </div>
+            </td>
+
+            {scores &&
+              scores.map((score: any, index: number) => (
+                <td key={`appendix-score-${index}`} className={tdStyles}>
+                  {`${score[item.name]}`}
                 </td>
               ))}
           </tr>
