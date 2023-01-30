@@ -70,9 +70,11 @@ const ApplicationDetails: NextPage = () => {
             <div className='w-2/5 justify-end flex'>
               {details.status === ApplicationStatus.WORKSHOP ? (
                 <div className='gap-2 flex'>
-                  <Button variant='primary' customClass='py-2'>
-                    View Summary Table
-                  </Button>
+                  <Link href={`/applications/${id}/score-table`}>
+                    <Button variant='primary' customClass='py-2'>
+                      View Summary Table
+                    </Button>
+                  </Link>
                   <Button variant='primary' onClick={downloadPDF}>
                     Download As PDF
                   </Button>
