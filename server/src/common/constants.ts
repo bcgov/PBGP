@@ -7,33 +7,6 @@ export const SUCCESS_RESPONSE = {
   status: RESPONSE_STATUS.SUCCESS,
 };
 
-export enum Permissions {
-  PERFORM = 'X',
-  ASSIST = 'A',
-  CONTINUED_EDUCATION = 'C(E)',
-  LIMITS = 'L',
-}
-
-export enum CareActivityType {
-  ASPECT_OF_PRACTICE = 'Aspect of Practice',
-  TASK = 'Task',
-  RESTRICTED_ACTIVITY = 'Restricted Activity',
-}
-
-export enum ClinicalType {
-  CLINICAL = 'Clinical',
-  SUPPORT = 'Clinical Support',
-}
-
-export enum ActivitiesActionType {
-  GREEN_CHECK = 'X',
-  YELLOW = 'A',
-  YELLOW_EXCLAMATION = 'C(E)',
-  YELLOW_CAUTION = 'L',
-  RED = '',
-  GREY = 'MIXED',
-}
-
 export enum REQUEST_METHODS {
   GET = 'get',
   POST = 'post',
@@ -44,4 +17,11 @@ export enum REQUEST_METHODS {
 
 export enum UserRoles {
   ADMIN = 'ADMIN',
+}
+
+export enum ApplicationType {
+  LARGE_PROJECT = 'LP',
+  SMALL_PROJECT = 'SP',
+  ENVIRONMENT_PLANNING = 'EP',
+  DEVELOPMENT_PLANNING = 'DP',
 }

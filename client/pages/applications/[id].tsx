@@ -34,6 +34,7 @@ const ApplicationDetails: NextPage = () => {
     userList,
     isPanelDefaultOpen,
     applicationType,
+    downloadPDF,
   } = useApplicationDetails(id);
 
   return (
@@ -66,7 +67,13 @@ const ApplicationDetails: NextPage = () => {
               </div>
             </div>
             <div className='w-1/5 grid justify-items-end gap-2'>
-              <MenuButton title='Open' items={getNextStatusUpdates(id, details.status)} />
+              {details.status === ApplicationStatus.WORKSHOP ? (
+                <Button variant='primary' onClick={downloadPDF}>
+                  Download As PDF
+                </Button>
+              ) : (
+                <MenuButton title='Open' items={getNextStatusUpdates(id, details.status)} />
+              )}
             </div>
           </div>
 

@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { ScoreDto } from './dto/score.dto';
 import { ScoreError } from './score.errors';
 import { WorkshopScore } from './workshop-score.entity';
+import { CompletionStatus } from '../common/enums';
 
 @Injectable()
 export class WorkshopScoreService {
@@ -60,5 +61,15 @@ export class WorkshopScoreService {
       throw new GenericException(ScoreError.APPLICATION_MISMATCH);
     }
     return this.workshopScoreRepository.save({ ...score, ...scoreDto });
+  }
+
+  async getApplicationDetailsWithFinalScore(applicationId: string): Promise<WorkshopScore> {
+    return this.workshopScoreRepository
+      .createQueryBuilder('workshop')
+      .innerJoinAndSelect('workshop.application', 'application')
+      .innerJoinAndSelect('application.form', 'form')
+      .where('application.id = :applicationId', { applicationId })
+      .andWhere('workshop.completionStatus = :status', { status: CompletionStatus.COMPLETE })
+      .getOne();
   }
 }

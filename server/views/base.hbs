@@ -1,0 +1,156 @@
+<p
+  style='margin-top:0;margin-right:0;margin-bottom:8pt;margin-left:0;line-height:107%;font-size:15px;font-family:Calibri,sans-serif;text-align:center'>
+  <strong>
+    <span style='font-size:19px;line-height:107%'>BC Air Access Program &ndash; {{ applicationHeading }}
+      Application Evaluation Summary</span>
+  </strong>
+</p>
+<p
+  style='margin-top:0;margin-right:0;margin-bottom:8pt;margin-left:0;line-height:107%;font-size:15px;font-family:Calibri,sans-serif;text-align:center'>
+  <strong>({{confirmationId}})</strong>
+</p>
+<p
+  style='margin-top:0;margin-right:0;margin-bottom:8pt;margin-left:0;line-height:107%;font-size:15px;font-family:Calibri,sans-serif'>
+  <strong>
+    <span style='font-size:16px;line-height:107%'>General Information:</span>
+  </strong>
+</p>
+<div
+  style='display: grid; align-content: end; grid-template-columns: 1fr 1fr;margin-left:42.55pt;line-height:107%;font-size:15px;font-family:Calibri,sans-serif'>
+  <div>
+    Applicant Name:
+  </div>
+  <div>
+    <strong>
+      {{applicantName}}
+    </strong>
+  </div>
+
+  <div>
+    Facility Name:
+  </div>
+  <div>
+    <strong>
+      {{facilityName}}
+    </strong>
+  </div>
+
+  <div>
+    Project:
+  </div>
+  <div>
+    <strong>
+      {{projectTitle}}
+    </strong>
+  </div>
+
+  <div>
+    Total Estimated project Cost:
+  </div>
+  <div>
+    <strong>
+      {{totalCost}}
+    </strong>
+  </div>
+
+  <div>
+    Raw or Initial Ask:
+  </div>
+  <div>
+    <strong>
+      {{initialAsk}}
+    </strong>
+  </div>
+</div>
+<p
+  style='margin-top:0;margin-right:0;margin-bottom:8pt;margin-left:0;line-height:107%;font-size:15px;font-family:Calibri,sans-serif'>
+  <strong>
+    <span style='font-size:16px;line-height:107%'>Consensus Evaluation:</span>
+  </strong>
+</p>
+
+<div
+  style='display: grid; align-content: end; grid-template-columns: 1fr 1fr;margin-left:42.55pt;line-height:107%;font-size:15px;font-family:Calibri,sans-serif'>
+  <div>
+    Overall Score:
+  </div>
+  <div>
+    <strong>
+      {{overallScore}}
+    </strong>
+  </div>
+  <div>
+    Score&nbsp;&divide;&nbsp;Points Available:
+  </div>
+  <div>
+    <strong>
+      {{points}}
+    </strong>
+  </div>
+  <div>
+    Overall Comments:
+  </div>
+  <div>
+    <strong>
+      {{comments}}
+    </strong>
+  </div>
+</div>
+
+<table style='margin-left:28.1pt;margin-top:10pt;border-collapse:collapse;border:1pt solid windowtext;'>
+  <tbody>
+    <tr>
+      <td style='width:233.9pt;padding:2.5pt 5.4pt;vertical-align:top'>
+        <p
+          style='margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;line-height:normal;font-size:15px;font-family:Calibri,sans-serif;text-align:center'>
+          <strong>
+            <span style='font-size:16px'>Evaluation Item</span>
+          </strong>
+        </p>
+      </td>
+      <td style='width:77.95pt;padding:2.5pt 5.4pt;vertical-align:top'>
+        <p
+          style='margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;line-height:normal;font-size:15px;font-family:Calibri,sans-serif;text-align:center'>
+          <strong>
+            <span style='font-size:16px'>Weight</span>
+          </strong>
+        </p>
+      </td>
+      <td style='width:78pt;padding:2.5pt 5.4pt;vertical-align:top'>
+        <p
+          style='margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;line-height:normal;font-size:15px;font-family:Calibri,sans-serif;text-align:center'>
+          <strong>
+            <span style='font-size:16px'>Score</span>
+          </strong>
+        </p>
+      </td>
+    </tr>
+
+    {{#each fields}}
+    {{#ifIn ../applicationType criteria }}
+    <tr>
+      <td style='width:233.9pt;padding:2.5pt 5.4pt;vertical-align:top'>
+        <p
+          style='margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;line-height:normal;font-size:15px;font-family:Calibri,sans-serif'>
+          <span style='font-size:16px'>{{label}}</span>
+        </p>
+      </td>
+      <td style='width:77.95pt;padding:2.5pt 5.4pt;vertical-align:top'>
+        <p
+          style='margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;line-height:normal;font-size:15px;font-family:Calibri,sans-serif;text-align:center'>
+          <span style='font-size:16px'>{{score}}</span>
+        </p>
+      </td>
+      <td style='width:78pt;padding:2.5pt 5.4pt;vertical-align:top'>
+        <p
+          style='margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;line-height:normal;font-size:15px;font-family:Calibri,sans-serif;text-align:center'>
+          <strong>
+            <span style='font-size:16px'>{{lookup ../scoreData [name]}}</span>
+          </strong>
+        </p>
+      </td>
+    </tr>
+    {{/ifIn}}
+    {{/each}}
+  </tbody>
+</table>

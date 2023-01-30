@@ -7,4 +7,9 @@ export const ApplicationError = {
     errorMessage: 'Cannot find application',
     httpStatus: HttpStatus.NOT_FOUND,
   } as GenericError,
+  APPLICATION_NOT_SCORED: {
+    errorType: 'APPLICATION_NOT_SCORED',
+    errorMessage: 'Workshop score for the application is not completed',
+    httpStatus: HttpStatus.NOT_FOUND,
+  } as GenericError,
 };
