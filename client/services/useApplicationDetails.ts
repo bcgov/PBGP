@@ -11,6 +11,7 @@ import {
   ApplicationType,
 } from '../constants';
 import { KeyValuePair } from '../constants/interfaces';
+import { downloadHtmlAsPdf } from '../constants/util';
 import { useAuthContext, UserInterface } from '../contexts';
 import {
   NEXT_PUBLIC_DEVELOPMENT_PLANNING,
@@ -176,6 +177,19 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
     return index === 0;
   };
 
+  const downloadPDF = () => {
+    if (id && typeof id === 'string') {
+      fetchData(
+        {
+          endpoint: API_ENDPOINT.downloadApplicationScore(id),
+        },
+        (data: any) => {
+          downloadHtmlAsPdf(data);
+        },
+      );
+    }
+  };
+
   useEffect(() => {
     if (data) {
       const { form, submission, ...submissionDetails } = data;
@@ -202,5 +216,6 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
     userList,
     isPanelDefaultOpen,
     applicationType,
+    downloadPDF,
   };
 };

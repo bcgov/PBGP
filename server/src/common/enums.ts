@@ -18,7 +18,7 @@ export enum AxiosResponseTypes {
   STREAM = 'stream',
 }
 
-export enum CompletionStatuses {
+export enum CompletionStatus {
   IN_PROGRESS = 'IN_PROGRESS',
   COMPLETE = 'COMPLETE',
 }

@@ -29,10 +29,10 @@ export class Application extends CustomBaseEntity {
   projectTitle: string;
 
   @Column({ type: 'money', nullable: true })
-  totalEstimatedCost: number;
+  totalEstimatedCost: string;
 
   @Column({ type: 'money', nullable: true })
-  asks: number;
+  asks: string;
 
   @Column({
     type: 'varchar',

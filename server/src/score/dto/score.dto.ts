@@ -1,4 +1,4 @@
-import { CompletionStatuses } from '../../common/enums';
+import { CompletionStatus } from '../../common/enums';
 
 import {
   IsEmpty,
@@ -197,6 +197,6 @@ export class ScoreDto {
   @Min(0)
   finalScore: number;
 
-  @IsEnum(CompletionStatuses)
-  completionStatus: CompletionStatuses;
+  @IsEnum(CompletionStatus)
+  completionStatus: CompletionStatus;
 }
