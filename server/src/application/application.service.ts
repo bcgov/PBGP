@@ -20,6 +20,7 @@ import { BroaderReviewScoreService } from '../score/broader-review-score.service
 import { ScoreDto } from '../score/dto/score.dto';
 import { WorkshopScoreService } from '../score/workshop-score.service';
 import { ApplicationFinalScoreRO } from './ro/application-score.ro';
+import { RawDataRo } from '@/score/ro/raw-data.ro';
 
 @Injectable()
 export class ApplicationService {
@@ -193,6 +194,6 @@ export class ApplicationService {
   async getRawData(): Promise<any> {
     const applicationsWithFinalScores =
       await this.workshopScoreService.getApplicationsWithFinalScores();
-    return applicationsWithFinalScores;
+    return new RawDataRo(applicationsWithFinalScores).result;
   }
 }
