@@ -96,7 +96,6 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
   const [formData, setFormData] = useState<KeyValuePair | undefined>();
   const [details, setDetails] = useState<ApplicationDetailsType | undefined>();
   const [showComments, setShowComments] = useState<boolean>(false);
-  const [userList, setUserList] = useState<UserInterface[]>([]);
 
   const updateStatus = (id: string, status: ApplicationStatus) => {
     sendApiRequest(
@@ -200,10 +199,6 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
     }
   }, [data]);
 
-  useEffect(() => {
-    setUserList(userData?.filter(each => each.isAuthorized));
-  }, [userData]);
-
   return {
     topStatusObj,
     schema,
@@ -213,7 +208,7 @@ export const useApplicationDetails = (id: string | string[] | undefined) => {
     setShowComments,
     getNextStatusUpdates,
     updateEvaluator,
-    userList,
+    userList: userData,
     isPanelDefaultOpen,
     applicationType,
     downloadPDF,
