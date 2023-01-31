@@ -9,12 +9,24 @@ type ScoreFieldsType = {
   score: number;
 };
 
-export const ApplicationVsHeading = {};
+export const ApplicationVsDetailsInfo = {};
 
-ApplicationVsHeading[ApplicationType.DEVELOPMENT_PLANNING] = 'Facility Master Plan';
-ApplicationVsHeading[ApplicationType.ENVIRONMENT_PLANNING] = 'Environmental Project';
-ApplicationVsHeading[ApplicationType.LARGE_PROJECT] = 'Large Project';
-ApplicationVsHeading[ApplicationType.SMALL_PROJECT] = 'Small Project';
+ApplicationVsDetailsInfo[ApplicationType.DEVELOPMENT_PLANNING] = {
+  heading: 'Facility Master Plan',
+  totalScore: 34,
+};
+ApplicationVsDetailsInfo[ApplicationType.ENVIRONMENT_PLANNING] = {
+  heading: 'Environmental Project',
+  totalScore: 53,
+};
+ApplicationVsDetailsInfo[ApplicationType.LARGE_PROJECT] = {
+  heading: 'Large Project',
+  totalScore: 112,
+};
+ApplicationVsDetailsInfo[ApplicationType.SMALL_PROJECT] = {
+  heading: 'Small Project',
+  totalScore: 46,
+};
 
 export class ApplicationFinalScoreRO {
   confirmationId: string;
@@ -54,11 +66,13 @@ export class ApplicationFinalScoreRO {
     this.initialAsk = `${application.asks?.split('.')[0]}.`;
     this.overallScore = `${finalScore}`;
     this.comments = overallComments;
-    this.points = `${(finalScore / 112).toFixed(3)}`;
     this.scoreData = {};
     Object.assign(this.scoreData, data);
     this.fields = ScoreFields;
     this.applicationType = findApplicationType(form.chefsFormId);
-    this.applicationHeading = ApplicationVsHeading[this.applicationType];
+    this.applicationHeading = ApplicationVsDetailsInfo[this.applicationType].heading;
+    this.points = `${(
+      finalScore / ApplicationVsDetailsInfo[this.applicationType].totalScore
+    ).toFixed(3)}`;
   }
 }
