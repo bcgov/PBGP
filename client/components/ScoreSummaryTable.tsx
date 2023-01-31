@@ -1,4 +1,4 @@
-import { ApplicationType, EvaluationReviewQuestions } from '@constants';
+import { ApplicationType, EvaluationReviewQuestions } from '../constants';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { BroaderReviewScore, ScoreSummaryTableProps } from 'constants/interfaces';
 import { useApplicationDetails, useBroaderReview } from 'services';
@@ -43,14 +43,18 @@ const TableBody: React.FC<TableBodyProps> = ({ scores, applicationType }) => {
     },
     { name: 'finalScore', label: 'Final Score', tooltiptext: 'Your final score for the project' },
   ];
+  const filteredEvaluationReviewQuestions = EvaluationReviewQuestions.filter((item: any) => {
+    if (item.criteria) {
+      return item.criteria.includes(applicationType);
+    }
+    return true;
+  });
+  const finalMaxScore = filteredEvaluationReviewQuestions
+    .map((item: any) => item.maxScore)
+    .reduce((accumulator, current) => accumulator + current);
   return (
     <tbody>
-      {EvaluationReviewQuestions.filter((item: any) => {
-        if (item.criteria) {
-          return item.criteria.includes(applicationType);
-        }
-        return true;
-      }).map((item, index) => {
+      {filteredEvaluationReviewQuestions.map((item: any, index) => {
         return (
           <tr key={`row-${index}`} className={trStyles}>
             <td className={`${tdStyles} w-1/5`}>
@@ -82,8 +86,10 @@ const TableBody: React.FC<TableBodyProps> = ({ scores, applicationType }) => {
 
             {scores &&
               scores.map((score: any, index: number) => (
-                <td key={`appendix-score-${index}`} className={tdStyles}>
-                  {`${score[item.name]}`}
+                <td key={`appendix-score-${index}`} className={`${tdStyles} font-semibold`}>
+                  {item.name === 'finalScore'
+                    ? `${score[item.name]}/${finalMaxScore}`
+                    : `${score[item.name]}`}
                 </td>
               ))}
           </tr>

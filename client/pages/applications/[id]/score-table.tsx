@@ -14,6 +14,11 @@ const ScoreTable: NextPage = () => {
       {details && id && typeof id === 'string' && (
         <div className='min-h-screen p-5 w-full bg-white'>
           <div className='w-full mt-2'>
+            <Link href={`/applications/${id}`} variant='link'>
+              &larr; Back
+            </Link>
+          </div>
+          <div className='w-full mt-2'>
             <Link href='/applications' variant='link'>
               Applications
             </Link>{' '}
