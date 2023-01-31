@@ -1,7 +1,7 @@
 import { Application } from '../application/application.entity';
 import { ScoreDataDto } from '../score/dto/score.dto';
 import { REQUEST_METHODS } from './constants';
-import { CompletionStatuses } from './enums';
+import { CompletionStatus } from './enums';
 
 export interface AxiosOptions {
   method: REQUEST_METHODS;
@@ -16,6 +16,6 @@ export interface BroaderReviewScoreInterface {
   finalScore: number;
   overallComments: string;
   id: string;
-  completionStatus: CompletionStatuses;
+  completionStatus: CompletionStatus;
   application: Application;
 }
