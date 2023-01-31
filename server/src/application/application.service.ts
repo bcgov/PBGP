@@ -191,6 +191,8 @@ export class ApplicationService {
   }
 
   async getRawData(): Promise<any> {
-    return { hello: 'world' };
+    const applicationsWithFinalScores =
+      await this.workshopScoreService.getApplicationsWithFinalScores();
+    return applicationsWithFinalScores;
   }
 }
