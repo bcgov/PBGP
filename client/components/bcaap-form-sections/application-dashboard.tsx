@@ -99,6 +99,9 @@ export const ApplicationDashboard: React.FC<any> = () => {
         <h1 className='text-2xl font-bold h-6 text-bcBluePrimary text-left flex-col items-start'>
           Applications
         </h1>
+        <Button variant='primary' customClass='py-2'>
+          Download Raw Data
+        </Button>
       </div>
 
       {isLoading ? (
