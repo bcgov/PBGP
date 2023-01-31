@@ -1,4 +1,6 @@
+import { API_ENDPOINT, REQUEST_METHOD } from '@constants';
 import xlsx from 'json-as-xlsx';
+import { useHttp } from './useHttp';
 
 const data = [
   {
@@ -36,8 +38,18 @@ const settings = {
 };
 
 export const useDownloadXlsx = () => {
+  const { sendApiRequest } = useHttp();
   const downloadXlsx = () => {
-    xlsx(data, settings);
+    sendApiRequest(
+      {
+        endpoint: API_ENDPOINT.RAW_DATA,
+        method: REQUEST_METHOD.POST,
+      },
+      (data: any) => {
+        console.log(data);
+      },
+    );
+    // xlsx(data, settings);
   };
 
   return { downloadXlsx };

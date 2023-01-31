@@ -189,4 +189,8 @@ export class ApplicationService {
 
     return new ApplicationFinalScoreRO(workshopScore);
   }
+
+  async getRawData(): Promise<any> {
+    return { hello: 'world' };
+  }
 }
