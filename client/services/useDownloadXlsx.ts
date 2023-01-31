@@ -2,33 +2,6 @@ import { API_ENDPOINT, REQUEST_METHOD } from '@constants';
 import xlsx from 'json-as-xlsx';
 import { useHttp } from './useHttp';
 
-const data = [
-  {
-    sheet: 'Adults',
-    columns: [
-      { label: 'User', value: 'user' }, // Top level data
-      { label: 'Age', value: (row: any) => row.age + ' years' }, // Custom format
-      { label: 'Phone', value: (row: any) => (row.more ? row.more.phone || '' : '') }, // Run functions
-    ],
-    content: [
-      { user: 'Andrea', age: 20, more: { phone: '11111111' } },
-      { user: 'Luis', age: 21, more: { phone: '12345678' } },
-    ],
-  },
-  {
-    sheet: 'Children',
-    columns: [
-      { label: 'User', value: 'user' }, // Top level data
-      { label: 'Age', value: 'age', format: '# "years"' }, // Column format
-      { label: 'Phone', value: 'more.phone', format: '(###) ###-####' }, // Deep props and column format
-    ],
-    content: [
-      { user: 'Manuel', age: 16, more: { phone: 9999999900 } },
-      { user: 'Ana', age: 17, more: { phone: 8765432135 } },
-    ],
-  },
-];
-
 const settings = {
   fileName: 'MySpreadsheet', // Name of the resulting spreadsheet
   extraLength: 3, // A bigger number means that columns will be wider
@@ -46,10 +19,9 @@ export const useDownloadXlsx = () => {
         method: REQUEST_METHOD.POST,
       },
       (data: any) => {
-        console.log(data);
+        xlsx(data, settings);
       },
     );
-    // xlsx(data, settings);
   };
 
   return { downloadXlsx };
