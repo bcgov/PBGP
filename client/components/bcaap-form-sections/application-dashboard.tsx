@@ -7,6 +7,7 @@ import { useHttp } from '../../services/useHttp';
 import { SetQueryParams } from '../../services/useQueryParams';
 import { useRouter } from 'next/router';
 import { API_ENDPOINT } from '../../constants';
+import { useDownloadXlsx } from 'services/useDownloadXlsx';
 
 export const ApplicationDashboard: React.FC<any> = () => {
   const [state, setState] = useState({
@@ -93,13 +94,15 @@ export const ApplicationDashboard: React.FC<any> = () => {
     SetQueryParams(push, query, params);
   };
 
+  const { downloadXlsx } = useDownloadXlsx();
+
   return (
     <div>
       <div className='w-full bg-white flex my-2 justify-between'>
         <h1 className='text-2xl font-bold h-6 text-bcBluePrimary text-left flex-col items-start'>
           Applications
         </h1>
-        <Button variant='primary' customClass='py-2'>
+        <Button variant='primary' customClass='py-2' onClick={downloadXlsx}>
           Download Raw Data
         </Button>
       </div>
