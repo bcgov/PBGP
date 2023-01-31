@@ -1,3 +1,5 @@
+import { ReviewCompletionStatus } from './constants';
+
 export interface ContactInfoInterface {
   facilityName: string;
   applicantName: string;
@@ -128,4 +130,21 @@ export interface BroaderReviewValues {
   classBCostScore: number;
   thirdPartyContributionScore: number;
   completionStatus: string;
+}
+
+export interface ScoreSummaryTableProps {
+  applicationId: string;
+}
+
+export interface BroaderReviewScore {
+  createdAt: Date;
+  updatedAt: Date;
+  data: BroaderReviewValues;
+  finalScore: number;
+  overallComments: string;
+  id: string;
+  completionStatus: ReviewCompletionStatus;
+  application: string;
+  user: string;
+  displayName: string;
 }

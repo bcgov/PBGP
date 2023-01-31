@@ -1,12 +1,13 @@
-import { Application } from '@/application/application.entity';
-import { GenericException } from '@/common/generic-exception';
-import { User } from '@/user/user.entity';
+import { Application } from '../application/application.entity';
+import { GenericException } from '../common/generic-exception';
+import { User } from '../user/user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ScoreDto } from './dto/score.dto';
 import { BroaderReviewScore } from './broader-review-score.entity';
 import { ScoreError } from './score.errors';
+import { BroaderReviewScoreResultRo } from './ro/broader-review-score.ro';
 
 @Injectable()
 export class BroaderReviewScoreService {
@@ -16,11 +17,11 @@ export class BroaderReviewScoreService {
   ) {}
 
   async getBroaderReviewScores(applicationId: string) {
-    return await this.scoreRepository.find({
+    const scores = await this.scoreRepository.find({
       where: { application: applicationId },
       relations: ['user'],
-      loadRelationIds: true,
     });
+    return new BroaderReviewScoreResultRo(scores).result;
   }
 
   async getBroaderReviewScore(id: string) {
