@@ -27,4 +27,5 @@ export enum SyncTypes {
   ALL = 'ALL',
   SUBMISSIONS = 'SUBMISSIONS',
   ATTACHMENTS = 'ATTACHMENTS',
+  SOFT_DELETE = 'SOFT_DELETE',
 }

@@ -1,14 +1,14 @@
 import { FormMetaData } from '../FormMetaData/formmetadata.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
-import { CustomBaseEntity } from '../common/custom-base.entity';
 import { User } from '../user/user.entity';
 import { Comment } from '../comments/comment.entity';
 import { ApplicationStatus } from './constants';
+import { RemovableBaseEntity } from '../common/removable-base.entity';
 
 @Entity({
   name: 'pbgp_application',
 })
-export class Application extends CustomBaseEntity {
+export class Application extends RemovableBaseEntity {
   @PrimaryGeneratedColumn('uuid', { name: 'application_id' })
   id: string;
 
