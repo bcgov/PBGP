@@ -15,7 +15,7 @@ export const useDownloadXlsx = () => {
   const downloadXlsx = () => {
     sendApiRequest(
       {
-        endpoint: API_ENDPOINT.RAW_DATA,
+        endpoint: API_ENDPOINT.APPLICATIONS_RAW_DATA,
         method: REQUEST_METHOD.POST,
       },
       (data: any) => {
