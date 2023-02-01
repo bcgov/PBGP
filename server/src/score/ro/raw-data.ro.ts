@@ -18,10 +18,10 @@ export class RawDataRo {
     this.result = [{ ...roHeaders, ...this.convertWorkshopScoreToContent(data) }];
   }
   convertWorkshopScoreToContent(data: WorkshopScore[]) {
-    const content = data.map((item) => {
+    const content = data.map((item: WorkshopScore) => {
       return {
-        facilityName: item.application.facilityName,
-        projectTitle: item.application.projectTitle,
+        facilityName: item.application.submission.facilityName,
+        projectTitle: item.application.submission.projectTitle,
         totalEstimatedCost: item.application.totalEstimatedCost,
         asks: item.application.asks,
         finalScore: item.finalScore,
