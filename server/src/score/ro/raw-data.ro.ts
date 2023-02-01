@@ -8,7 +8,7 @@ const roHeaders = {
     { label: 'Estimated Project Cost', value: 'totalEstimatedCost' },
     { label: 'Raw Ask', value: 'asks' },
     { label: 'Overall Score', value: 'finalScore' },
-    { label: 'Score Ratio', value: 'scoreRatio' }, // Score ÷ Points Available (possible rename to “Ratio”)
+    { label: 'Score Ratio', value: 'scoreRatio' },
   ],
 };
 
@@ -25,7 +25,7 @@ export class RawDataRo {
         totalEstimatedCost: item.application.totalEstimatedCost,
         asks: item.application.asks,
         finalScore: item.finalScore,
-        scoreRatio: 0, // Implement ratio calculation here later
+        scoreRatio: `${(item.finalScore / 112).toFixed(3)}`,
       };
     });
     return { content };
