@@ -19,6 +19,7 @@ import { UpdateStatusDto } from './dto/update-status.dto';
 import { BroaderReviewScoreService } from '../score/broader-review-score.service';
 import { ScoreDto } from '../score/dto/score.dto';
 import { WorkshopScoreService } from '../score/workshop-score.service';
+import { ApplicationFinalScoreRO } from './ro/application-score.ro';
 
 @Injectable()
 export class ApplicationService {
@@ -175,5 +176,17 @@ export class ApplicationService {
     const application = await this.getApplication(applicationId);
 
     return this.workshopScoreService.updateWorkshopScore(application, scoreId, scoreDto);
+  }
+
+  async getApplicationDetailsForPDF(applicationId: string): Promise<ApplicationFinalScoreRO> {
+    const workshopScore = await this.workshopScoreService.getApplicationDetailsWithFinalScore(
+      applicationId
+    );
+
+    if (!workshopScore) {
+      throw new GenericException(ApplicationError.APPLICATION_NOT_SCORED);
+    }
+
+    return new ApplicationFinalScoreRO(workshopScore);
   }
 }

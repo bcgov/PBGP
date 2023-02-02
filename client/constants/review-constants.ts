@@ -29,6 +29,7 @@ const evaluationObj3 = [
 export const EvaluationReviewQuestions = [
   {
     obj: evaluationObj1,
+    maxScore: 10,
     label: 'What type of project is being applied for?',
     description:
       'Refer `Project Scope` and `Type of Project` in General Project Information and Description section',
@@ -38,6 +39,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'projectNeedScore',
+    maxScore: 5,
     label: 'Need for project?',
     description: 'Refer `Project Rationale` in General Project Information and Description section',
     tooltiptext:
@@ -45,6 +47,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'projectFundingScore',
+    maxScore: 5,
     label: 'Need for funding?',
     description: 'Refer `Project Rationale` in General Project Information and Description section',
     tooltiptext:
@@ -52,6 +55,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'pastBcaapFundingScore',
+    maxScore: 3,
     label: 'Past BCAAP funding?',
     description: 'BCAAP staff to evaluate this line',
     tooltiptext:
@@ -59,6 +63,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'facilityMasterPlanScore',
+    maxScore: 2,
     label: 'Is this project identified in your facility master plan?',
     description: 'BCAAP staff to evaluate this line',
     tooltiptext: 'Score 2 if “yes”, score 0 if “no” or “NA”.',
@@ -72,6 +77,7 @@ export const EvaluationReviewQuestions = [
   {
     name: 'facilityUsageScore',
     label: 'Facility usage?',
+    maxScore: 2,
     description: '',
     tooltiptext:
       'Score 2 if application checks 3 or more of the facility usage boxes. Score 1 is fewer than 3 are checked.',
@@ -79,6 +85,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'trafficDataScore',
+    maxScore: 3,
     label: 'Traffic data? ',
     description: '',
     tooltiptext:
@@ -88,6 +95,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'climatePerspectiveScore',
+    maxScore: 5,
     label: 'Outline the benefits of the project from an environmental and/or climate perspective.',
     description: '',
     tooltiptext:
@@ -97,6 +105,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'climateBestPracticesScore',
+    maxScore: 5,
     label:
       'How are best practices from an environmental and/or climate perspective incorporated into the design and construction of this project?',
     description: '',
@@ -107,6 +116,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'environmentalRisksScore',
+    maxScore: 5,
     label:
       'Have any specific environmentally related risks been identified with this project and, if yes, what is your planning for addressed these risks?',
     description: '',
@@ -117,6 +127,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'environmentalInnovationScore',
+    maxScore: 5,
     label:
       'Is any type of innovation from an environmental and/or climate perspective being incorporated into this project?',
     description: '',
@@ -127,6 +138,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'projectDescriptionScore',
+    maxScore: 2,
     label: 'Which of the following best describes your project?',
     description: '',
     tooltiptext:
@@ -136,6 +148,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'climateGoalsScore',
+    maxScore: 5,
     label:
       'What are the environmental and/or climate goals of your project? How will this project result in sustainable environmental / climate benefits moving forward?',
     description: '',
@@ -146,6 +159,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'organizationClimateGoalScore',
+    maxScore: 5,
     label:
       'How does this project fit with your organization’s broader environmental and/or climate goals? Is this project part of a broader strategy? Please provide details.',
     description: '',
@@ -156,6 +170,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'successMeasurementScore',
+    maxScore: 5,
     label: 'How will this project be assessed to determine success? How will success be measured?',
     description: '',
     tooltiptext:
@@ -165,6 +180,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'safetyScore',
+    maxScore: 15,
     label: 'How will this project improve safety?',
     description: '',
     tooltiptext:
@@ -174,6 +190,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'medevacScore',
+    maxScore: 15,
     label: 'How will the project benefit medevac and/or wildfire suppression? ',
     description: '',
     tooltiptext:
@@ -183,6 +200,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'localBenefitsScore',
+    maxScore: 10,
     label:
       'How will this project provide local, regional and/or provincial economic benefits, including how this project may support your facility in recovery from the impacts of COVID-19?',
     description: '',
@@ -193,6 +211,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'longTermScore',
+    maxScore: 5,
     label:
       'How will the project advance the long-term goals and visions for the facility and community?',
     description: '',
@@ -203,6 +222,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'communitySupportScore',
+    maxScore: 3,
     label: 'Community support.',
     description: '',
     tooltiptext:
@@ -212,6 +232,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'concernsScore',
+    maxScore: 5,
     label:
       'Have any concerns or issues with respect to this project been raised by facility users or by members of the surrounding community? What are those concerns or issues? What plans, if any, do you have to addresses these concerns or issues?',
     description: '',
@@ -222,6 +243,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'contingencyPlanScore',
+    maxScore: 2,
     label:
       'Do you have a contingency plan in place to ensure the project will be completed if costs increase?',
     description: '',
@@ -230,6 +252,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'classBCostScore',
+    maxScore: 5,
     label: 'Class B Project Cost Estimates',
     description: '',
     tooltiptext:
@@ -238,6 +261,7 @@ export const EvaluationReviewQuestions = [
   },
   {
     name: 'thirdPartyContributionScore',
+    maxScore: 2,
     label: 'Applicant or third-party contributions',
     description: '',
     tooltiptext:

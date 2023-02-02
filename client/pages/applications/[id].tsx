@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import {
   AssignEvaluator,
   Button,
+  Link as LinkComponent,
   Comments,
   BroaderReview,
-  Link,
   MenuButton,
   Panel,
   RenderCHFSElement,
@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useApplicationDetails } from '../../services';
 import { ApplicationStatus } from '../../constants';
 import { WorkshopReview } from '../../components/application/WorkshopReview';
+import Link from 'next/link';
 
 const ApplicationDetails: NextPage = () => {
   const { query } = useRouter();
@@ -34,6 +35,7 @@ const ApplicationDetails: NextPage = () => {
     userList,
     isPanelDefaultOpen,
     applicationType,
+    downloadPDF,
   } = useApplicationDetails(id);
 
   return (
@@ -41,16 +43,16 @@ const ApplicationDetails: NextPage = () => {
       {details && id && typeof id === 'string' && (
         <div className='min-h-screen p-5 w-full bg-white'>
           <div className='w-full mt-2'>
-            <Link href='/applications' variant='link'>
+            <LinkComponent href='/applications' variant='link'>
               Applications
-            </Link>{' '}
+            </LinkComponent>{' '}
             &gt;&gt; Confirmation ID: {details.confirmationId}
           </div>
           <h1 className='text-3xl w-full text-bcBluePrimary text-left mb-2 mt-2'>
             {details.projectTitle}
           </h1>
           <div className='flex flex-row mb-4 mt-4'>
-            <div className='flex flex-none flex-row  w-4/5 gap-2'>
+            <div className='flex flex-none flex-row  w-3/5 gap-2'>
               <div className='w-fit'>
                 <AssignEvaluator
                   users={userList}
@@ -65,8 +67,21 @@ const ApplicationDetails: NextPage = () => {
                 </Button>
               </div>
             </div>
-            <div className='w-1/5 grid justify-items-end gap-2'>
-              <MenuButton title='Open' items={getNextStatusUpdates(id, details.status)} />
+            <div className='w-2/5 justify-end flex'>
+              {details.status === ApplicationStatus.WORKSHOP ? (
+                <div className='gap-2 flex'>
+                  <Link href={`/applications/${id}/score-table`}>
+                    <Button variant='primary' customClass='py-2'>
+                      View Summary Table
+                    </Button>
+                  </Link>
+                  <Button variant='primary' onClick={downloadPDF}>
+                    Download As PDF
+                  </Button>
+                </div>
+              ) : (
+                <MenuButton title='Open' items={getNextStatusUpdates(id, details.status)} />
+              )}
             </div>
           </div>
 

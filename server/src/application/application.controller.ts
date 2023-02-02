@@ -10,6 +10,7 @@ import {
   Patch,
   Post,
   Query,
+  Res,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -24,6 +25,7 @@ import { User } from '../user/user.entity';
 import { CommentResultRo } from './ro/app-comment.ro';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { ScoreDto } from '../score/dto/score.dto';
+import { Response } from 'express';
 
 @ApiBearerAuth()
 @Controller('applications')
@@ -146,5 +148,14 @@ export class ApplicationController {
     @Body() scoreDto: ScoreDto
   ) {
     return this.applicationService.updateWorkshopScore(applicationId, scoreId, scoreDto);
+  }
+
+  @Get('/:applicationId/download')
+  async getApplicationAsPDF(@Param('applicationId') applicationId: string, @Res() res: Response) {
+    const application = await this.applicationService.getApplicationDetailsForPDF(applicationId);
+    return res.render('base', {
+      layout: 'base',
+      ...application,
+    });
   }
 }

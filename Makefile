@@ -158,12 +158,12 @@ server-create:
 client-build:
 	@echo "Building client image in $(TOOLS_NAMESPACE) namespace"
 	@oc cancel-build bc/$(APP_NAME)-client -n $(TOOLS_NAMESPACE)
-	@oc start-build $(APP_NAME)-client -n $(TOOLS_NAMESPACE) --build-arg VERSION="$(LAST_COMMIT)"
+	@oc start-build $(APP_NAME)-client -n $(TOOLS_NAMESPACE)
 
 server-build: client-build
 	@echo "Building server image in $(TOOLS_NAMESPACE) namespace"
 	@oc cancel-build bc/$(APP_NAME)-server -n $(TOOLS_NAMESPACE)
-	@oc start-build $(APP_NAME)-server -n $(TOOLS_NAMESPACE) --build-arg VERSION="$(LAST_COMMIT)"
+	@oc start-build $(APP_NAME)-server -n $(TOOLS_NAMESPACE)
 
 deploy:
 	@oc -n $(TOOLS_NAMESPACE) tag $(APP_NAME)-server:latest $(APP_NAME)-server:$(OS_NAMESPACE_SUFFIX)

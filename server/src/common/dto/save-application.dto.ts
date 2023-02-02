@@ -4,6 +4,6 @@ export interface SaveApplicationDto {
   confirmationId: string;
   facilityName: string;
   projectTitle: string;
-  totalEstimatedCost: number;
-  asks: number;
+  totalEstimatedCost: string;
+  asks: string;
 }
