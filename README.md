@@ -6,13 +6,11 @@
 ## Prerequisites
 
 
-- Node.JS vX or newer
-- Docker
+- <a href='https://nodejs.org/en/download/' target='_blank'> Node.JS </a> version 14 or newer 
+- <a href='https://www.docker.com/products/docker-desktop/' target='_blank' > Docker </a>
 
-## Dependencies
+## Mandatory Dependencies
 
-- Working KeyCloak Realm with BC Gov IDIR
-- Ministry of Transportation and Infrastructure GeoServer access
 - IDIR service account with access to LDAP service
 
 ## Local Development
@@ -74,9 +72,20 @@ Use the following steps to run the local development environment
    yarn install
    
    ```
+There could be 2 ways to run the application,
 
-3. To run Application in Docker 
-    cd main folder
+3(a) To run Application in Docker 
+    cd root folder
     ```
     make run-local
+    ```
+3(b) To run Application using yarn 
+    cd server
+    ```
+    yarn run dev
+    ```
+    
+    cd client
+    ```
+    yarn run dev
     ```
