@@ -259,4 +259,12 @@ export class SyncChefsDataService {
       }
     });
   }
+
+  async softDeleteApplications(): Promise<void> {
+    try {
+      await this.applicationRepo.createQueryBuilder('application').softDelete().execute();
+    } catch (error) {
+      Logger.error(`Error occurred deleting application - `, error);
+    }
+  }
 }

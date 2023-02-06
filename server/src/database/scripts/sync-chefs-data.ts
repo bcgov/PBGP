@@ -13,6 +13,9 @@ import { SyncTypes } from '../../common/enums';
     case SyncTypes.SUBMISSIONS:
       syncChefsDataService.syncSubmissions();
       break;
+    case SyncTypes.SOFT_DELETE:
+      syncChefsDataService.softDeleteApplications();
+      break;
     default:
       syncChefsDataService.syncChefsData();
       break;
