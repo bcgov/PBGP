@@ -23,4 +23,5 @@ export const API_ENDPOINT = {
   updateWorksopScores: (applicationId: string, scoreId: string) =>
     `/applications/${applicationId}/workshop/${scoreId}`,
   downloadApplicationScore: (applicationId: string) => `/applications/${applicationId}/download`,
+  APPLICATIONS_RAW_DATA: '/applications/raw-data',
 };

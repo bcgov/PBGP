@@ -71,9 +71,16 @@ const ApplicationDetails: NextPage = () => {
               {details.status === ApplicationStatus.WORKSHOP ? (
                 <div className='gap-2 flex'>
                   <Link href={`/applications/${id}/score-table`}>
-                    <Button variant='primary' customClass='py-2'>
+                    <a
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className={`w-auto inline-flex justify-center items-center rounded 
+  shadow-sm px-4 py-2 text-base font-bold focus:outline-none
+  disabled:opacity-50
+  focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:text-sm border-transparent bg-bcBluePrimary text-white hover:bg-blue-800 focus:ring-blue-500`}
+                    >
                       View Summary Table
-                    </Button>
+                    </a>
                   </Link>
                   <Button variant='primary' onClick={downloadPDF}>
                     Download As PDF

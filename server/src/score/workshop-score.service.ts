@@ -72,4 +72,13 @@ export class WorkshopScoreService {
       .andWhere('workshop.completionStatus = :status', { status: CompletionStatus.COMPLETE })
       .getOne();
   }
+
+  async getApplicationsWithFinalScores(): Promise<WorkshopScore[]> {
+    return this.workshopScoreRepository
+      .createQueryBuilder('workshop')
+      .innerJoinAndSelect('workshop.application', 'application')
+      .innerJoinAndSelect('application.form', 'form')
+      .andWhere('workshop.completionStatus = :status', { status: CompletionStatus.COMPLETE })
+      .getMany();
+  }
 }

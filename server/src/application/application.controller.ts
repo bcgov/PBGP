@@ -158,4 +158,9 @@ export class ApplicationController {
       ...application,
     });
   }
+
+  @Post('/raw-data')
+  async getRawData(): Promise<any> {
+    return this.applicationService.getRawData();
+  }
 }

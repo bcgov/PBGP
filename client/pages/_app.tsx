@@ -29,7 +29,6 @@ const keycloakConfig = {
 };
 
 const BASE_URL = publicRuntimeConfig.NEXT_PUBLIC_SERVER_URL;
-const REDIRECT_URL = publicRuntimeConfig.NEXT_PUBLIC_REDIRECT_URI;
 
 export const NEXT_PUBLIC_LARGE_PROJECT = publicRuntimeConfig.NEXT_PUBLIC_LARGE_PROJECT;
 export const NEXT_PUBLIC_SMALL_PROJECT = publicRuntimeConfig.NEXT_PUBLIC_SMALL_PROJECT;
@@ -69,7 +68,6 @@ function CustomApp({ Component, pageProps, cookies }: AppProps) {
       onTokens={handleTokens}
       initOptions={{
         pkceMethod: 'S256',
-        redirectUri: REDIRECT_URL,
       }}
     >
       <StrictMode>
