@@ -13,7 +13,7 @@
 - <a href='https://typeorm.io/' target='_blank' >TypeORM </a> version 0.2 or newer
 - <a href='https://tailwindcss.com/docs/installation' target='_blank' >TailwindCSS </a> version 3 or newer
 - <a href='https://www.docker.com/products/docker-desktop/' target='_blank' > Docker </a> 
-- <a href='https://www.postgresql.org/download/' target='_blank' >PostgreSQL </a>
+- <a href='https://www.postgresql.org/download/' target='_blank' >PostgreSQL </a> - version 12.12
    
 
 ## Mandatory Dependencies
