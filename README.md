@@ -65,7 +65,7 @@ Use the following steps to configure the local development environment
 
 3. local development environment
 
-   - Need to install Windows make located here: https://gnuwin32.sourceforge.net/packages/make.htm
+   Windows make is required.   It can be located here: https://gnuwin32.sourceforge.net/packages/make.htm   Please add the bin director to the Windows path.
 
    To run Application in Docker 
        cd root folder
