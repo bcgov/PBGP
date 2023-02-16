@@ -18,7 +18,7 @@
 
 ## Mandatory Dependencies
 
-- IDIR service account with access to Active Director (LDAP) service
+- IDIR service account with access to Active Directory (LDAP) service
 
 ## Local Development
 
