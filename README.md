@@ -9,9 +9,9 @@
 - <a href='https://nodejs.org/en/download/' target='_blank'> Node.js </a> version 16.18.1 
 - <a href='https://reactjs.org/docs/getting-started.html' target='_blank' > React </a> version 18.1.0
 - <a href='https://nextjs.org/' target='_blank' > Next.js </a> version 12.3.1 
-- <a href='https://nestjs.com/' target='_blank' > Nest.js </a> version 8 or newer
-- <a href='https://typeorm.io/' target='_blank' >TypeORM </a> version 0.2 or newer
-- <a href='https://tailwindcss.com/docs/installation' target='_blank' >TailwindCSS </a> version 3 or newer
+- <a href='https://nestjs.com/' target='_blank' > Nest.js </a> version 8.2.3
+- <a href='https://typeorm.io/' target='_blank' >TypeORM </a> version 0.2.41
+- <a href='https://tailwindcss.com/docs/installation' target='_blank' >TailwindCSS </a> version 3.2.4
 - <a href='https://www.docker.com/products/docker-desktop/' target='_blank' > Docker </a>  - for local development in place of Openshift 
 - <a href='https://www.postgresql.org/download/' target='_blank' >PostgreSQL </a> - version 12.12
    
