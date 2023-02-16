@@ -6,7 +6,7 @@
 ### Prerequisites
 
 
-- <a href='https://nodejs.org/en/download/' target='_blank'> Node.js </a> version 16 or newer 
+- <a href='https://nodejs.org/en/download/' target='_blank'> Node.js </a> version 16.18.1 
 - <a href='https://reactjs.org/docs/getting-started.html' target='_blank' > React </a> version 18 or newer
 - <a href='https://nextjs.org/' target='_blank' > Next.js </a> version 12 or newer 
 - <a href='https://nestjs.com/' target='_blank' > Nest.js </a> version 8 or newer
