@@ -27,6 +27,7 @@
     "migration:create-tables": "npx typeorm migration:generate -n UpdateTableSchema --config dist/ormconfig.js",
     "sync-chefs-data": "NODE_ENV=development node dist/database/scripts/sync-chefs-data.js",
     "sync-chefs-attachments": "NODE_ENV=development SYNC_TYPE=ATTACHMENTS node dist/database/scripts/sync-chefs-data.js",
+    "sync-chefs-attachments": "NODE_ENV=test SYNC_TYPE=ATTACHMENTS node dist/database/scripts/sync-chefs-data.js",
     "sync-chefs-submissions": "NODE_ENV=development SYNC_TYPE=SUBMISSIONS node dist/database/scripts/sync-chefs-data.js",
     "sync-chefs-submissions-test": "NODE_ENV=test SYNC_TYPE=SUBMISSIONS node dist/database/scripts/sync-chefs-data.js",
     "delete-existing-applications": "NODE_ENV=development SYNC_TYPE=SOFT_DELETE node dist/database/scripts/sync-chefs-data.js",
