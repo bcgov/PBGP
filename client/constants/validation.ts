@@ -73,3 +73,7 @@ export const APPLICATION_REVIEW_VALIDATION_SCHEMA = Yup.object().shape({
     .min(0, minValidationText + '0')
     .max(2, maxValidationText + '2'),
 });
+
+export const TOKEN_VALIDATION_SCHEMA = Yup.object().shape({
+  token: Yup.string().required('This field is required'),
+});
