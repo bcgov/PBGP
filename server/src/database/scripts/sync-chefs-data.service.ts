@@ -23,6 +23,7 @@ const MAX_PROJECT_TITLE_LENGTH = 100;
 @Injectable()
 export class SyncChefsDataService {
   CHEFS_FORM_IDS: string[];
+  CHEFS_API_KEYS: string[];
   constructor(
     @InjectRepository(Application)
     private readonly applicationRepo: Repository<Application>,
@@ -32,6 +33,7 @@ export class SyncChefsDataService {
     private readonly attachmentService: AttachmentService
   ) {
     this.CHEFS_FORM_IDS = JSON.parse(process.env.CHEFS_FORM_IDS);
+    this.CHEFS_API_KEYS = JSON.parse(process.env.CHEFS_API_KEYS);
   }
 
   private getFormUrl(formId: string): string {
@@ -77,11 +79,11 @@ export class SyncChefsDataService {
     return [];
   }
 
-  async updateAttachments() {
+  async updateAttachments(data?: any) {
     // Axios stuff
     const method = REQUEST_METHODS.GET;
     // Make sure you include the -- token=<token> into the script args
-    const token = this.getTokenFromArgs(process.argv);
+    const token = data?.token || this.getTokenFromArgs(process.argv);
     const headers = {
       Authorization: `Bearer ${token}`,
     };
@@ -229,13 +231,13 @@ export class SyncChefsDataService {
   async syncChefsData(): Promise<void> {
     const method = REQUEST_METHODS.GET;
 
-    const token = this.getTokenFromArgs(process.argv);
-    const headers = this.getHeadersFromToken(token);
-
-    this.CHEFS_FORM_IDS.forEach(async (formId) => {
+    this.CHEFS_FORM_IDS.forEach(async (formId, ind) => {
       const options = {
         method,
-        headers,
+        auth: {
+          username: formId,
+          password: this.CHEFS_API_KEYS[ind] || '',
+        },
       };
 
       try {
