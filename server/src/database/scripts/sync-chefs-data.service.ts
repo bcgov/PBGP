@@ -23,7 +23,6 @@ const MAX_PROJECT_TITLE_LENGTH = 100;
 @Injectable()
 export class SyncChefsDataService {
   CHEFS_FORM_IDS: string[];
-  CHEFS_API_KEYS: string[];
   constructor(
     @InjectRepository(Application)
     private readonly applicationRepo: Repository<Application>,
@@ -33,7 +32,6 @@ export class SyncChefsDataService {
     private readonly attachmentService: AttachmentService
   ) {
     this.CHEFS_FORM_IDS = JSON.parse(process.env.CHEFS_FORM_IDS);
-    this.CHEFS_API_KEYS = JSON.parse(process.env.CHEFS_API_KEYS);
   }
 
   private getFormUrl(formId: string): string {
@@ -231,12 +229,33 @@ export class SyncChefsDataService {
   async syncChefsData(): Promise<void> {
     const method = REQUEST_METHODS.GET;
 
-    this.CHEFS_FORM_IDS.forEach(async (formId, ind) => {
+    const envParams = [
+      {
+        id: process.env.BCAAP_SMALL_FORM,
+        key: process.env.BCAAP_SMALL_KEY,
+      },
+      {
+        id: process.env.BCAAP_LARGE_FORM,
+        key: process.env.BCAAP_LARGE_KEY,
+      },
+      {
+        id: process.env.BCAAP_FACILITY_FORM,
+        key: process.env.BCAAP_FACILITY_KEY,
+      },
+      {
+        id: process.env.BCAAP_ENVIRONMENT_FORM,
+        key: process.env.BCAAP_ENVIRONMENT_KEY,
+      },
+    ];
+
+    envParams.forEach(async (formData) => {
+      const formId = formData.id || 'NA';
+
       const options = {
         method,
         auth: {
-          username: formId,
-          password: this.CHEFS_API_KEYS[ind] || '',
+          username: formData.id,
+          password: formData.key || '',
         },
       };
 
