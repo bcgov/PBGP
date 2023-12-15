@@ -121,6 +121,46 @@ objects:
                     secretKeyRef:
                       key: CHEFS_FORM_API_KEY
                       name: ${APP_NAME}-server-env
+                - name: BCAAP_SMALL_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      key: BCAAP_SMALL_KEY
+                      name: ${APP_NAME}-chefs-env
+                - name: BCAAP_LARGE_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      key: BCAAP_LARGE_KEY
+                      name: ${APP_NAME}-chefs-env
+                - name: BCAAP_ENVIRONMENT_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      key: BCAAP_ENVIRONMENT_KEY
+                      name: ${APP_NAME}-chefs-env
+                - name: BCAAP_FACILITY_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      key: BCAAP_FACILITY_KEY
+                      name: ${APP_NAME}-chefs-env
+                - name: BCAAP_SMALL_FORM
+                  valueFrom:
+                    secretKeyRef:
+                      key: BCAAP_SMALL_FORM
+                      name: ${APP_NAME}-chefs-env
+                - name: BCAAP_FACILITY_FORM
+                  valueFrom:
+                    secretKeyRef:
+                      key: BCAAP_FACILITY_FORM
+                      name: ${APP_NAME}-chefs-env
+                - name: BCAAP_ENVIRONMENT_FORM
+                  valueFrom:
+                    secretKeyRef:
+                      key: BCAAP_ENVIRONMENT_FORM
+                      name: ${APP_NAME}-chefs-env
+                - name: BCAAP_LARGE_FORM
+                  valueFrom:
+                    secretKeyRef:
+                      key: BCAAP_LARGE_FORM
+                      name: ${APP_NAME}-chefs-env
               image: image-registry.openshift-image-registry.svc:5000/${IMAGE_NAMESPACE}/${APP_NAME}-server:${IMAGE_TAG}
               ports:
                 - containerPort: "${{SERVER_PORT}}"

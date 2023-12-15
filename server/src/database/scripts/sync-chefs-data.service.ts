@@ -77,11 +77,11 @@ export class SyncChefsDataService {
     return [];
   }
 
-  async updateAttachments() {
+  async updateAttachments(data?: any) {
     // Axios stuff
     const method = REQUEST_METHODS.GET;
     // Make sure you include the -- token=<token> into the script args
-    const token = this.getTokenFromArgs(process.argv);
+    const token = data?.token || this.getTokenFromArgs(process.argv);
     const headers = {
       Authorization: `Bearer ${token}`,
     };
@@ -229,13 +229,34 @@ export class SyncChefsDataService {
   async syncChefsData(): Promise<void> {
     const method = REQUEST_METHODS.GET;
 
-    const token = this.getTokenFromArgs(process.argv);
-    const headers = this.getHeadersFromToken(token);
+    const envParams = [
+      {
+        id: process.env.BCAAP_SMALL_FORM,
+        key: process.env.BCAAP_SMALL_KEY,
+      },
+      {
+        id: process.env.BCAAP_LARGE_FORM,
+        key: process.env.BCAAP_LARGE_KEY,
+      },
+      {
+        id: process.env.BCAAP_FACILITY_FORM,
+        key: process.env.BCAAP_FACILITY_KEY,
+      },
+      {
+        id: process.env.BCAAP_ENVIRONMENT_FORM,
+        key: process.env.BCAAP_ENVIRONMENT_KEY,
+      },
+    ];
 
-    this.CHEFS_FORM_IDS.forEach(async (formId) => {
+    envParams.forEach(async (formData) => {
+      const formId = formData.id || 'NA';
+
       const options = {
         method,
-        headers,
+        auth: {
+          username: formData.id,
+          password: formData.key || '',
+        },
       };
 
       try {

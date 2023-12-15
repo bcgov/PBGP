@@ -14,6 +14,10 @@ export const Layout: React.FC<LayoutProps> = ({ pageName, children }) => {
       title: 'Team Management',
       href: Routes.TEAM_MANAGEMENT,
     });
+    tabList.push({
+      title: 'Data Sync',
+      href: Routes.DATA_SYNC,
+    });
   }
 
   return (
