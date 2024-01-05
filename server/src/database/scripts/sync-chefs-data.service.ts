@@ -266,7 +266,7 @@ export class SyncChefsDataService {
           .filter((submission) => submission.formSubmissionStatusCode === 'SUBMITTED' && !submission.deleted)
           .map((submission) => submission.submissionId);
 
-        if (submissionIds && submissionIds.length > 0) {
+          if (submissionIds && submissionIds.length > 0) {
           this.getSubmissionsFromIds(submissionIds, options);
         } else {
           Logger.log(`No submissions with found in the form with ID ${formId}. \nSkipping...`);
