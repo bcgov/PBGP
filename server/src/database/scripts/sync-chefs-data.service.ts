@@ -263,7 +263,10 @@ export class SyncChefsDataService {
         const formResponse = await axios({ ...options, url: this.getFormUrl(formId) });
 
         const submissionIds = formResponse.data
-          .filter((submission) => submission.formSubmissionStatusCode === 'SUBMITTED')
+          .filter(
+            (submission) =>
+              submission.formSubmissionStatusCode === 'SUBMITTED' && !submission.deleted
+          )
           .map((submission) => submission.submissionId);
 
         if (submissionIds && submissionIds.length > 0) {
