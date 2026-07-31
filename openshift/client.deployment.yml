@@ -1,0 +1,144 @@
+kind: Template
+apiVersion: template.openshift.io/v1
+labels:
+  app: ${APP_NAME}
+parameters:
+  - name: APP_NAME
+    description: App name that OpenShift objects will be prefixed with
+    required: true
+  - name: IMAGE_NAMESPACE
+    description: Namespace from which to pull the image
+    required: true
+  - name: IMAGE_TAG
+    description: Image tag from image stream
+    value: latest
+    required: true
+  - name: SERVER_PORT
+    description: Port the server will be exposed on
+    value: "3000"
+    required: true
+  - name: CONFIG_VERSION
+    description: The GitHub repository version of the config
+    value: default
+  - name: REPLICAS
+    description: The number of deployment replicas
+    value: "1"
+    required: true
+  - name: ROUTE_HOST
+    description: Public client route hostname
+    required: true
+
+objects:
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    metadata:
+      name: ${APP_NAME}-client
+      annotations:
+        haproxy.router.openshift.io/timeout: 90s
+        haproxy.router.openshift.io/disable_cookies: "true"
+    spec:
+      host: ${ROUTE_HOST}
+      port:
+        targetPort: 3000-tcp
+      tls:
+        insecureEdgeTerminationPolicy: Redirect
+        termination: edge
+      to:
+        kind: Service
+        name: ${APP_NAME}-client
+        weight: 100
+      wildcardPolicy: None
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: ${APP_NAME}-client
+      annotations:
+        image.openshift.io/triggers: >-
+          [{"from":{"kind":"ImageStreamTag","name":"${APP_NAME}-client:${IMAGE_TAG}","namespace":"${IMAGE_NAMESPACE}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"${APP_NAME}-client\")].image","pause":"false"}]
+    spec:
+      replicas: "${{REPLICAS}}"
+      revisionHistoryLimit: 10
+      progressDeadlineSeconds: 600
+      selector:
+        matchLabels:
+          name: ${APP_NAME}-client
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          # Prod's long-running CPU request quota has no surge headroom.
+          maxSurge: 0
+          maxUnavailable: 1
+      template:
+        metadata:
+          labels:
+            name: ${APP_NAME}-client
+        spec:
+          containers:
+            - name: ${APP_NAME}-client
+              envFrom:
+                - configMapRef:
+                    name: ${APP_NAME}-client-env
+              env:
+                - name: APP_ENV
+                  value: ${IMAGE_TAG}
+                - name: NEXT_PUBLIC_KC_AUTH_URL
+                  valueFrom:
+                    secretKeyRef:
+                      key: auth-url
+                      name: ${APP_NAME}-keycloak
+                - name: NEXT_PUBLIC_KC_AUTH_REALM
+                  valueFrom:
+                    secretKeyRef:
+                      key: realm
+                      name: ${APP_NAME}-keycloak
+                - name: NEXT_PUBLIC_KC_AUTH_CLIENT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      key: client-id
+                      name: ${APP_NAME}-keycloak
+                - name: CONFIG_VERSION
+                  value: ${CONFIG_VERSION}
+              image: image-registry.openshift-image-registry.svc:5000/${IMAGE_NAMESPACE}/${APP_NAME}-client:${IMAGE_TAG}
+              imagePullPolicy: Always
+              ports:
+                - containerPort: "${{SERVER_PORT}}"
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 5
+                httpGet:
+                  path: /
+                  port: ${{SERVER_PORT}}
+                initialDelaySeconds: 15
+                periodSeconds: 15
+              livenessProbe:
+                failureThreshold: 5
+                httpGet:
+                  path: /
+                  port: ${{SERVER_PORT}}
+                initialDelaySeconds: 15
+                periodSeconds: 15
+              resources:
+                limits:
+                  cpu: 250m
+                  memory: 512Mi
+                requests:
+                  cpu: 100m
+                  memory: 256Mi
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          restartPolicy: Always
+          dnsPolicy: ClusterFirst
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: ${APP_NAME}-client
+    spec:
+      ports:
+        - name: 3000-tcp
+          protocol: TCP
+          port: "${{SERVER_PORT}}"
+          targetPort: "${{SERVER_PORT}}"
+      selector:
+        name: ${APP_NAME}-client
+      type: ClusterIP
+      sessionAffinity: None

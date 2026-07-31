@@ -1,0 +1,120 @@
+kind: Template
+apiVersion: template.openshift.io/v1
+labels:
+  app: ${APP_NAME}
+parameters:
+  - name: APP_NAME
+    description: App name used by the image stream
+    value: pbgp
+    required: true
+  - name: IMAGE_NAMESPACE
+    description: Namespace from which to pull the image
+    value: ed9154-tools
+    required: true
+  - name: IMAGE_TAG
+    description: PostgreSQL image stream tag
+    value: "12"
+    required: true
+  - name: DATABASE_SECRET
+    description: Secret containing the database credentials
+    value: pbgp-patroni
+    required: true
+  - name: DATABASE_USER_KEY
+    description: Username key in DATABASE_SECRET
+    value: db-username
+    required: true
+  - name: DATABASE_PASSWORD_KEY
+    description: Password key in DATABASE_SECRET
+    value: db-password
+    required: true
+  - name: DATABASE_NAME_KEY
+    description: Database name key in DATABASE_SECRET
+    value: db-name
+    required: true
+  - name: REPLICAS
+    description: The number of deployment replicas
+    value: "1"
+    required: true
+
+objects:
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: postgresql
+      annotations:
+        template.alpha.openshift.io/wait-for-ready: "true"
+        image.openshift.io/triggers: >-
+          [{"from":{"kind":"ImageStreamTag","name":"${APP_NAME}-postgres:${IMAGE_TAG}","namespace":"${IMAGE_NAMESPACE}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"postgresql\")].image","pause":"false"}]
+    spec:
+      replicas: "${{REPLICAS}}"
+      revisionHistoryLimit: 10
+      progressDeadlineSeconds: 600
+      selector:
+        matchLabels:
+          name: postgresql
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          labels:
+            name: postgresql
+        spec:
+          volumes:
+            - name: postgresql-data
+              persistentVolumeClaim:
+                claimName: postgresql
+          containers:
+            - name: postgresql
+              image: image-registry.openshift-image-registry.svc:5000/${IMAGE_NAMESPACE}/${APP_NAME}-postgres:${IMAGE_TAG}
+              imagePullPolicy: IfNotPresent
+              resources:
+                limits:
+                  memory: 512Mi
+              readinessProbe:
+                exec:
+                  command: [psql, -U, pbgp, -d, pbgp, -c, SELECT, "1"]
+                initialDelaySeconds: 5
+                timeoutSeconds: 1
+                periodSeconds: 10
+                successThreshold: 1
+                failureThreshold: 3
+              livenessProbe:
+                exec:
+                  command: [psql, -U, pbgp, -d, pbgp, -c, SELECT, "1"]
+                initialDelaySeconds: 120
+                timeoutSeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                failureThreshold: 3
+              env:
+                - name: POSTGRES_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DATABASE_SECRET}
+                      key: ${DATABASE_USER_KEY}
+                - name: POSTGRES_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DATABASE_SECRET}
+                      key: ${DATABASE_PASSWORD_KEY}
+                - name: POSTGRES_DB
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DATABASE_SECRET}
+                      key: ${DATABASE_NAME_KEY}
+                - name: PGDATA
+                  value: /var/lib/postgresql/data/pgdata
+              securityContext:
+                capabilities: {}
+                privileged: false
+              ports:
+                - containerPort: 5432
+                  protocol: TCP
+              volumeMounts:
+                - name: postgresql-data
+                  mountPath: /var/lib/postgresql/data
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          restartPolicy: Always
+          terminationGracePeriodSeconds: 30
+          dnsPolicy: ClusterFirst

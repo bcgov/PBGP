@@ -15,26 +15,32 @@ env:
 
 jobs:
   deploy:
-    name: OpenShift Build & Deploy to DEV
+    name: OpenShift Build & Deploy
     runs-on: ubuntu-latest
     concurrency: ci-build
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set DEPLOY_ENV variable
+        shell: bash
         run: |
-          if [ $BRANCH_NAME = 'main' ]
+          if [[ "${{ github.event_name }}" == "pull_request" ]]
           then
-            echo '::set-output name=DEPLOY_ENV::prod'
-          elif [ ${{ github.ref_name }} = 'develop'  ]
+            deploy_env=test
+          elif [[ "$BRANCH_NAME" == "main" ]]
           then
-            echo '::set-output name=DEPLOY_ENV::dev'
+            deploy_env=prod
+          elif [[ "$BRANCH_NAME" == "develop" ]]
+          then
+            deploy_env=dev
           else
-            echo '::set-output name=DEPLOY_ENV::test'
+            echo "Unsupported deployment branch: $BRANCH_NAME" >&2
+            exit 1
           fi
+          echo "DEPLOY_ENV=$deploy_env" >> "$GITHUB_OUTPUT"
         id: DEPLOY_ENV
 
       - name: Build & Deploy
@@ -42,4 +48,4 @@ jobs:
           oc login --token=$AUTH_TOKEN --server=$CLUSTER
           oc patch bc/pbgp-client -p '{"spec":{"source":{"git":{"ref": "${{ github.head_ref || github.ref_name }}" }},"output":{"to":{"name":"pbgp-client:${{ steps.DEPLOY_ENV.outputs.DEPLOY_ENV }}"}}}}' -n ed9154-tools
           oc patch bc/pbgp-server -p '{"spec":{"source":{"git":{"ref": "${{ github.head_ref || github.ref_name }}" }},"output":{"to":{"name":"pbgp-server:${{ steps.DEPLOY_ENV.outputs.DEPLOY_ENV }}"}}}}' -n ed9154-tools
-          make server-build
+          make server-build OS_NAMESPACE_SUFFIX=${{ steps.DEPLOY_ENV.outputs.DEPLOY_ENV }}
