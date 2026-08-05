@@ -21,7 +21,7 @@ jobs:
           npm install yarn -g && yarn set version ./.yarn/releases/yarn-3.2.4.cjs
         shell: bash
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v5
         name: Cache yarn
         with:
           path: server/.yarn/cache
