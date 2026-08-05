@@ -13,7 +13,7 @@ RUN mkdir -p ${HOME_SERVER}
 
 WORKDIR ${HOME_SERVER}
 ADD .yarn/releases/yarn-3.2.4.cjs ./.yarn/releases/yarn-3.2.4.cjs
-RUN npm install yarn -g && yarn set version ./.yarn/releases/yarn-3.2.4.cjs
+RUN npm install yarn@1.22.22 -g && yarn set version ./.yarn/releases/yarn-3.2.4.cjs
 COPY package.json yarn.lock .yarnrc.yml ./
 RUN yarn install --immutable
 COPY . .
