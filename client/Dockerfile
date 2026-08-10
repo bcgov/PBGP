@@ -11,14 +11,13 @@ RUN mkdir -p ${HOME_CLIENT}
 
 WORKDIR ${HOME_CLIENT}
 ADD .yarn/releases/yarn-3.3.0.cjs ./.yarn/releases/yarn-3.3.0.cjs
-RUN npm install yarn -g && yarn set version ./.yarn/releases/yarn-3.3.0.cjs
 COPY package.json yarn.lock .yarnrc.yml ./
-RUN yarn install --immutable
+RUN node ./.yarn/releases/yarn-3.3.0.cjs install --immutable
 COPY . .
-RUN INLINE_RUNTIME_CHUNK=false yarn run build
+RUN INLINE_RUNTIME_CHUNK=false node ./.yarn/releases/yarn-3.3.0.cjs run build
 
 RUN chown -R 1001 ${HOME_CLIENT}
 
 USER 1001
 EXPOSE 3000
-CMD [ "yarn", "run", "start" ]
+CMD [ "node", "./.yarn/releases/yarn-3.3.0.cjs", "run", "start" ]

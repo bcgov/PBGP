@@ -13,15 +13,14 @@ RUN mkdir -p ${HOME_SERVER}
 
 WORKDIR ${HOME_SERVER}
 ADD .yarn/releases/yarn-3.2.4.cjs ./.yarn/releases/yarn-3.2.4.cjs
-RUN npm install yarn -g && yarn set version ./.yarn/releases/yarn-3.2.4.cjs
 COPY package.json yarn.lock .yarnrc.yml ./
-RUN yarn install --immutable
+RUN node ./.yarn/releases/yarn-3.2.4.cjs install --immutable
 COPY . .
-RUN yarn run build
+RUN node ./.yarn/releases/yarn-3.2.4.cjs run build
 # Run app
 
 RUN chown -R 1001 ${HOME_SERVER}
 
 USER 1001
 EXPOSE 8080
-CMD [ "yarn", "run", "start:prod" ]
+CMD [ "node", "./.yarn/releases/yarn-3.2.4.cjs", "run", "start:prod" ]

@@ -1,3 +1,4 @@
+# Rollback-only backup. Do not use for normal deployment.
 kind: DeploymentConfig
 apiVersion: apps.openshift.io/v1
 metadata:

@@ -18,22 +18,26 @@ parameters:
     value: "8080"
     required: true
   - name: CONFIG_VERSION
-    description: The github repository version of Config (Commit SHA)
+    description: The GitHub repository version of the config
     value: default
   - name: REPLICAS
-    description: The number of replicas of deployments
+    description: The number of deployment replicas
     value: "1"
+    required: true
+  - name: ROUTE_HOST
+    description: Public server route hostname
+    required: true
 
 objects:
-  - apiVersion: v1
+  - apiVersion: route.openshift.io/v1
     kind: Route
     metadata:
       name: ${APP_NAME}-server
       annotations:
         haproxy.router.openshift.io/timeout: 90s
-        haproxy.router.openshift.io/disable_cookies: true
+        haproxy.router.openshift.io/disable_cookies: "true"
     spec:
-      host: ""
+      host: ${ROUTE_HOST}
       path: /api
       port:
         targetPort: web
@@ -45,31 +49,28 @@ objects:
         name: ${APP_NAME}-server
         weight: 100
       wildcardPolicy: None
-  - kind: DeploymentConfig
-    apiVersion: v1
+  - apiVersion: apps/v1
+    kind: Deployment
     metadata:
       name: ${APP_NAME}-server
+      annotations:
+        image.openshift.io/triggers: >-
+          [{"from":{"kind":"ImageStreamTag","name":"${APP_NAME}-server:${IMAGE_TAG}","namespace":"${IMAGE_NAMESPACE}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"${APP_NAME}-server\")].image","pause":"false"}]
     spec:
-      strategy:
-        type: Rolling
-        activeDeadlineSeconds: 21600
-      triggers:
-        - imageChangeParams:
-            automatic: true
-            containerNames:
-              - ${APP_NAME}-server
-            from:
-              kind: ImageStreamTag
-              name: ${APP_NAME}-server:${IMAGE_TAG}
-              namespace: ${IMAGE_NAMESPACE}
-          type: ImageChange
-        - type: ConfigChange
       replicas: "${{REPLICAS}}"
+      revisionHistoryLimit: 10
+      progressDeadlineSeconds: 600
       selector:
-        name: ${APP_NAME}-server
+        matchLabels:
+          name: ${APP_NAME}-server
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          # Prod's long-running CPU request quota has no surge headroom.
+          maxSurge: 0
+          maxUnavailable: 1
       template:
         metadata:
-          name: ${APP_NAME}-server
           labels:
             name: ${APP_NAME}-server
         spec:
@@ -116,52 +117,14 @@ objects:
                     secretKeyRef:
                       key: client-id
                       name: ${APP_NAME}-keycloak
-                - name: CHEFS_FORM_API_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      key: CHEFS_FORM_API_KEY
-                      name: ${APP_NAME}-server-env
-                - name: BCAAP_SMALL_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      key: BCAAP_SMALL_KEY
-                      name: ${APP_NAME}-chefs-env
-                - name: BCAAP_LARGE_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      key: BCAAP_LARGE_KEY
-                      name: ${APP_NAME}-chefs-env
-                - name: BCAAP_ENVIRONMENT_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      key: BCAAP_ENVIRONMENT_KEY
-                      name: ${APP_NAME}-chefs-env
-                - name: BCAAP_FACILITY_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      key: BCAAP_FACILITY_KEY
-                      name: ${APP_NAME}-chefs-env
-                - name: BCAAP_SMALL_FORM
-                  valueFrom:
-                    secretKeyRef:
-                      key: BCAAP_SMALL_FORM
-                      name: ${APP_NAME}-chefs-env
-                - name: BCAAP_FACILITY_FORM
-                  valueFrom:
-                    secretKeyRef:
-                      key: BCAAP_FACILITY_FORM
-                      name: ${APP_NAME}-chefs-env
-                - name: BCAAP_ENVIRONMENT_FORM
-                  valueFrom:
-                    secretKeyRef:
-                      key: BCAAP_ENVIRONMENT_FORM
-                      name: ${APP_NAME}-chefs-env
-                - name: BCAAP_LARGE_FORM
-                  valueFrom:
-                    secretKeyRef:
-                      key: BCAAP_LARGE_FORM
-                      name: ${APP_NAME}-chefs-env
+              envFrom:
+                - secretRef:
+                    name: ${APP_NAME}-server-env
+                - secretRef:
+                    name: ${APP_NAME}-chefs-env
+                    optional: true
               image: image-registry.openshift-image-registry.svc:5000/${IMAGE_NAMESPACE}/${APP_NAME}-server:${IMAGE_TAG}
+              imagePullPolicy: Always
               ports:
                 - containerPort: "${{SERVER_PORT}}"
                   protocol: TCP
@@ -188,19 +151,18 @@ objects:
                   memory: 256Mi
               terminationMessagePath: /dev/termination-log
               terminationMessagePolicy: File
-              imagePullPolicy: Always
           restartPolicy: Always
           dnsPolicy: ClusterFirst
-  - kind: Service
-    apiVersion: v1
+  - apiVersion: v1
+    kind: Service
     metadata:
       name: ${APP_NAME}-server
     spec:
       ports:
         - name: web
           protocol: TCP
-          port: ${{SERVER_PORT}}
-          targetPort: ${{SERVER_PORT}}
+          port: "${{SERVER_PORT}}"
+          targetPort: "${{SERVER_PORT}}"
       selector:
         name: ${APP_NAME}-server
       type: ClusterIP

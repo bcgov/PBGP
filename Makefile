@@ -4,9 +4,10 @@
 ## Define default environment variables for local development
 ####################################################################
 
--include .env
-
+ifneq (,$(wildcard .env))
+include .env
 export $(shell sed 's/=.*//' .env)
+endif
 
 export GIT_LOCAL_BRANCH?=$(shell git rev-parse --abbrev-ref HEAD)
 export DEPLOY_DATE?=$(shell date '+%Y%m%d%H%M')
@@ -30,6 +31,14 @@ export OS_NAMESPACE_PREFIX:=ed9154
 export OS_NAMESPACE_SUFFIX?=dev
 export TARGET_NAMESPACE=$(OS_NAMESPACE_PREFIX)-$(OS_NAMESPACE_SUFFIX)
 export TOOLS_NAMESPACE=$(OS_NAMESPACE_PREFIX)-tools
+export CLIENT_ROUTE_HOST_dev:=pbgp-dev.apps.silver.devops.gov.bc.ca
+export CLIENT_ROUTE_HOST_test:=pbgp-test.apps.silver.devops.gov.bc.ca
+export CLIENT_ROUTE_HOST_prod:=admin.pbgp.apps.silver.devops.gov.bc.ca
+export CLIENT_ROUTE_HOST=$(CLIENT_ROUTE_HOST_$(OS_NAMESPACE_SUFFIX))
+export SERVER_ROUTE_HOST_dev:=pbgp-server-ed9154-dev.apps.silver.devops.gov.bc.ca
+export SERVER_ROUTE_HOST_test:=pbgp-server-ed9154-test.apps.silver.devops.gov.bc.ca
+export SERVER_ROUTE_HOST_prod:=api-pbgp.apps.silver.devops.gov.bc.ca
+export SERVER_ROUTE_HOST=$(SERVER_ROUTE_HOST_$(OS_NAMESPACE_SUFFIX))
 
 export NEXT_PUBLIC_REDIRECT_URI = https://pgbp-dev.apps.silver.devops.gov.bc.ca
 export NEXT_PUBLIC_SERVER_URL = https://pbgp-server-ed9154-dev.apps.silver.devops.gov.bc.ca/api/v1
@@ -118,7 +127,7 @@ db-prep:
 
 db-create:
 	@oc process -f openshift/patroni.bc.yml -p APP_NAME=$(APP_NAME) | oc apply -n $(TOOLS_NAMESPACE) -f -
-	@oc process -f openshift/patroni.dc.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) | oc apply -n $(TARGET_NAMESPACE) -f -
+	@oc process -f openshift/patroni.statefulset.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) | oc apply -n $(TARGET_NAMESPACE) -f -
 
 db-postgres-tunnel:
 	@oc project $(TARGET_NAMESPACE)
@@ -129,10 +138,10 @@ db-postgres-tunnel:
 # 	@oc process -f openshift/keycloak.prep.yml -p APP_NAME=$(APP_NAME) | oc create -n $(TARGET_NAMESPACE) -f -
 
 # server-config-test:
-# 	@oc -n $(TARGET_NAMESPACE)  process -f openshift/server.dc.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) CONFIG_VERSION=$(COMMIT_SHA)  | oc apply -n $(TARGET_NAMESPACE) -f - --dry-run=client
+# 	@oc -n $(TARGET_NAMESPACE) process -f openshift/server.deployment.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) CONFIG_VERSION=$(COMMIT_SHA) | oc apply -n $(TARGET_NAMESPACE) -f - --dry-run=client
 
 # server-config: server-config-test
-# 	@oc -n $(TARGET_NAMESPACE) process -f openshift/server.dc.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) CONFIG_VERSION=$(COMMIT_SHA) | oc apply -n $(TARGET_NAMESPACE) -f -
+# 	@oc -n $(TARGET_NAMESPACE) process -f openshift/server.deployment.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) CONFIG_VERSION=$(COMMIT_SHA) | oc apply -n $(TARGET_NAMESPACE) -f -
 
 # server-build-config-test:
 # 	@echo "Testing Building config in $(TOOLS_NAMESPACE) namespace"
@@ -150,20 +159,20 @@ app-create:
 	@oc process -f openshift/app.bc.yml -p APP_NAME=$(APP_NAME) APP_TYPE=client IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) | oc apply -n $(TOOLS_NAMESPACE) -f -
 
 client-create:
-	@oc process -f openshift/client.dc.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) | oc apply -n $(TARGET_NAMESPACE) -f -
+	@oc process -f openshift/client.deployment.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) ROUTE_HOST=$(CLIENT_ROUTE_HOST) | oc apply -n $(TARGET_NAMESPACE) -f -
 
 server-create:
-	@oc process -f openshift/server.dc.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) | oc apply -n $(TARGET_NAMESPACE) -f -
+	@oc process -f openshift/server.deployment.yml -p APP_NAME=$(APP_NAME) IMAGE_NAMESPACE=$(TOOLS_NAMESPACE) IMAGE_TAG=$(OS_NAMESPACE_SUFFIX) ROUTE_HOST=$(SERVER_ROUTE_HOST) | oc apply -n $(TARGET_NAMESPACE) -f -
 
 client-build:
 	@echo "Building client image in $(TOOLS_NAMESPACE) namespace"
-	@oc cancel-build bc/$(APP_NAME)-client -n $(TOOLS_NAMESPACE)
-	@oc start-build $(APP_NAME)-client -n $(TOOLS_NAMESPACE)
+	@oc cancel-build bc/$(APP_NAME)-client -n $(TOOLS_NAMESPACE) || true
+	@oc start-build $(APP_NAME)-client -n $(TOOLS_NAMESPACE) --wait --follow
 
 server-build: client-build
 	@echo "Building server image in $(TOOLS_NAMESPACE) namespace"
-	@oc cancel-build bc/$(APP_NAME)-server -n $(TOOLS_NAMESPACE)
-	@oc start-build $(APP_NAME)-server -n $(TOOLS_NAMESPACE)
+	@oc cancel-build bc/$(APP_NAME)-server -n $(TOOLS_NAMESPACE) || true
+	@oc start-build $(APP_NAME)-server -n $(TOOLS_NAMESPACE) --wait --follow
 
 deploy:
 	@oc -n $(TOOLS_NAMESPACE) tag $(APP_NAME)-server:latest $(APP_NAME)-server:$(OS_NAMESPACE_SUFFIX)
